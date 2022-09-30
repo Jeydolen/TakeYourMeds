@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
@@ -19,12 +20,12 @@ class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
 
   void exportDataToString(String data, String format) async {
+    String now = DateTime.now().toString();
     Directory? pDir = await getExternalStorageDirectory();
     if (pDir == null) {
       return;
     }
 
-    String now = DateTime.now().toString();
     String fullPath = "${pDir.path}/${now}_summary.$format";
     FileHandler.saveContentWithFullPath(fullPath, data);
 
@@ -32,14 +33,34 @@ class SummaryPageState extends State<SummaryPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void exportData(SupportedFormats formats) async {
+  void shareData(String data, String format) async {
+    String now = DateTime.now().toString();
+    Directory? pDir = await getExternalStorageDirectory();
+    if (pDir == null) {
+      return;
+    }
+
+    String fullPath = "${pDir.path}/${now}_summary.$format";
+    File file = File(fullPath);
+    file.writeAsString(data);
+    Share.shareFiles(
+      [fullPath],
+      subject: "My summary export",
+      text: "This is the text for summary export",
+    );
+  }
+
+  void exportData(SupportedFormats formats, bool doShare) async {
     List<MedEvent> eventList = await summary;
 
     switch (formats) {
       case SupportedFormats.JSON:
         {
           String data = jsonEncode(eventList.map((e) => e.toJson()).toList());
-          exportDataToString(data, "json");
+          if (!doShare)
+            exportDataToString(data, "json");
+          else
+            shareData(data, "json");
           return;
         }
 
@@ -54,7 +75,10 @@ class SummaryPageState extends State<SummaryPage> {
           eventList.forEach((e) {
             data += e.toCSV();
           });
-          exportDataToString(data, "csv");
+          if (!doShare)
+            exportDataToString(data, "csv");
+          else
+            shareData(data, "csv");
           return;
         }
 
@@ -63,11 +87,11 @@ class SummaryPageState extends State<SummaryPage> {
     }
   }
 
-  void showExportDialog() async {
+  void showExportDialog(bool doShare) async {
     AlertDialog dialog = AlertDialog(
-      title: Text('Do you really want to remove: ?'),
-      content: const Text(
-          'If you really want to delete this medication, press Delete otherwise press Cancel.'),
+      title: Text('Export Summary'),
+      content: Text(
+          'Please, select a format to ${doShare ? "share" : "export"} your data otherwise press Cancel.'),
       actions: <Widget>[
         ElevatedButton(
           child: const Text('Cancel'),
@@ -83,25 +107,21 @@ class SummaryPageState extends State<SummaryPage> {
         ),
         TextButton(
           child: const Text('CSV'),
-          onPressed: () {
-            Navigator.of(context).pop(2);
-          },
+          onPressed: () => Navigator.of(context).pop(2),
         ),
       ],
     );
 
     int? doExport = await showDialog<int>(
       context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      },
+      builder: (BuildContext context) => dialog,
     );
 
     switch (doExport) {
       case 1:
-        return exportData(SupportedFormats.JSON);
+        return exportData(SupportedFormats.JSON, doShare);
       case 2:
-        return exportData(SupportedFormats.CSV);
+        return exportData(SupportedFormats.CSV, doShare);
       default:
         return;
     }
@@ -155,8 +175,12 @@ class SummaryPageState extends State<SummaryPage> {
           appBar: AppBar(
             actions: [
               ElevatedButton(
-                onPressed: showExportDialog,
+                onPressed: () => showExportDialog(false),
                 child: const Icon(Icons.save),
+              ),
+              ElevatedButton(
+                onPressed: () => showExportDialog(true),
+                child: const Icon(Icons.share),
               ),
             ],
           ),
