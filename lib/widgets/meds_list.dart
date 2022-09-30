@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:take_your_meds/pages/med_presentation.dart';
 import 'package:take_your_meds/common/utils.dart';
 
 import '../common/file_handler.dart';
@@ -49,14 +48,7 @@ class MedsListState extends State<MedsList> {
   }
 
   void showMed(Map<String, dynamic> json) {
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => MedPresentationPage(
-          json: json,
-        ),
-      ),
-    );
+    Navigator.pushNamed(context, "/med_presentation", arguments: json);
   }
 
   void addMed() async {

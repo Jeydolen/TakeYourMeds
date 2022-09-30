@@ -15,10 +15,6 @@ class _ClockButtonState extends State<ClockButton> {
   DateTime _now = DateTime.now();
   late Timer _timer;
 
-  void addMeds() {
-    Navigator.pushNamed(context, '/took_med');
-  }
-
   void _updateTime() {
     setState(() {
       _now = DateTime.now();
@@ -48,11 +44,9 @@ class _ClockButtonState extends State<ClockButton> {
     String timeText = DateFormat.Hms().format(_now);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          textStyle: TextStyle(
-            fontSize: MediaQuery.of(context).size.width / 6,
-          ),
+          textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
           minimumSize: Size(100, 60)),
-      onPressed: addMeds,
+      onPressed: () => Navigator.pushNamed(context, '/took_med'),
       child: Text(timeText),
     );
   }

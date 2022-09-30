@@ -3,10 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:take_your_meds/common/utils.dart';
 
-import 'package:take_your_meds/pages/home.dart';
-import 'package:take_your_meds/widgets/nav_bar.dart';
+import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
@@ -18,9 +16,9 @@ class SummaryPage extends StatefulWidget {
 }
 
 class SummaryPageState extends State<SummaryPage> {
-  late Future<List<dynamic>> summary;
+  late Future<List<MedEvent>> summary;
 
-  void exportData(String data, String format) async {
+  void exportDataToString(String data, String format) async {
     Directory? pDir = await getExternalStorageDirectory();
     if (pDir == null) {
       return;
@@ -34,40 +32,35 @@ class SummaryPageState extends State<SummaryPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void exportDataAsJson() async {
-    exportData(jsonEncode(await summary), "json");
-  }
+  void exportData(SupportedFormats formats) async {
+    List<MedEvent> eventList = await summary;
 
-  void exportDataAsCSV() async {
-    // TODO: Implements recursive CSV converter
-    //print(Utils.JSON2CSV(await summary));
-
-    List<dynamic> data = await summary;
-
-    String CSV = "Dates,Name,Dose,Unit,Quantity,Reason\n";
-
-    for (var element in data) {
-      String line = "";
-      if (element["dates"] == null) {
-        // Means there is no dates available for this medication
-        line = ",${element["name"]},${element["dose"]},${element["unit"]},";
-      }
-
-      element["dates"].forEach((dateObj) {
-        line +=
-            "${dateObj["date"]},${element["name"]},${element["dose"]},${element["unit"]},${dateObj["quantity"]}";
-
-        if (dateObj["reason"] != null) {
-          line += ",${dateObj["reason"]}";
+    switch (formats) {
+      case SupportedFormats.JSON:
+        {
+          String data = jsonEncode(eventList.map((e) => e.toJson()).toList());
+          exportDataToString(data, "json");
+          return;
         }
 
-        line += "\n";
-      });
+      case SupportedFormats.CSV:
+        {
+          String data = "";
+          MedEvent.header.forEach((e) {
+            data += e + ",";
+          });
+          data += "\n";
 
-      CSV += line + "\n";
+          eventList.forEach((e) {
+            data += e.toCSV();
+          });
+          exportDataToString(data, "csv");
+          return;
+        }
+
+      default:
+        break;
     }
-
-    exportData(CSV, "csv");
   }
 
   void showExportDialog() async {
@@ -97,32 +90,21 @@ class SummaryPageState extends State<SummaryPage> {
       ],
     );
 
-    int? doRemove = await showDialog<int>(
+    int? doExport = await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
         return dialog;
       },
     );
 
-    switch (doRemove) {
+    switch (doExport) {
       case 1:
-        return exportDataAsJson();
+        return exportData(SupportedFormats.JSON);
       case 2:
-        return exportDataAsCSV();
+        return exportData(SupportedFormats.CSV);
       default:
         return;
     }
-  }
-
-  void gotoHome() {
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => const HomePage(),
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
-      ),
-    );
   }
 
   Future<List<dynamic>> fetchSummary() async {
@@ -135,21 +117,34 @@ class SummaryPageState extends State<SummaryPage> {
     return [];
   }
 
+  Future<List<MedEvent>> createEvents(Future<List<dynamic>> summary) async {
+    List<MedEvent> events = [];
+    for (var element in await summary) {
+      List<dynamic>? dates = element["dates"];
+      if (dates != null) {
+        dates.forEach((dateObj) {
+          DateTime date = DateTime.parse(dateObj["date"]);
+          events.add(MedEvent.fromJson(element, date));
+        });
+      }
+    }
+    return events;
+  }
+
   @override
   void initState() {
     super.initState();
-    summary = fetchSummary();
+    summary = createEvents(fetchSummary());
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
+    return FutureBuilder<List<MedEvent>>(
       future: summary,
       builder: (context, snapshot) {
         Widget widget;
         if (snapshot.hasData) {
-          widget = SummaryCalendar(json: snapshot.data ?? []);
-          //widget = Text('${snapshot.data}');
+          widget = SummaryCalendar(medEvents: snapshot.data ?? []);
         } else if (snapshot.hasError) {
           widget = Text('${snapshot.error}');
         } else {
@@ -166,7 +161,6 @@ class SummaryPageState extends State<SummaryPage> {
             ],
           ),
           body: widget,
-          bottomNavigationBar: NavigationBar(selectedId: 1, onClick: gotoHome),
         );
       },
     );

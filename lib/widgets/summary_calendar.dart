@@ -3,8 +3,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:take_your_meds/common/med_event.dart';
 
 class SummaryCalendar extends StatefulWidget {
-  const SummaryCalendar({Key? key, required this.json}) : super(key: key);
-  final List<dynamic> json;
+  const SummaryCalendar({Key? key, required this.medEvents}) : super(key: key);
+  final List<MedEvent> medEvents;
 
   @override
   State<StatefulWidget> createState() => SummaryCalendarState();
@@ -12,36 +12,17 @@ class SummaryCalendar extends StatefulWidget {
 
 class SummaryCalendarState extends State<SummaryCalendar> {
   late final ValueNotifier<List<MedEvent>> _selectedEvents;
+  DateTime? _selectedDay;
+  DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-  }
-
-  @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
-  }
 
   List<MedEvent> _getEventsForDay(DateTime day) {
     List<MedEvent> eventsForDay = [];
-    for (var element in widget.json) {
-      List<dynamic>? dates = element["dates"];
-      if (dates != null) {
-        dates.forEach((dateObj) {
-          DateTime date = DateTime.parse(dateObj["date"]);
-          if (isSameDay(date, day)) {
-            eventsForDay.add(MedEvent.fromJson(element, date));
-          }
-        });
+    for (var event in widget.medEvents) {
+      DateTime date = event.datetime;
+      if (isSameDay(date, day)) {
+        eventsForDay.add(event);
       }
     }
     return eventsForDay;
@@ -55,6 +36,20 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
   }
 
   @override

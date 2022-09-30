@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
-  NavigationBar({Key? key, required this.selectedId, required this.onClick})
-      : super(key: key);
-  int selectedId;
-  Function onClick;
+  NavigationBar({Key? key, required this.onClick}) : super(key: key);
+  final Function onClick;
 
   @override
   State<NavigationBar> createState() => NavigationBarState();
 }
 
 class NavigationBarState extends State<NavigationBar> {
+  int currIndex = 0;
+
   void nextPage(int index) {
-    if (index == widget.selectedId) {
+    if (index == currIndex) {
       return;
     }
 
     setState(() {
-      widget.selectedId = index;
+      currIndex = index;
     });
 
-    widget.onClick();
+    widget.onClick(index);
   }
 
   @override
@@ -36,7 +36,7 @@ class NavigationBarState extends State<NavigationBar> {
           label: 'Summary',
         ),
       ],
-      currentIndex: widget.selectedId,
+      currentIndex: currIndex,
       onTap: (int index) => nextPage(index),
     );
   }
