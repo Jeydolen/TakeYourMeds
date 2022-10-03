@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/home.dart';
-import 'package:take_your_meds/pages/med_presentation.dart';
 import 'package:take_your_meds/pages/summary.dart';
+import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
+import 'package:take_your_meds/pages/med_presentation.dart';
 
 void main() {
   runApp(const App());
@@ -11,6 +11,7 @@ void main() {
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => AppState();
 }

@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
@@ -27,7 +27,7 @@ class SummaryPageState extends State<SummaryPage> {
     }
 
     String fullPath = "${pDir.path}/${now}_summary.$format";
-    FileHandler.saveContentWithFullPath(fullPath, data);
+    FileHandler.saveToPath(fullPath, data);
 
     final snackBar = SnackBar(content: Text("File saved at: $fullPath"));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -95,15 +95,11 @@ class SummaryPageState extends State<SummaryPage> {
       actions: <Widget>[
         ElevatedButton(
           child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
           child: const Text('JSON'),
-          onPressed: () {
-            Navigator.of(context).pop(1);
-          },
+          onPressed: () => Navigator.of(context).pop(1),
         ),
         TextButton(
           child: const Text('CSV'),
@@ -140,11 +136,13 @@ class SummaryPageState extends State<SummaryPage> {
   Future<List<MedEvent>> createEvents(Future<List<dynamic>> summary) async {
     List<MedEvent> events = [];
     for (var element in await summary) {
+      print("element $element");
       List<dynamic>? dates = element["dates"];
       if (dates != null) {
         dates.forEach((dateObj) {
           DateTime date = DateTime.parse(dateObj["date"]);
-          events.add(MedEvent.fromJson(element, date));
+          events.add(MedEvent.fromJson(
+              element, dateObj["quantity"], date, dateObj["reason"]!));
         });
       }
     }

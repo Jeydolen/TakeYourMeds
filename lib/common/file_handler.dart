@@ -13,11 +13,8 @@ class FileHandler {
     return file.writeAsString(textContent);
   }
 
-  static Future<File> saveContentWithFullPath(
-      String fullPath, String textContent) async {
-    final File file = File(fullPath);
-    return file.writeAsString(textContent);
-  }
+  static Future<File> saveToPath(String fullPath, String content) async =>
+      File(fullPath).writeAsString(content);
 
   static Future<String?> readContent(String fileName) async {
     try {

@@ -4,11 +4,17 @@ import 'package:take_your_meds/common/medication.dart';
 enum SupportedFormats { JSON, CSV }
 
 class MedEvent extends Medication {
-  static final List<String> keys = ["quantity", "time", "reason"];
+  static final List<String> keys = [
+    "quantity",
+    "time",
+    "date",
+    "iso8601_date",
+    "reason"
+  ];
   static final List header = [...Medication.keys, ...MedEvent.keys];
-  final String? quantity;
-  final String? reason;
+  final String quantity;
   final DateTime _time;
+  final String? reason;
 
   String get time {
     return DateFormat.Hm().format(_time);
@@ -21,21 +27,23 @@ class MedEvent extends Medication {
   MedEvent(name, dose, unit, this.quantity, this._time, this.reason)
       : super(name, dose, unit);
 
-  factory MedEvent.fromJson(Map<String, dynamic> json, DateTime time) {
+  factory MedEvent.fromJson(Map<String, dynamic> json, String quantity,
+      DateTime time, String? reason) {
     return new MedEvent(
       json["name"],
       json["dose"],
       json["unit"],
-      json["quantity"],
+      quantity,
       time,
-      json["reason"],
+      reason,
     );
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> MedicationObj = Map.of(super.toJson());
-
     MedicationObj["time"] = time;
+    MedicationObj["date"] = DateFormat.yMd().format(_time);
+    MedicationObj["iso8601_date"] = _time.toIso8601String();
     MedicationObj["quantity"] = quantity;
     MedicationObj["reason"] = reason;
     return MedicationObj;
