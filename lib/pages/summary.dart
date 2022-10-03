@@ -12,12 +12,23 @@ import 'package:take_your_meds/widgets/summary_calendar.dart';
 class SummaryPage extends StatefulWidget {
   const SummaryPage({Key? key}) : super(key: key);
 
+  static Future<List<dynamic>> fetchSummary() async {
+    String? jsonString = await FileHandler.readContent("meds");
+
+    if (jsonString != null) {
+      return jsonDecode(jsonString);
+    }
+
+    return [];
+  }
+
   @override
   State<StatefulWidget> createState() => SummaryPageState();
 }
 
 class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
+  late List<dynamic> json;
 
   void exportDataToString(String data, String format) async {
     String now = DateTime.now().toString();
@@ -123,26 +134,63 @@ class SummaryPageState extends State<SummaryPage> {
     }
   }
 
-  Future<List<dynamic>> fetchSummary() async {
-    String? jsonString = await FileHandler.readContent("meds");
+  void saveData(MedEvent diffEvent) async {
+    // createEvents but other side
+    List<Map> eventsToJson = [];
+    for (MedEvent event in await summary) {
+      bool found = eventsToJson.any((obj) => obj["uid"] == event.uid);
 
-    if (jsonString != null) {
-      return jsonDecode(jsonString);
+      if (!found) {
+        Map obj = event.toJson();
+        obj.remove("time");
+        obj.remove("date");
+        obj.remove("iso8601_date");
+        obj.remove("quantity");
+        obj.remove("reason");
+        obj["dates"] = [];
+        obj["dates"].add({
+          "date": event.datetime.toIso8601String(),
+          "quantity": event.quantity,
+          "reason": event.reason,
+        });
+        eventsToJson.add(obj);
+      } else {
+        Map obj = eventsToJson.firstWhere((obj) => obj["uid"] == event.uid);
+        obj["dates"].add({
+          "date": event.datetime.toIso8601String(),
+          "quantity": event.quantity,
+          "reason": event.reason,
+        });
+      }
     }
 
-    return [];
+    for (Map obj in json) {
+      if (!eventsToJson.any((element) {
+        return element["uid"] == obj["uid"];
+      })) {
+        List<dynamic> dates = obj["dates"];
+        String diffTime = diffEvent.datetime.toIso8601String();
+        dates.removeWhere((e) => e["date"] == diffTime);
+        eventsToJson.add(obj);
+      }
+    }
+    FileHandler.writeContent("meds", jsonEncode(eventsToJson));
   }
 
-  Future<List<MedEvent>> createEvents(Future<List<dynamic>> summary) async {
+  Future<List<MedEvent>> createEvents(Future<List<dynamic>> data) async {
     List<MedEvent> events = [];
-    for (var element in await summary) {
-      print("element $element");
+    json = await data;
+    for (var element in json) {
       List<dynamic>? dates = element["dates"];
       if (dates != null) {
         dates.forEach((dateObj) {
           DateTime date = DateTime.parse(dateObj["date"]);
           events.add(MedEvent.fromJson(
-              element, dateObj["quantity"], date, dateObj["reason"]!));
+            element,
+            dateObj["quantity"],
+            date,
+            dateObj["reason"]!,
+          ));
         });
       }
     }
@@ -152,7 +200,7 @@ class SummaryPageState extends State<SummaryPage> {
   @override
   void initState() {
     super.initState();
-    summary = createEvents(fetchSummary());
+    summary = createEvents(SummaryPage.fetchSummary());
   }
 
   @override
@@ -162,7 +210,11 @@ class SummaryPageState extends State<SummaryPage> {
       builder: (context, snapshot) {
         Widget widget;
         if (snapshot.hasData) {
-          widget = SummaryCalendar(medEvents: snapshot.data ?? []);
+          widget = SummaryCalendar(
+            medEvents: snapshot.data ?? [],
+            json: json,
+            saveData: saveData,
+          );
         } else if (snapshot.hasError) {
           widget = Text('${snapshot.error}');
         } else {

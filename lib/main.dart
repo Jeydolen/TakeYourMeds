@@ -27,7 +27,7 @@ class AppState extends State<App> {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => const HomePage(),
-        '/summary': (BuildContext context) => const SummaryPage(),
+        '/summary': (BuildContext context) => SummaryPage(),
         '/add_med': (BuildContext context) => const AddMedPage(),
         '/took_med': (BuildContext context) => const TookMedPage(),
         '/med_presentation': (BuildContext context) => MedPresentationPage(),

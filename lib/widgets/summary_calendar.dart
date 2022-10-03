@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/pages/summary_presentation.dart';
+
+import '../main.dart';
 
 class SummaryCalendar extends StatefulWidget {
-  const SummaryCalendar({Key? key, required this.medEvents}) : super(key: key);
-  final List<MedEvent> medEvents;
+  SummaryCalendar({
+    Key? key,
+    required this.medEvents,
+    required this.json,
+    required this.saveData,
+  }) : super(key: key);
+  List<MedEvent> medEvents;
+  final List<dynamic> json;
+  Function saveData;
 
   @override
   State<StatefulWidget> createState() => SummaryCalendarState();
 }
 
 class SummaryCalendarState extends State<SummaryCalendar> {
-  late final ValueNotifier<List<MedEvent>> _selectedEvents;
+  late List<MedEvent> medEvents;
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  late final ValueNotifier<List<MedEvent>> _selectedEvents;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
   List<MedEvent> _getEventsForDay(DateTime day) {
     List<MedEvent> eventsForDay = [];
-    for (var event in widget.medEvents) {
+    for (var event in medEvents) {
       DateTime date = event.datetime;
       if (isSameDay(date, day)) {
         eventsForDay.add(event);
@@ -38,10 +49,29 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     }
   }
 
+  void showEvent(MedEvent value) async {
+    MedEvent? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => SummaryPresentationPage(
+          json: widget.json,
+          event: value,
+        ),
+      ),
+    );
+
+    if (result != null) {
+      medEvents.remove(value);
+      medEvents.add(result);
+      _selectedEvents.value = _getEventsForDay(_selectedDay!);
+      widget.saveData(result);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
+    medEvents = widget.medEvents;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
@@ -85,23 +115,22 @@ class SummaryCalendarState extends State<SummaryCalendar> {
             return ListView.builder(
               itemCount: value.length,
               itemBuilder: (context, index) {
+                MedEvent event = value[index];
                 return Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                    vertical: 4.0,
-                  ),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
                   decoration: BoxDecoration(
                     border: Border.all(),
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                    onTap: () => print(' ${value[index]}'),
+                    onTap: () => showEvent(event),
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('${value[index].name}'),
-                        Text('${value[index].dose} ${value[index].unit}'),
-                        Text('${value[index].time}'),
+                        Text('${event.name}'),
+                        Text('${event.quantity}x ${event.dose} ${event.unit}'),
+                        Text('${event.time}'),
                       ],
                     ),
                   ),
