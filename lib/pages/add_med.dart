@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:take_your_meds/common/medication.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,8 +26,14 @@ class AddMedPageState extends State<AddMedPage> {
     List<dynamic> currMeds = meds != null ? jsonDecode(meds) : [];
 
     formData["unit"] = dropdownValue;
-    formData["uid"] = const Uuid().v4();
-    currMeds.add(formData);
+    Medication med = Medication(
+      formData["name"],
+      formData["dose"],
+      dropdownValue,
+      formData["notes"],
+      const Uuid().v4(),
+    );
+    currMeds.add(med.toJson());
     FileHandler.writeContent("meds", jsonEncode(currMeds));
     Navigator.pop(context, currMeds);
   }

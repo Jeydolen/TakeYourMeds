@@ -24,20 +24,21 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
           element["name"],
           element["dose"],
           element["unit"],
+          element["notes"],
           element["uid"],
         ),
       )
       .toList();
 
   void editEvent(String? uid) async {
-    if (uid != null && uid != widget.event.uid) {
+    if (uid != null && uid != event.uid) {
       setState(() {
         Medication med = meds.firstWhere((element) => element.uid == uid);
         event = MedEvent.fromJson(
           med.toJson(),
-          widget.event.quantity,
-          widget.event.datetime,
-          widget.event.reason,
+          event.quantity,
+          event.datetime,
+          event.reason,
         );
       });
     }
@@ -78,17 +79,21 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
     Icon editIcon = edit ? Icon(Icons.cancel) : Icon(Icons.edit);
     String name = "Name: ${event.name}";
     String dose = "Dosage: ${event.quantity} x ${event.dose} ${event.unit}";
+    String notes = "Notes: ${(event.notes.isEmpty) ? "/" : event.notes}";
     String time = "Time: ${event.time}";
-    String reason = "Reason: ${event.reason!.isEmpty ? "/" : event.reason}";
+
+    final String? rVal = event.reason;
+    String reason = "Reason: ${(rVal == null || rVal.isEmpty) ? "/" : rVal}";
 
     return Scaffold(
         appBar: AppBar(
           actions: [
             ElevatedButton(
-                onPressed: () => setState(() {
-                      edit = !edit;
-                    }),
-                child: editIcon)
+              onPressed: () => setState(() {
+                edit = !edit;
+              }),
+              child: editIcon,
+            )
           ],
         ),
         body: Padding(
@@ -99,6 +104,8 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
               edit ? dropDown : Text(name),
               const SizedBox(height: 20),
               Text(dose),
+              const SizedBox(height: 20),
+              Text(notes),
               const SizedBox(height: 20),
               Text(time),
               const SizedBox(height: 20),
