@@ -4,9 +4,7 @@ class Utils {
   static Future<bool?> dialogBuilder(BuildContext context, AlertDialog dialog) {
     return showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      },
+      builder: (BuildContext context) => dialog,
     );
   }
 }

@@ -10,20 +10,22 @@ class SummaryCalendar extends StatefulWidget {
     required this.json,
     required this.saveData,
   }) : super(key: key);
-  List<MedEvent> medEvents;
+  final List<MedEvent> medEvents;
   final List<dynamic> json;
-  Function saveData;
+  final Function saveData;
 
   @override
   State<StatefulWidget> createState() => SummaryCalendarState();
 }
 
 class SummaryCalendarState extends State<SummaryCalendar> {
-  late List<MedEvent> medEvents;
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
+
+  late List<MedEvent> medEvents;
   late final ValueNotifier<List<MedEvent>> _selectedEvents;
+
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
   List<MedEvent> _getEventsForDay(DateTime day) {

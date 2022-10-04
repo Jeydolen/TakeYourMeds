@@ -5,19 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
-class MedPresentationPage extends StatefulWidget {
-  //final Map<String, dynamic> json;
-
-  MedPresentationPage({
-    Key? key,
-    /*required this.json*/
-  }) : super(key: key);
+class TookMedPresentationPage extends StatefulWidget {
+  TookMedPresentationPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MedPresentationPageState();
+  State<StatefulWidget> createState() => TookMedPresentationPageState();
 }
 
-class MedPresentationPageState extends State<MedPresentationPage> {
+class TookMedPresentationPageState extends State<TookMedPresentationPage> {
   late Map json;
   DateTime now = DateTime.now();
   String today = DateFormat.Hm().add_EEEE().format(DateTime.now());
@@ -59,7 +54,8 @@ class MedPresentationPageState extends State<MedPresentationPage> {
               const SizedBox(height: 20),
               () {
                 String? notes = json["notes"];
-                return Text("Notes: ${notes!.isEmpty ? "/" : notes}");
+                String text = (notes == null || notes.isEmpty) ? "/" : notes;
+                return Text("Notes: $text");
               }(),
               const SizedBox(height: 20),
               Row(

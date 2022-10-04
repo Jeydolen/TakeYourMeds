@@ -5,8 +5,8 @@ import 'package:take_your_meds/common/medication.dart';
 class SummaryPresentationPage extends StatefulWidget {
   SummaryPresentationPage({Key? key, required this.json, required this.event})
       : super(key: key);
-  List<dynamic> json;
-  MedEvent event;
+  final List<dynamic> json;
+  final MedEvent event;
 
   @override
   State<StatefulWidget> createState() => SummaryPresentationPageState();
@@ -44,12 +44,12 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   }
 
   void generateDropDown() {
-    List<DropdownMenuItem> a = meds.map((element) {
-      return DropdownMenuItem(
-        child: Text(element.name),
-        value: element.uid,
-      );
-    }).toList();
+    List<DropdownMenuItem> a = meds
+        .map((element) => DropdownMenuItem(
+              child: Text(element.name),
+              value: element.uid,
+            ))
+        .toList();
 
     setState(() {
       dropDown = a.length == 1

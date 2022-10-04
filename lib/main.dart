@@ -3,7 +3,7 @@ import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/summary.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
-import 'package:take_your_meds/pages/med_presentation.dart';
+import 'package:take_your_meds/pages/took_med_presentation.dart';
 
 void main() {
   runApp(const App());
@@ -30,7 +30,8 @@ class AppState extends State<App> {
         '/summary': (BuildContext context) => SummaryPage(),
         '/add_med': (BuildContext context) => const AddMedPage(),
         '/took_med': (BuildContext context) => const TookMedPage(),
-        '/med_presentation': (BuildContext context) => MedPresentationPage(),
+        '/med_presentation': (BuildContext context) =>
+            TookMedPresentationPage(),
       },
     );
   }

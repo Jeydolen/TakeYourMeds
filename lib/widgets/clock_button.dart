@@ -18,8 +18,6 @@ class _ClockButtonState extends State<ClockButton> {
   void _updateTime() {
     setState(() {
       _now = DateTime.now();
-      // Update once per second. Make sure to do it at the beginning of each
-      // new second, so that the clock is accurate.
       _timer = Timer(
         const Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
@@ -41,13 +39,12 @@ class _ClockButtonState extends State<ClockButton> {
 
   @override
   Widget build(BuildContext context) {
-    String timeText = DateFormat.Hms().format(_now);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
           minimumSize: Size(100, 60)),
       onPressed: () => Navigator.pushNamed(context, '/took_med'),
-      child: Text(timeText),
+      child: Text(DateFormat.Hms().format(_now)),
     );
   }
 }
