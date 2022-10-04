@@ -3,8 +3,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
 
-import '../main.dart';
-
 class SummaryCalendar extends StatefulWidget {
   SummaryCalendar({
     Key? key,

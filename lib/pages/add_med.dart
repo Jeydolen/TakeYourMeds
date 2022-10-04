@@ -25,7 +25,7 @@ class AddMedPageState extends State<AddMedPage> {
     List<dynamic> currMeds = meds != null ? jsonDecode(meds) : [];
 
     formData["unit"] = dropdownValue;
-    formData["uid"] = const Uuid().v4();
+    //formData["uid"] = const Uuid().v4();
     currMeds.add(formData);
     FileHandler.writeContent("meds", jsonEncode(currMeds));
     Navigator.pop(context, currMeds);

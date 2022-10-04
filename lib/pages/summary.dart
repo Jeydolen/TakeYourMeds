@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
+import 'package:uuid/uuid.dart';
 
 class SummaryPage extends StatefulWidget {
   const SummaryPage({Key? key}) : super(key: key);
@@ -29,6 +30,16 @@ class SummaryPage extends StatefulWidget {
 class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
   late List<dynamic> json;
+
+  void updateIds() async {
+    for (Map obj in await json) {
+      if (obj["uid"] == null) {
+        obj["uid"] = Uuid().v4();
+      }
+    }
+
+    saveData(null);
+  }
 
   void exportDataToString(String data, String format) async {
     String now = DateTime.now().toString();
@@ -134,7 +145,7 @@ class SummaryPageState extends State<SummaryPage> {
     }
   }
 
-  void saveData(MedEvent diffEvent) async {
+  void saveData(MedEvent? diffEvent) async {
     // createEvents but other side
     List<Map> eventsToJson = [];
     for (MedEvent event in await summary) {
@@ -165,12 +176,12 @@ class SummaryPageState extends State<SummaryPage> {
     }
 
     for (Map obj in json) {
-      if (!eventsToJson.any((element) {
-        return element["uid"] == obj["uid"];
-      })) {
-        List<dynamic> dates = obj["dates"];
-        String diffTime = diffEvent.datetime.toIso8601String();
-        dates.removeWhere((e) => e["date"] == diffTime);
+      if (!eventsToJson.any((element) => element["uid"] == obj["uid"])) {
+        if (diffEvent != null) {
+          List<dynamic> dates = obj["dates"];
+          String diffTime = diffEvent.datetime.toIso8601String();
+          dates.removeWhere((e) => e["date"] == diffTime);
+        }
         eventsToJson.add(obj);
       }
     }
@@ -200,7 +211,10 @@ class SummaryPageState extends State<SummaryPage> {
   @override
   void initState() {
     super.initState();
-    summary = createEvents(SummaryPage.fetchSummary());
+    summary = createEvents(SummaryPage.fetchSummary()).then((value) {
+      updateIds();
+      return value;
+    });
   }
 
   @override
