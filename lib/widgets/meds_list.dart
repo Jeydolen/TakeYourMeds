@@ -6,7 +6,7 @@ import 'package:take_your_meds/common/utils.dart';
 import '../common/file_handler.dart';
 
 class MedsList extends StatefulWidget {
-  late List<dynamic> json;
+  final List<dynamic> json;
   MedsList({Key? key, required this.json}) : super(key: key);
 
   @override
@@ -15,6 +15,7 @@ class MedsList extends StatefulWidget {
 
 class MedsListState extends State<MedsList> {
   bool edit = false;
+  late List<dynamic> json;
 
   Widget emptyList() => Center(
         child: Row(
@@ -31,20 +32,20 @@ class MedsListState extends State<MedsList> {
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
-      final dynamic item = widget.json.removeAt(oldIndex);
-      widget.json.insert(newIndex, item);
+      final dynamic item = json.removeAt(oldIndex);
+      json.insert(newIndex, item);
     });
-    FileHandler.writeContent("meds", jsonEncode(widget.json));
+    FileHandler.writeContent("meds", jsonEncode(json));
   }
 
   void removeMed(element) {
     setState(() {
-      widget.json.remove(element);
-      if (widget.json.isEmpty) {
+      json.remove(element);
+      if (json.isEmpty) {
         edit = false;
       }
     });
-    FileHandler.writeContent("meds", jsonEncode(widget.json));
+    FileHandler.writeContent("meds", jsonEncode(json));
   }
 
   void showMed(Map<String, dynamic> json) {
@@ -57,12 +58,12 @@ class MedsListState extends State<MedsList> {
       return;
     }
     setState(() {
-      widget.json = result;
+      json = result;
     });
   }
 
   void editList() {
-    if (widget.json.isEmpty) {
+    if (json.isEmpty) {
       return;
     }
     setState(() {
@@ -71,24 +72,25 @@ class MedsListState extends State<MedsList> {
   }
 
   void removeMedDialog(dynamic element) async {
+    String alertTitle = 'Do you really want to remove:  ${element["name"]} ?';
+    String alertContent =
+        'If you really want to delete this medication, press Delete otherwise press Cancel.';
+
     AlertDialog dialog = AlertDialog(
-      title: Text('Do you really want to remove:  ${element["name"]} ?'),
-      content: const Text(
-          'If you really want to delete this medication, press Delete otherwise press Cancel.'),
+      title: Text(alertTitle),
+      content: Text(alertContent),
       actions: <Widget>[
         TextButton(
           child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
           style: TextButton.styleFrom(
-              primary: Colors.white, backgroundColor: Colors.red),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.red,
+          ),
           child: const Text('Delete'),
-          onPressed: () {
-            Navigator.of(context).pop(true);
-          },
+          onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
     );
@@ -100,39 +102,46 @@ class MedsListState extends State<MedsList> {
     }
   }
 
-  List<Widget> generateElements(
-      List<dynamic> json, Function onClick, bool edit) {
-    return json.map((element) {
-      return ListTile(
-        contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-        key: UniqueKey(),
-        title: TextButton(
-          onPressed: () => edit ? {} : onClick(element),
-          child: Row(
-            children: [
-              SizedBox(
-                child: Text(element["name"]),
-                width: MediaQuery.of(context).size.width / 2.2,
+  List<Widget> generateElements(List<dynamic> json, Function onClick) {
+    return json
+        .map((element) => ListTile(
+              contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              key: UniqueKey(),
+              title: TextButton(
+                onPressed: () => edit ? {} : onClick(element),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      child: Text(element["name"]),
+                      width: MediaQuery.of(context).size.width / 2.2,
+                    ),
+                    SizedBox(
+                      child: Text(element["dose"]),
+                      width: MediaQuery.of(context).size.width / 5,
+                    ),
+                    SizedBox(
+                      child: Text(element["unit"]),
+                      width: 20,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                child: Text(element["dose"]),
-                width: MediaQuery.of(context).size.width / 5,
+              trailing: TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: edit ? Colors.red : null,
+                  padding: EdgeInsets.all(0),
+                ),
+                child: Icon(edit ? Icons.delete : Icons.drag_handle),
+                onPressed: () => edit ? onClick(element) : {},
               ),
-              SizedBox(
-                child: Text(element["unit"]),
-                width: 20,
-              ),
-            ],
-          ),
-        ),
-        trailing: TextButton(
-          style: TextButton.styleFrom(
-              primary: edit ? Colors.red : null, padding: EdgeInsets.all(0)),
-          child: Icon(edit ? Icons.delete : Icons.drag_handle),
-          onPressed: () => edit ? onClick(element) : {},
-        ),
-      );
-    }).toList();
+            ))
+        .toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    json = widget.json;
   }
 
   @override
@@ -147,11 +156,13 @@ class MedsListState extends State<MedsList> {
           )
         ],
       ),
-      body: widget.json.isEmpty
+      body: json.isEmpty
           ? emptyList()
           : ReorderableListView(
               children: generateElements(
-                  widget.json, edit ? removeMedDialog : showMed, edit),
+                json,
+                edit ? removeMedDialog : showMed,
+              ),
               onReorder: reorderList,
             ),
     );
