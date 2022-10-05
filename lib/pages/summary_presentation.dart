@@ -3,7 +3,8 @@ import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/medication.dart';
 
 class SummaryPresentationPage extends StatefulWidget {
-  SummaryPresentationPage({Key? key, required this.json, required this.event})
+  const SummaryPresentationPage(
+      {Key? key, required this.json, required this.event})
       : super(key: key);
   final List<dynamic> json;
   final MedEvent event;
@@ -16,7 +17,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   late MedEvent event;
   bool edit = false;
   late List<Medication> meds = getAll();
-  Widget dropDown = CircularProgressIndicator();
+  Widget dropDown = const CircularProgressIndicator();
 
   List<Medication> getAll() => widget.json
       .map(
@@ -46,14 +47,14 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   void generateDropDown() {
     List<DropdownMenuItem> a = meds
         .map((element) => DropdownMenuItem(
-              child: Text(element.name),
               value: element.uid,
+              child: Text(element.name),
             ))
         .toList();
 
     setState(() {
       dropDown = a.length == 1
-          ? Text("Can't make it editable because no other meds detected")
+          ? const Text("Can't make it editable because no other meds detected")
           : DropdownButtonFormField<dynamic>(
               value: event.uid,
               onChanged: (value) => editEvent(value),
@@ -75,7 +76,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
 
   @override
   Widget build(BuildContext context) {
-    Icon editIcon = edit ? Icon(Icons.cancel) : Icon(Icons.edit);
+    Icon editIcon = edit ? const Icon(Icons.cancel) : const Icon(Icons.edit);
     String name = "Name: ${event.name}";
     String dose = "Dosage: ${event.quantity} x ${event.dose} ${event.unit}";
     String time = "Time: ${event.time}";
@@ -92,7 +93,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
           ],
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: ListView(
             children: [
               const SizedBox(height: 20),
@@ -107,9 +108,9 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
               edit
                   ? ElevatedButton(
                       onPressed: save,
-                      child: Text("Save changes"),
+                      child: const Text("Save changes"),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
         ));

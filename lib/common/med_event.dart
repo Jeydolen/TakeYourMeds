@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:take_your_meds/common/medication.dart';
 
-enum SupportedFormats { JSON, CSV }
+enum SupportedFormats { json, csv }
 
 class MedEvent extends Medication {
   static final List<String> keys = [
@@ -29,7 +29,7 @@ class MedEvent extends Medication {
 
   factory MedEvent.fromJson(Map<String, dynamic> json, String quantity,
       DateTime time, String? reason) {
-    return new MedEvent(
+    return MedEvent(
       json["name"],
       json["dose"],
       json["unit"],
@@ -40,30 +40,31 @@ class MedEvent extends Medication {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> MedicationObj = Map.of(super.toJson());
-    MedicationObj["time"] = time;
-    MedicationObj["date"] = DateFormat.yMd().format(_time);
-    MedicationObj["iso8601_date"] = _time.toIso8601String();
-    MedicationObj["quantity"] = quantity;
-    MedicationObj["reason"] = reason;
-    return MedicationObj;
+    Map<String, dynamic> medicationObj = Map.of(super.toJson());
+    medicationObj["time"] = time;
+    medicationObj["date"] = DateFormat.yMd().format(_time);
+    medicationObj["iso8601_date"] = _time.toIso8601String();
+    medicationObj["quantity"] = quantity;
+    medicationObj["reason"] = reason;
+    return medicationObj;
   }
 
   String toCSV() {
-    String CSV = "";
+    String csv = "";
 
-    Map MedToJson = toJson();
-    MedToJson.remove("uid");
-    for (int i = 0; i < MedToJson.length; i++) {
-      if (MedToJson[header[i]] != null) {
-        CSV += MedToJson[header[i]] + ",";
+    Map medToJson = toJson();
+    medToJson.remove("uid");
+    for (int i = 0; i < medToJson.length; i++) {
+      if (medToJson[header[i]] != null) {
+        csv += medToJson[header[i]] + ",";
       } else {
-        CSV += ",";
+        csv += ",";
       }
     }
-    CSV += "\n";
+    csv += "\n";
 
-    return CSV;
+    return csv;
   }
 }

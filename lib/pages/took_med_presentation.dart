@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
 class TookMedPresentationPage extends StatefulWidget {
-  TookMedPresentationPage({Key? key}) : super(key: key);
+  const TookMedPresentationPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => TookMedPresentationPageState();
@@ -33,6 +33,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
 
     cMed["dates"] = dates;
     FileHandler.writeContent("meds", jsonEncode(a));
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 
@@ -44,7 +45,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
           title: Text("Took ${json["name"]}"),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: ListView(
             children: [
               const SizedBox(height: 20),
@@ -81,7 +82,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
                     },
                     child: Text(DateFormat.Hm().add_EEEE().format(now)),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () async {
                       DateTime? dt = await showDatePicker(
@@ -103,14 +104,14 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
                         });
                       }
                     },
-                    child: Text("Change day"),
+                    child: const Text("Change day"),
                   ),
                 ],
               ),
               SizedBox(
                 width: 50,
                 child: TextField(
-                  decoration: InputDecoration(label: Text("Quantity")),
+                  decoration: const InputDecoration(label: Text("Quantity")),
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly
@@ -121,7 +122,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               SizedBox(
                 width: 50,
                 child: TextField(
-                  decoration: InputDecoration(label: Text("Reason")),
+                  decoration: const InputDecoration(label: Text("Reason")),
                   keyboardType: TextInputType.text,
                   controller: reasonField,
                 ),

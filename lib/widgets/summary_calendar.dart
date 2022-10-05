@@ -4,7 +4,7 @@ import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
 
 class SummaryCalendar extends StatefulWidget {
-  SummaryCalendar({
+  const SummaryCalendar({
     Key? key,
     required this.medEvents,
     required this.json,
@@ -26,7 +26,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
   late List<MedEvent> medEvents;
   late final ValueNotifier<List<MedEvent>> _selectedEvents;
 
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
   List<MedEvent> _getEventsForDay(DateTime day) {
     List<MedEvent> eventsForDay = [];
@@ -128,9 +128,9 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('${event.name}'),
+                        Text(event.name),
                         Text('${event.quantity}x ${event.dose} ${event.unit}'),
-                        Text('${event.time}'),
+                        Text(event.time),
                       ],
                     ),
                   ),

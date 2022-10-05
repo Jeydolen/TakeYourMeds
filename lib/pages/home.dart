@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: const <Widget>[ClockButton()],
     )),
-    SummaryPage()
+    const SummaryPage()
   ];
 
   void change(int index) {
@@ -36,11 +36,11 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: selectedId == 0
           ? ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(15),
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(15),
               ),
               onPressed: () => Navigator.pushNamed(context, '/add_med'),
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             )
           : null,
     );

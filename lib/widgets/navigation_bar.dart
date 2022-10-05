@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
-  NavigationBar({Key? key, required this.onClick}) : super(key: key);
+  const NavigationBar({Key? key, required this.onClick}) : super(key: key);
   final Function onClick;
 
   @override

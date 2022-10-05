@@ -27,7 +27,8 @@ class AddMedPageState extends State<AddMedPage> {
     formData["unit"] = dropdownValue;
     formData["uid"] = const Uuid().v4();
     currMeds.add(formData);
-    FileHandler.writeContent("meds", jsonEncode(currMeds));
+    await FileHandler.writeContent("meds", jsonEncode(currMeds));
+    // ignore: use_build_context_synchronously
     Navigator.pop(context, currMeds);
   }
 
@@ -45,7 +46,7 @@ class AddMedPageState extends State<AddMedPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextFormField(
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(hintText: 'Name'),
@@ -59,7 +60,7 @@ class AddMedPageState extends State<AddMedPage> {
                         formData['name'] = value;
                       },
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -86,8 +87,8 @@ class AddMedPageState extends State<AddMedPage> {
                         Expanded(
                             child: DropdownButtonFormField(
                           isDense: false,
-                          decoration:
-                              InputDecoration(contentPadding: EdgeInsets.zero),
+                          decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.zero),
                           value: dropdownValue,
                           items: units
                               .map<DropdownMenuItem<String>>((String value) =>
@@ -102,7 +103,7 @@ class AddMedPageState extends State<AddMedPage> {
                         )),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextFormField(
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
