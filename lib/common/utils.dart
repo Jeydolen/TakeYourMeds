@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 
-class Utils {
-  static Future<bool?> dialogBuilder(BuildContext context, AlertDialog dialog) {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => dialog,
-    );
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }
+
+class Utils {}

@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:take_your_meds/common/utils.dart';
-
-import '../common/file_handler.dart';
+import 'package:take_your_meds/common/file_handler.dart';
 
 class MedsList extends StatefulWidget {
   final List<dynamic> json;
@@ -95,7 +93,10 @@ class MedsListState extends State<MedsList> {
       ],
     );
 
-    bool? doRemove = await Utils.dialogBuilder(context, dialog);
+    bool? doRemove = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => dialog,
+    );
 
     if (doRemove == true) {
       removeMed(element);
