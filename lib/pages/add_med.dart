@@ -66,7 +66,7 @@ class AddMedPageState extends State<AddMedPage> {
         formField = TextFormField(
           initialValue: field == "notes" ? "/" : null,
           keyboardType: f.inputType,
-          decoration: InputDecoration(hintText: field.capitalize()),
+          decoration: InputDecoration(labelText: field.capitalize()),
           validator: (String? value) =>
               (value == null || value.isEmpty) ? 'Please enter a $field' : null,
           inputFormatters: f.inputType == TextInputType.number
