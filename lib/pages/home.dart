@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:take_your_meds/pages/misc.dart';
 
 import 'package:take_your_meds/pages/summary.dart';
 import 'package:take_your_meds/widgets/navigation_bar.dart';
@@ -15,11 +16,13 @@ class _HomePageState extends State<HomePage> {
   static int selectedId = 0;
   static final List<Widget> _pages = [
     Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const <Widget>[ClockButton()],
-    )),
-    const SummaryPage()
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [ClockButton()],
+      ),
+    ),
+    const SummaryPage(),
+    const MiscPage(),
   ];
 
   void change(int index) {

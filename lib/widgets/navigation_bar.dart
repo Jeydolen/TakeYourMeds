@@ -35,6 +35,10 @@ class NavigationBarState extends State<NavigationBar> {
           icon: Icon(Icons.preview),
           label: 'Summary',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.miscellaneous_services),
+          label: 'Other',
+        ),
       ],
       currentIndex: currIndex,
       onTap: (int index) => nextPage(index),

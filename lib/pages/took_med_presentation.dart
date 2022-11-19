@@ -20,6 +20,8 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
   TextEditingController reasonField = TextEditingController(text: "/");
 
   void saveData() async {
+    Navigator.pop(context);
+
     List<dynamic> a = jsonDecode(await FileHandler.readContent("meds") ?? "");
 
     Map<String, dynamic> cMed = a.firstWhere((e) => e["uid"] == json["uid"]);
@@ -33,17 +35,13 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
 
     cMed["dates"] = dates;
     FileHandler.writeContent("meds", jsonEncode(a));
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     json = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Took ${json["name"]}"),
-        ),
+        appBar: AppBar(title: Text("Took ${json["name"]}")),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: ListView(

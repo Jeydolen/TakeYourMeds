@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
 
@@ -22,6 +25,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  late Future<List> moods;
 
   late List<MedEvent> medEvents;
   late final ValueNotifier<List<MedEvent>> _selectedEvents;
@@ -68,12 +72,19 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     }
   }
 
+  Future<List<dynamic>> getMoods() async {
+    String? data = await FileHandler.readContent("moods");
+    List<dynamic> moods = data != null ? jsonDecode(data) : [];
+    return moods;
+  }
+
   @override
   void initState() {
     super.initState();
     medEvents = widget.medEvents;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    moods = getMoods();
   }
 
   @override
@@ -84,62 +95,65 @@ class SummaryCalendarState extends State<SummaryCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      TableCalendar(
-        startingDayOfWeek: StartingDayOfWeek.monday,
-        firstDay: DateTime.utc(2010, 12, 1),
-        lastDay: DateTime.utc(2030, 12, 1),
-        focusedDay: DateTime.now(),
-        currentDay: DateTime.now(),
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        onDaySelected: _onDaySelected,
-        calendarFormat: _calendarFormat,
-        rangeSelectionMode: _rangeSelectionMode,
-        onFormatChanged: (format) {
-          setState(() {
-            _calendarFormat = format;
-          });
-        },
-        onPageChanged: (focusedDay) {
-          _focusedDay = focusedDay;
-        },
-        eventLoader: (day) {
-          return _getEventsForDay(day);
-        },
-      ),
-      const SizedBox(height: 8.0),
-      Expanded(
-        child: ValueListenableBuilder<List<MedEvent>>(
-          valueListenable: _selectedEvents,
-          builder: (context, value, _) {
-            return ListView.builder(
-              itemCount: value.length,
-              itemBuilder: (context, index) {
-                MedEvent event = value[index];
-                return Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    onTap: () => showEvent(event),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(event.name),
-                        Text('${event.quantity}x ${event.dose} ${event.unit}'),
-                        Text(event.time),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
+    return Column(
+      children: [
+        TableCalendar(
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          firstDay: DateTime.utc(2010, 12, 1),
+          lastDay: DateTime.utc(2030, 12, 1),
+          focusedDay: DateTime.now(),
+          currentDay: DateTime.now(),
+          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          onDaySelected: _onDaySelected,
+          calendarFormat: _calendarFormat,
+          rangeSelectionMode: _rangeSelectionMode,
+          onFormatChanged: (format) {
+            setState(() {
+              _calendarFormat = format;
+            });
+          },
+          onPageChanged: (focusedDay) {
+            _focusedDay = focusedDay;
+          },
+          eventLoader: (day) {
+            return _getEventsForDay(day);
           },
         ),
-      ),
-    ]);
+        const SizedBox(height: 8.0),
+        Expanded(
+          child: ValueListenableBuilder<List<MedEvent>>(
+            valueListenable: _selectedEvents,
+            builder: (context, value, _) {
+              return ListView.builder(
+                itemCount: value.length,
+                itemBuilder: (context, index) {
+                  MedEvent event = value[index];
+                  return Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      onTap: () => showEvent(event),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(event.name),
+                          Text(
+                              '${event.quantity}x ${event.dose} ${event.unit}'),
+                          Text(event.time),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
