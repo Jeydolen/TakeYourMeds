@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:take_your_meds/common/utils.dart';
-
-import '../common/file_handler.dart';
+import 'package:take_your_meds/common/file_handler.dart';
 
 class MedsList extends StatefulWidget {
   final List<dynamic> json;
-  MedsList({Key? key, required this.json}) : super(key: key);
+  const MedsList({Key? key, required this.json}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MedsListState();
@@ -21,8 +19,8 @@ class MedsListState extends State<MedsList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("No data available, you can add meds here:"),
-            ElevatedButton(onPressed: addMed, child: Icon(Icons.add))
+            const Text("No data available, you can add meds here:"),
+            ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
           ],
         ),
       );
@@ -95,7 +93,10 @@ class MedsListState extends State<MedsList> {
       ],
     );
 
-    bool? doRemove = await Utils.dialogBuilder(context, dialog);
+    bool? doRemove = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => dialog,
+    );
 
     if (doRemove == true) {
       removeMed(element);
@@ -105,23 +106,23 @@ class MedsListState extends State<MedsList> {
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
     return json
         .map((element) => ListTile(
-              contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
               key: UniqueKey(),
               title: TextButton(
                 onPressed: () => edit ? {} : onClick(element),
                 child: Row(
                   children: [
                     SizedBox(
-                      child: Text(element["name"]),
                       width: MediaQuery.of(context).size.width / 2.2,
+                      child: Text(element["name"]),
                     ),
                     SizedBox(
-                      child: Text(element["dose"]),
                       width: MediaQuery.of(context).size.width / 5,
+                      child: Text(element["dose"]),
                     ),
                     SizedBox(
-                      child: Text(element["unit"]),
                       width: 20,
+                      child: Text(element["unit"]),
                     ),
                   ],
                 ),
@@ -129,7 +130,7 @@ class MedsListState extends State<MedsList> {
               trailing: TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: edit ? Colors.red : null,
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                 ),
                 child: Icon(edit ? Icons.delete : Icons.drag_handle),
                 onPressed: () => edit ? onClick(element) : {},
@@ -159,11 +160,11 @@ class MedsListState extends State<MedsList> {
       body: json.isEmpty
           ? emptyList()
           : ReorderableListView(
+              onReorder: reorderList,
               children: generateElements(
                 json,
                 edit ? removeMedDialog : showMed,
               ),
-              onReorder: reorderList,
             ),
     );
   }

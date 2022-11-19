@@ -1,13 +1,29 @@
 import 'dart:convert';
 
-import 'package:take_your_meds/common/medication.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
-const List<String> units = ["mg", "g", "ml", "cl", "l", "drops", "occur."];
+enum Unit {
+  mg(string: "mg"),
+  g(string: "g"),
+  ml(string: "ml"),
+  cl(string: "cl"),
+  l(string: "l"),
+  drops(string: "drops"),
+  occur(string: "occur.");
+
+  const Unit({required this.string});
+  final String string;
+
+  List<String> toList() {
+    return Unit.values.map((e) => e.string).toList();
+  }
+}
 
 class AddMedPage extends StatefulWidget {
   const AddMedPage({Key? key}) : super(key: key);
@@ -17,7 +33,7 @@ class AddMedPage extends StatefulWidget {
 }
 
 class AddMedPageState extends State<AddMedPage> {
-  String dropdownValue = units.first;
+  String dropdownValue = Unit.values.first.string;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> formData = {};
 
@@ -34,8 +50,53 @@ class AddMedPageState extends State<AddMedPage> {
       const Uuid().v4(),
     );
     currMeds.add(med.toJson());
-    FileHandler.writeContent("meds", jsonEncode(currMeds));
+    await FileHandler.writeContent("meds", jsonEncode(currMeds));
+    // ignore: use_build_context_synchronously
     Navigator.pop(context, currMeds);
+  }
+
+  List genFormFields() {
+    List formFields = [];
+    for (Field f in Field.values) {
+      String field = f.string;
+      formFields.add(const SizedBox(height: 10));
+
+      Widget formField;
+      if (field != "unit") {
+        formField = TextFormField(
+          initialValue: field == "notes" ? "/" : null,
+          keyboardType: f.inputType,
+          decoration: InputDecoration(labelText: field.capitalize()),
+          validator: (String? value) =>
+              (value == null || value.isEmpty) ? 'Please enter a $field' : null,
+          inputFormatters: f.inputType == TextInputType.number
+              ? <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                ]
+              : null,
+          onSaved: (String? value) {
+            formData[field] = value;
+          },
+        );
+      } else {
+        formField = DropdownButtonFormField(
+          isDense: false,
+          decoration: const InputDecoration(contentPadding: EdgeInsets.zero),
+          value: dropdownValue,
+          items: Unit.values
+              .map((e) => e.string)
+              .map((String v) => DropdownMenuItem(value: v, child: Text(v)))
+              .toList(),
+          onChanged: (String? value) {
+            setState(() {
+              dropdownValue = value!;
+            });
+          },
+        );
+      }
+      formFields.add(formField);
+    }
+    return formFields;
   }
 
   @override
@@ -51,74 +112,8 @@ class AddMedPageState extends State<AddMedPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 10),
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(hintText: 'Name'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
-                        }
-                        return null;
-                      },
-                      onSaved: (String? value) {
-                        formData['name'] = value;
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(hintText: 'Dose'),
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'[0-9]'))
-                            ],
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a dosage';
-                              }
-                              return null;
-                            },
-                            onSaved: (String? value) {
-                              formData['dose'] = value;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                            child: DropdownButtonFormField(
-                          isDense: false,
-                          decoration:
-                              InputDecoration(contentPadding: EdgeInsets.zero),
-                          value: dropdownValue,
-                          items: units
-                              .map<DropdownMenuItem<String>>((String value) =>
-                                  DropdownMenuItem<String>(
-                                      value: value, child: Text(value)))
-                              .toList(),
-                          onChanged: (String? value) {
-                            setState(() {
-                              dropdownValue = value!;
-                            });
-                          },
-                        )),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        hintText: 'Notes',
-                      ),
-                      onSaved: (String? value) {
-                        formData['notes'] = value;
-                      },
-                    ),
+                  children: [
+                    ...genFormFields(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(

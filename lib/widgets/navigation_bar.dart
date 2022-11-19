@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
-  NavigationBar({Key? key, required this.onClick}) : super(key: key);
+  const NavigationBar({Key? key, required this.onClick}) : super(key: key);
   final Function onClick;
 
   @override
@@ -34,6 +34,10 @@ class NavigationBarState extends State<NavigationBar> {
         BottomNavigationBarItem(
           icon: Icon(Icons.preview),
           label: 'Summary',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.miscellaneous_services),
+          label: 'Other',
         ),
       ],
       currentIndex: currIndex,

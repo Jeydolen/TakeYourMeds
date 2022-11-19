@@ -7,8 +7,8 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
-import 'package:uuid/uuid.dart';
 
 class SummaryPage extends StatefulWidget {
   const SummaryPage({Key? key}) : super(key: key);
@@ -31,17 +31,8 @@ class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
   late List<dynamic> json;
 
-  void updateIds() async {
-    for (Map obj in await json) {
-      if (obj["uid"] == null) {
-        obj["uid"] = Uuid().v4();
-      }
-    }
-
-    saveData(null);
-  }
-
   void exportDataToString(String data, String format) async {
+    print(data);
     String now = DateTime.now().toString();
     Directory? pDir = await getExternalStorageDirectory();
     if (pDir == null) {
@@ -49,10 +40,14 @@ class SummaryPageState extends State<SummaryPage> {
     }
 
     String fullPath = "${pDir.path}/${now}_summary.$format";
-    FileHandler.saveToPath(fullPath, data);
+    //FileHandler.saveToPath(fullPath, data);
 
     final snackBar = SnackBar(content: Text("File saved at: $fullPath"));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    showSnack(snackBar);
+  }
+
+  void showSnack(SnackBar snack) {
+    ScaffoldMessenger.of(context).showSnackBar(snack);
   }
 
   void shareData(String data, String format) async {
@@ -75,32 +70,60 @@ class SummaryPageState extends State<SummaryPage> {
   void exportData(SupportedFormats formats, bool doShare) async {
     List<MedEvent> eventList = await summary;
 
+    String? moodStr = await FileHandler.readContent("moods");
+    List<dynamic> moodsList = moodStr != null ? jsonDecode(moodStr) : [];
+
     switch (formats) {
-      case SupportedFormats.JSON:
+      case SupportedFormats.json:
         {
-          String data = jsonEncode(eventList.map((e) => e.toJson()).toList());
-          if (!doShare)
+          // Mood data
+          List<dynamic> json = moodsList.toList();
+
+          // Medication data
+          json.addAll(eventList.map((e) => e.toJson()).toList());
+
+          String data = jsonEncode(json);
+          if (!doShare) {
             exportDataToString(data, "json");
-          else
+          } else {
             shareData(data, "json");
+          }
           return;
         }
 
-      case SupportedFormats.CSV:
+      case SupportedFormats.csv:
         {
+          // Exports medication data
           String data = "";
-          MedEvent.header.forEach((e) {
-            data += e + ",";
-          });
+          for (var e in MedEvent.header) {
+            data += "$e,";
+          }
           data += "\n";
 
-          eventList.forEach((e) {
+          for (var e in eventList) {
             data += e.toCSV();
-          });
-          if (!doShare)
+          }
+          // ----------------------------
+
+          data += "\n\n";
+          // Exports mood data
+          for (var e in MoodEvent.header) {
+            data += "$e,";
+          }
+          data += "\n";
+
+          List<String> moodCsv =
+              moodsList.map((e) => MoodEvent.fromJson(e).toCSV()).toList();
+          for (var e in moodCsv) {
+            data += e;
+          }
+          // ----------------------------
+
+          if (!doShare) {
             exportDataToString(data, "csv");
-          else
+          } else {
             shareData(data, "csv");
+          }
           return;
         }
 
@@ -111,7 +134,7 @@ class SummaryPageState extends State<SummaryPage> {
 
   void showExportDialog(bool doShare) async {
     AlertDialog dialog = AlertDialog(
-      title: Text('Export Summary'),
+      title: const Text('Export Summary'),
       content: Text(
           'Please, select a format to ${doShare ? "share" : "export"} your data otherwise press Cancel.'),
       actions: <Widget>[
@@ -137,9 +160,9 @@ class SummaryPageState extends State<SummaryPage> {
 
     switch (doExport) {
       case 1:
-        return exportData(SupportedFormats.JSON, doShare);
+        return exportData(SupportedFormats.json, doShare);
       case 2:
-        return exportData(SupportedFormats.CSV, doShare);
+        return exportData(SupportedFormats.csv, doShare);
       default:
         return;
     }
@@ -194,7 +217,7 @@ class SummaryPageState extends State<SummaryPage> {
     for (var element in json) {
       List<dynamic>? dates = element["dates"];
       if (dates != null) {
-        dates.forEach((dateObj) {
+        for (var dateObj in dates) {
           DateTime date = DateTime.parse(dateObj["date"]);
           events.add(MedEvent.fromJson(
             element,
@@ -202,7 +225,7 @@ class SummaryPageState extends State<SummaryPage> {
             date,
             dateObj["reason"]!,
           ));
-        });
+        }
       }
     }
     return events;
@@ -211,10 +234,7 @@ class SummaryPageState extends State<SummaryPage> {
   @override
   void initState() {
     super.initState();
-    summary = createEvents(SummaryPage.fetchSummary()).then((value) {
-      updateIds();
-      return value;
-    });
+    summary = createEvents(SummaryPage.fetchSummary());
   }
 
   @override

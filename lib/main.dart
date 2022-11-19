@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/summary.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
+import 'package:take_your_meds/pages/add_reminder.dart';
 import 'package:take_your_meds/pages/took_med_presentation.dart';
 
-void main() {
+FlutterLocalNotificationsPlugin flnp = FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+const InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await flnp.initialize(initializationSettings);
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('Europe/Brussels'));
   runApp(const App());
 }
 
@@ -26,12 +43,13 @@ class AppState extends State<App> {
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => const HomePage(),
-        '/summary': (BuildContext context) => SummaryPage(),
-        '/add_med': (BuildContext context) => const AddMedPage(),
-        '/took_med': (BuildContext context) => const TookMedPage(),
-        '/med_presentation': (BuildContext context) =>
-            TookMedPresentationPage(),
+        '/': (BuildContext _) => const HomePage(),
+        '/summary': (BuildContext _) => const SummaryPage(),
+        '/add_med': (BuildContext _) => const AddMedPage(),
+        '/took_med': (BuildContext _) => const TookMedPage(),
+        '/med_presentation': (BuildContext _) =>
+            const TookMedPresentationPage(),
+        '/add_alarm': (BuildContext _) => const AddReminderPage(),
       },
     );
   }

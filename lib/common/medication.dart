@@ -1,5 +1,19 @@
+import 'package:flutter/services.dart';
+
+enum Field {
+  name(string: "name", inputType: TextInputType.text),
+  dose(string: "dose", inputType: TextInputType.number),
+  unit(string: "unit", inputType: TextInputType.text),
+  notes(string: "notes", inputType: TextInputType.text);
+
+  const Field({required this.string, required this.inputType});
+  final String string;
+  final TextInputType inputType;
+}
+
 class Medication {
-  static final List<String> keys = ["name", "dose", "unit", "notes"];
+  static final List<String> keys = Field.values.map((e) => e.string).toList();
+
   final String name;
   final String dose;
   final String unit;

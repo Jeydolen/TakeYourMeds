@@ -42,7 +42,7 @@ class _ClockButtonState extends State<ClockButton> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
-          minimumSize: Size(100, 60)),
+          minimumSize: const Size(100, 60)),
       onPressed: () => Navigator.pushNamed(context, '/took_med'),
       child: Text(DateFormat.Hms().format(_now)),
     );
