@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/common/medication.dart';
+import 'package:take_your_meds/common/utils.dart';
 
 class AddReminderPage extends StatefulWidget {
   const AddReminderPage({Key? key}) : super(key: key);
@@ -13,7 +15,10 @@ class AddReminderPage extends StatefulWidget {
 }
 
 class AddReminderPageState extends State<AddReminderPage> {
+  bool recurrent = false;
   DateTime now = DateTime.now();
+  Widget dropDown = const CircularProgressIndicator();
+  String currMed = 'none';
   Map<String, bool> days = {
     "Mon": true,
     "Tue": false,
@@ -23,7 +28,6 @@ class AddReminderPageState extends State<AddReminderPage> {
     "Sat": false,
     "Sun": false,
   };
-  bool recurrent = false;
 
   void saveData() async {
     dynamic obj = {
@@ -38,6 +42,10 @@ class AddReminderPageState extends State<AddReminderPage> {
 
     if (days.values.every((_) => _ == true)) {
       obj["all_days"] = true;
+    }
+
+    if (currMed != 'none') {
+      obj['med_name'] = currMed;
     }
 
     Navigator.pop(context, obj);
@@ -76,6 +84,60 @@ class AddReminderPageState extends State<AddReminderPage> {
       style: style,
       child: Text(text),
     );
+  }
+
+  void changeMed(dynamic val) {
+    setState(() {
+      currMed = val;
+    });
+  }
+
+  void generateDropDown() async {
+    // Load file
+    String? medsString = await FileHandler.readContent("meds");
+    List<dynamic> meds = medsString == null ? [] : jsonDecode(medsString);
+
+    List<Medication> medications = [];
+    for (var element in meds) {
+      medications.add(
+        Medication(
+          element["name"],
+          element["dose"],
+          element["unit"],
+          element["notes"],
+          element["uid"],
+        ),
+      );
+    }
+
+    List<DropdownMenuItem> dropDownMeds = medications
+        .map((element) => DropdownMenuItem<String>(
+              value: element.name,
+              child: Text(element.name),
+            ))
+        .toList();
+
+    // Adding default value
+    dropDownMeds.add(const DropdownMenuItem<String>(
+      value: 'none',
+      child: Text('None'),
+    ));
+
+    setState(() {
+      dropDown = DropdownButtonFormField<dynamic>(
+        value: currMed,
+        onChanged: changeMed,
+        items: dropDownMeds,
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Load dropdown
+    generateDropDown();
   }
 
   @override
@@ -121,6 +183,7 @@ class AddReminderPageState extends State<AddReminderPage> {
               )
             ],
           ),
+          dropDown,
           recurrent
               ? Wrap(
                   alignment: WrapAlignment.center,

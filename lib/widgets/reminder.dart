@@ -29,7 +29,6 @@ class ReminderListState extends State<ReminderList> {
 
     if (jsonString != null) {
       List<dynamic> alarms = jsonDecode(jsonString);
-
       for (var element in alarms) {
         if (element["enabled"]) {
           String? time = element["time"];
@@ -45,7 +44,7 @@ class ReminderListState extends State<ReminderList> {
 
           const String title = 'Medication reminder';
           String body =
-              'You should take your  ${element["notes"] ??= "medication"}';
+              'You should take your ${element["med_name"] ??= "medication"}';
           showNotification(title, body, time, d);
         }
       }
@@ -157,7 +156,7 @@ class ReminderListState extends State<ReminderList> {
         content:
             const Text('Are you sure you really want to delete this alarm ?'),
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),

@@ -8,20 +8,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/common/mood_event.dart';
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
 class SummaryPage extends StatefulWidget {
   const SummaryPage({Key? key}) : super(key: key);
-
-  static Future<List<dynamic>> fetchSummary() async {
-    String? jsonString = await FileHandler.readContent("meds");
-
-    if (jsonString != null) {
-      return jsonDecode(jsonString);
-    }
-
-    return [];
-  }
 
   @override
   State<StatefulWidget> createState() => SummaryPageState();
@@ -32,7 +23,6 @@ class SummaryPageState extends State<SummaryPage> {
   late List<dynamic> json;
 
   void exportDataToString(String data, String format) async {
-    print(data);
     String now = DateTime.now().toString();
     Directory? pDir = await getExternalStorageDirectory();
     if (pDir == null) {
@@ -40,7 +30,7 @@ class SummaryPageState extends State<SummaryPage> {
     }
 
     String fullPath = "${pDir.path}/${now}_summary.$format";
-    //FileHandler.saveToPath(fullPath, data);
+    FileHandler.saveToPath(fullPath, data);
 
     final snackBar = SnackBar(content: Text("File saved at: $fullPath"));
     showSnack(snackBar);
@@ -209,34 +199,17 @@ class SummaryPageState extends State<SummaryPage> {
         eventsToJson.add(obj);
       }
     }
-
-    FileHandler.writeContent("meds", jsonEncode(eventsToJson));
   }
 
   Future<List<MedEvent>> createEvents(Future<List<dynamic>> data) async {
-    List<MedEvent> events = [];
     json = await data;
-    for (var element in json) {
-      List<dynamic>? dates = element["dates"];
-      if (dates != null) {
-        for (var dateObj in dates) {
-          DateTime date = DateTime.parse(dateObj["date"]);
-          events.add(MedEvent.fromJson(
-            element,
-            dateObj["quantity"],
-            date,
-            dateObj["reason"]!,
-          ));
-        }
-      }
-    }
-    return events;
+    return await Utils.createEvents(json);
   }
 
   @override
   void initState() {
     super.initState();
-    summary = createEvents(SummaryPage.fetchSummary());
+    summary = createEvents(Utils.fetchMeds());
   }
 
   @override

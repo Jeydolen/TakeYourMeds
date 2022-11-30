@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:take_your_meds/common/file_handler.dart';
+
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/widgets/meds_list.dart';
 
 class TookMedPage extends StatefulWidget {
@@ -17,17 +16,7 @@ class TookMedPageState extends State<TookMedPage> {
   @override
   void initState() {
     super.initState();
-    futureMeds = fetchMeds();
-  }
-
-  Future<List<dynamic>> fetchMeds() async {
-    String? jsonString = await FileHandler.readContent("meds");
-
-    if (jsonString != null) {
-      return jsonDecode(jsonString);
-    }
-
-    return [];
+    futureMeds = Utils.fetchMeds();
   }
 
   @override
