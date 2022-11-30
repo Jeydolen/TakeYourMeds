@@ -11,11 +11,11 @@ class SummaryCalendar extends StatefulWidget {
     Key? key,
     required this.medEvents,
     required this.json,
-    required this.saveData,
+    required this.removeEvent,
   }) : super(key: key);
   final List<MedEvent> medEvents;
   final List<dynamic> json;
-  final Function saveData;
+  final Function removeEvent;
 
   @override
   State<StatefulWidget> createState() => SummaryCalendarState();
@@ -65,10 +65,62 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     );
 
     if (result != null) {
+      // Removing old event from list
       medEvents.remove(value);
+
+      // Add new version of event
       medEvents.add(result);
+
+      // Update
       _selectedEvents.value = _getEventsForDay(_selectedDay!);
-      widget.saveData(result);
+
+      // Saving new list
+      widget.removeEvent(result);
+    }
+  }
+
+  void removeEvent(MedEvent value) async {
+    AlertDialog dialog = AlertDialog(
+      title: const Text('Delete event ?'),
+      content: Text(
+        '''Do you really want to delete this event ?
+        Medication: ${value.quantity}x${value.dose} of ${value.name}
+        Date: ${value.datetime}
+        ''',
+      ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          child: const Text('Delete'),
+        )
+      ],
+    );
+
+    // Show confirmation dialog
+    bool? doRemove = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext _) => dialog,
+    );
+
+    if (doRemove == true) {
+      // Removing event from list
+      medEvents.remove(value);
+
+      // Telling listener to update
+      _selectedEvents.value = _getEventsForDay(_selectedDay!);
+
+      // Workaround to rebuild calendar
+      setState(() {
+        _calendarFormat = _calendarFormat;
+      });
+
+      // Saving new list
+      widget.removeEvent(value);
     }
   }
 
@@ -115,9 +167,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
           onPageChanged: (focusedDay) {
             _focusedDay = focusedDay;
           },
-          eventLoader: (day) {
-            return _getEventsForDay(day);
-          },
+          eventLoader: (day) => _getEventsForDay(day),
         ),
         const SizedBox(height: 8.0),
         Expanded(
@@ -129,22 +179,32 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                 itemBuilder: (context, index) {
                   MedEvent event = value[index];
                   return Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 12,
+                    ),
                     decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: ListTile(
-                      onTap: () => showEvent(event),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(event.name),
-                          Text(
-                              '${event.quantity}x ${event.dose} ${event.unit}'),
-                          Text(event.time),
-                        ],
+                    child: Theme(
+                      data: ThemeData(
+                        splashColor: Colors.red,
+                        highlightColor: const Color(0xFFFF0000).withOpacity(.5),
+                      ),
+                      child: ListTile(
+                        onTap: () => showEvent(event),
+                        onLongPress: () => removeEvent(event),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(event.name),
+                            Text(
+                              '${event.quantity}x ${event.dose} ${event.unit}',
+                            ),
+                            Text(event.time),
+                          ],
+                        ),
                       ),
                     ),
                   );

@@ -168,8 +168,9 @@ class SummaryPageState extends State<SummaryPage> {
     }
   }
 
-  void saveData(MedEvent? diffEvent) async {
-    // createEvents but other side
+  void removeEvent(MedEvent? diffEvent) async {
+    // Construct json from events
+    // In summary_calendar when medEvents gets modified it gets repercuted here
     List<Map> eventsToJson = [];
     for (MedEvent event in await summary) {
       bool found = eventsToJson.any((obj) => obj["uid"] == event.uid);
@@ -208,6 +209,7 @@ class SummaryPageState extends State<SummaryPage> {
         eventsToJson.add(obj);
       }
     }
+
     FileHandler.writeContent("meds", jsonEncode(eventsToJson));
   }
 
@@ -247,7 +249,7 @@ class SummaryPageState extends State<SummaryPage> {
           widget = SummaryCalendar(
             medEvents: snapshot.data ?? [],
             json: json,
-            saveData: saveData,
+            removeEvent: removeEvent,
           );
         } else if (snapshot.hasError) {
           widget = Text('${snapshot.error}');
