@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -41,21 +42,21 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
   Widget build(BuildContext context) {
     json = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
-        appBar: AppBar(title: Text("Took ${json["name"]}")),
+        appBar: AppBar(title: const Text("took_med").tr(args: [json["name"]])),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: ListView(
             children: [
               const SizedBox(height: 20),
-              Text("Name: ${json["name"]}"),
+              const Text("med_name").tr(args: [json["name"]]),
               const SizedBox(height: 20),
-              Text("Dosage: ${json["dose"]} ${json["unit"]}"),
+              const Text("med_dosage").tr(args: [json["dose"], json["unit"]]),
               const SizedBox(height: 20),
-              () {
-                String? notes = json["notes"];
-                String text = (notes == null || notes.isEmpty) ? "/" : notes;
-                return Text("Notes: $text");
-              }(),
+              const Text("med_notes").tr(args: [
+                (json["notes"] == null || json["notes"].isEmpty)
+                    ? "/"
+                    : json["notes"]
+              ]),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -102,14 +103,15 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
                         });
                       }
                     },
-                    child: const Text("Change day"),
+                    child: const Text("change_day").tr(),
                   ),
                 ],
               ),
               SizedBox(
                 width: 50,
                 child: TextField(
-                  decoration: const InputDecoration(label: Text("Quantity")),
+                  decoration:
+                      InputDecoration(label: const Text("quantity").tr()),
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly
@@ -120,14 +122,14 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               SizedBox(
                 width: 50,
                 child: TextField(
-                  decoration: const InputDecoration(label: Text("Reason")),
+                  decoration: InputDecoration(label: const Text("reason").tr()),
                   keyboardType: TextInputType.text,
                   controller: reasonField,
                 ),
               ),
               ElevatedButton(
                 onPressed: saveData,
-                child: const Text("Add to summary"),
+                child: const Text("add_summary").tr(),
               ),
             ],
           ),

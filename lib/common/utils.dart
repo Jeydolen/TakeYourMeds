@@ -13,10 +13,12 @@ extension StringExtension on String {
 
 List<DropdownMenuItem> generateDropDownItems(List<Medication> medications) =>
     medications
-        .map((element) => DropdownMenuItem<String>(
-              value: element.uid,
-              child: Text(element.name),
-            ))
+        .map(
+          (element) => DropdownMenuItem<String>(
+            value: element.uid,
+            child: Text(element.name),
+          ),
+        )
         .toList();
 
 class Utils {

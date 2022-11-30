@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
 
@@ -117,9 +117,9 @@ class AddReminderPageState extends State<AddReminderPage> {
         .toList();
 
     // Adding default value
-    dropDownMeds.add(const DropdownMenuItem<String>(
+    dropDownMeds.add(DropdownMenuItem<String>(
       value: 'none',
-      child: Text('None'),
+      child: const Text("none").tr(),
     ));
 
     setState(() {
@@ -143,7 +143,7 @@ class AddReminderPageState extends State<AddReminderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add reminder"),
+        title: const Text("add_reminder").tr(),
       ),
       body: Column(
         children: [
@@ -171,7 +171,7 @@ class AddReminderPageState extends State<AddReminderPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Recurrent'),
+              const Text("recurrent").tr(),
               Checkbox(
                 value: recurrent,
                 onChanged: ((value) {
@@ -203,7 +203,7 @@ class AddReminderPageState extends State<AddReminderPage> {
               onPressed: () {
                 saveData();
               },
-              child: const Text('Submit'),
+              child: const Text("submit").tr(),
             ),
           ),
         ],

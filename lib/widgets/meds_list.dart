@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:take_your_meds/common/file_handler.dart';
 
 class MedsList extends StatefulWidget {
@@ -19,7 +21,7 @@ class MedsListState extends State<MedsList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("No data available, you can add meds here:"),
+            const Text("no_meds").tr(),
             ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
           ],
         ),
@@ -70,16 +72,15 @@ class MedsListState extends State<MedsList> {
   }
 
   void removeMedDialog(dynamic element) async {
-    String alertTitle = 'Do you really want to remove:  ${element["name"]} ?';
-    String alertContent =
-        'If you really want to delete this medication, press Delete otherwise press Cancel.';
+    String alertTitle = "del_med_title".tr(args: [element["name"]]);
+    String alertContent = "del_med".tr();
 
     AlertDialog dialog = AlertDialog(
       title: Text(alertTitle),
       content: Text(alertContent),
       actions: <Widget>[
         TextButton(
-          child: const Text('Cancel'),
+          child: const Text("cancel").tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
@@ -87,7 +88,7 @@ class MedsListState extends State<MedsList> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.red,
           ),
-          child: const Text('Delete'),
+          child: const Text("delete").tr(),
           onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
@@ -149,7 +150,7 @@ class MedsListState extends State<MedsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Took medication"),
+        title: const Text("took_med_general").tr(),
         actions: [
           ElevatedButton(
             onPressed: editList,

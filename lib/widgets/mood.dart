@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -37,30 +38,30 @@ class MoodsWidgetState extends State<MoodsWidget> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 20),
-        const Center(
-          child: Text(
-            'Mood',
+        Center(
+          child: const Text(
+            "mood",
             style: TextStyle(fontSize: 25.0),
-          ),
+          ).tr(),
         ),
         ElevatedButton(
             onPressed: () => saveMood(Mood.good),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
             ),
-            child: const Text('Good')),
+            child: const Text("good").tr()),
         ElevatedButton(
             onPressed: () => saveMood(Mood.meh),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange,
             ),
-            child: const Text('Meh')),
+            child: const Text("meh").tr()),
         ElevatedButton(
             onPressed: () => saveMood(Mood.bad),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
             ),
-            child: const Text('Bad')),
+            child: const Text("bad").tr()),
       ],
     );
   }

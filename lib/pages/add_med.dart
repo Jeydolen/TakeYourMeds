@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,9 +51,11 @@ class AddMedPageState extends State<AddMedPage> {
       const Uuid().v4(),
     );
     currMeds.add(med.toJson());
-    await FileHandler.writeContent("meds", jsonEncode(currMeds));
+
     // ignore: use_build_context_synchronously
     Navigator.pop(context, currMeds);
+
+    FileHandler.writeContent("meds", jsonEncode(currMeds));
   }
 
   List genFormFields() {
@@ -103,7 +106,7 @@ class AddMedPageState extends State<AddMedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add medication"),
+        title: const Text("add_med").tr(),
       ),
       body: ListView(
         children: [
@@ -125,7 +128,7 @@ class AddMedPageState extends State<AddMedPage> {
                             saveData();
                           }
                         },
-                        child: const Text('Submit'),
+                        child: const Text("submit").tr(),
                       ),
                     ),
                   ],

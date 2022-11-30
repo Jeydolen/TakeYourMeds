@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -124,7 +125,7 @@ class ReminderListState extends State<ReminderList> {
     await FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
   }
 
-  void updateAlarm(newVal, element) async {
+  void updateReminder(newVal, element) async {
     int i = (await futureAlarms).indexOf(element);
 
     setState(() {
@@ -148,22 +149,21 @@ class ReminderListState extends State<ReminderList> {
     await FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
   }
 
-  void deleteAlarm(element) async {
+  void deleteReminder(element) async {
     bool? remove = await showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Delete alarm ?'),
-        content:
-            const Text('Are you sure you really want to delete this alarm ?'),
+        title: const Text("del_reminder_title").tr(),
+        content: const Text("del_reminder").tr(),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text("cancel").tr(),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Remove'),
+            child: const Text("delete").tr(),
           ),
         ],
       ),
@@ -232,7 +232,7 @@ class ReminderListState extends State<ReminderList> {
             key: UniqueKey(),
             title: TextButton(
               onPressed: () {},
-              onLongPress: () => deleteAlarm(el),
+              onLongPress: () => deleteReminder(el),
               child: Row(
                 children: [
                   SizedBox(
@@ -248,7 +248,7 @@ class ReminderListState extends State<ReminderList> {
                     value: isSwitched,
                     onChanged: recurrent
                         ? (_) => switchSave(_, el)
-                        : (_) => updateAlarm(_, el),
+                        : (_) => updateReminder(_, el),
                   )
                 ],
               ),
@@ -261,8 +261,8 @@ class ReminderListState extends State<ReminderList> {
     List<Widget> els = generateElements(json);
 
     if (els.isEmpty) {
-      return const SizedBox(
-        child: Text('No reminders created yet.'),
+      return SizedBox(
+        child: const Text("no_reminder").tr(),
       );
     }
 
@@ -282,11 +282,11 @@ class ReminderListState extends State<ReminderList> {
             height: MediaQuery.of(context).size.height * .5,
             child: Column(
               children: [
-                const Center(
-                  child: Text(
-                    'Reminders',
+                Center(
+                  child: const Text(
+                    "reminders",
                     style: TextStyle(fontSize: 25.0),
-                  ),
+                  ).tr(),
                 ),
                 listAlarms(snapshot.data),
               ],

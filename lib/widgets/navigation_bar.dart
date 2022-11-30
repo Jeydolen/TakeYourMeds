@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBar extends StatefulWidget {
@@ -26,18 +27,18 @@ class NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: const Icon(Icons.home),
+          label: "home".tr(),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.preview),
-          label: 'Summary',
+          icon: const Icon(Icons.preview),
+          label: "summary".tr(),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.miscellaneous_services),
-          label: 'Other',
+          icon: const Icon(Icons.miscellaneous_services),
+          label: "other".tr(),
         ),
       ],
       currentIndex: currIndex,

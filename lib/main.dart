@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -21,9 +22,16 @@ const InitializationSettings initializationSettings =
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await flnp.initialize(initializationSettings);
+  await EasyLocalization.ensureInitialized();
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Europe/Brussels'));
-  runApp(const App());
+  runApp(
+    EasyLocalization(
+      path: 'assets/translations',
+      supportedLocales: const [Locale('fr'), Locale('en')],
+      child: const App(),
+    ),
+  );
 }
 
 class App extends StatefulWidget {
@@ -40,6 +48,9 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Take your meds',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{

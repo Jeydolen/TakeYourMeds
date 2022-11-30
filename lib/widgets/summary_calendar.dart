@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:take_your_meds/common/file_handler.dart';
@@ -81,22 +82,22 @@ class SummaryCalendarState extends State<SummaryCalendar> {
 
   void removeEvent(MedEvent value) async {
     AlertDialog dialog = AlertDialog(
-      title: const Text('Delete event ?'),
-      content: Text(
-        '''Do you really want to delete this event ?
-        Medication: ${value.quantity}x${value.dose} of ${value.name}
-        Date: ${value.datetime}
-        ''',
-      ),
+      title: const Text("del_event_title").tr(),
+      content: const Text("del_event").tr(args: [
+        value.quantity,
+        value.dose,
+        value.name,
+        value.datetime.toString()
+      ]),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: const Text("cancel").tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          child: const Text('Delete'),
+          child: const Text("delete").tr(),
         )
       ],
     );
@@ -151,6 +152,11 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       children: [
         TableCalendar(
           startingDayOfWeek: StartingDayOfWeek.monday,
+          availableCalendarFormats: {
+            CalendarFormat.month: "month".tr(),
+            CalendarFormat.twoWeeks: "two_weeks".tr(),
+            CalendarFormat.week: "week".tr(),
+          },
           firstDay: DateTime.utc(2010, 12, 1),
           lastDay: DateTime.utc(2030, 12, 1),
           focusedDay: DateTime.now(),

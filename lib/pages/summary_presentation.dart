@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/medication.dart';
@@ -52,7 +53,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
     List<DropdownMenuItem> a = generateDropDownItems(medications);
     setState(() {
       dropDown = a.length == 1
-          ? const Text("Can't make it editable because no other meds detected")
+          ? const Text("one_med_length").tr()
           : DropdownButtonFormField<dynamic>(
               value: event.uid,
               onChanged: (value) => editEvent(value),
