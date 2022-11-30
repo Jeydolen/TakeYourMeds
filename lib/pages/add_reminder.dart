@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
 
@@ -19,13 +19,13 @@ class AddReminderPageState extends State<AddReminderPage> {
   Widget dropDown = const CircularProgressIndicator();
   String currMed = 'none';
   Map<String, bool> days = {
-    "Mon": true,
-    "Tue": false,
-    "Wed": false,
-    "Thu": false,
-    "Fri": false,
-    "Sat": false,
-    "Sun": false,
+    "mon": true,
+    "tue": false,
+    "wed": false,
+    "thu": false,
+    "fri": false,
+    "sat": false,
+    "sun": false,
   };
 
   void saveData() async {
@@ -55,33 +55,33 @@ class AddReminderPageState extends State<AddReminderPage> {
     FileHandler.writeContent("reminders", jsonEncode(currAlarms));
   }
 
-  Widget dayBtn(String text) {
+  Widget dayBtn(String key) {
     ButtonStyle style = ButtonStyle(
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
       ),
     );
 
-    if (!days[text]!) {
+    if (!days[key]!) {
       return TextButton(
         onPressed: () {
           setState(() {
-            days[text] = !days[text]!;
+            days[key] = !days[key]!;
           });
         },
         style: style,
-        child: Text(text),
+        child: Text(key.tr()),
       );
     }
 
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          days[text] = !days[text]!;
+          days[key] = !days[key]!;
         });
       },
       style: style,
-      child: Text(text),
+      child: Text(key.tr()),
     );
   }
 
@@ -117,9 +117,9 @@ class AddReminderPageState extends State<AddReminderPage> {
         .toList();
 
     // Adding default value
-    dropDownMeds.add(const DropdownMenuItem<String>(
+    dropDownMeds.add(DropdownMenuItem<String>(
       value: 'none',
-      child: Text('None'),
+      child: const Text("none").tr(),
     ));
 
     setState(() {
@@ -143,7 +143,7 @@ class AddReminderPageState extends State<AddReminderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add reminder"),
+        title: const Text("add_reminder").tr(),
       ),
       body: Column(
         children: [
@@ -171,7 +171,7 @@ class AddReminderPageState extends State<AddReminderPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Recurrent'),
+              const Text("recurrent").tr(),
               Checkbox(
                 value: recurrent,
                 onChanged: ((value) {
@@ -187,13 +187,13 @@ class AddReminderPageState extends State<AddReminderPage> {
               ? Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    dayBtn('Mon'),
-                    dayBtn('Tue'),
-                    dayBtn('Wed'),
-                    dayBtn('Thu'),
-                    dayBtn('Fri'),
-                    dayBtn('Sat'),
-                    dayBtn('Sun'),
+                    dayBtn("mon"),
+                    dayBtn("tue"),
+                    dayBtn("wed"),
+                    dayBtn("thu"),
+                    dayBtn("fri"),
+                    dayBtn("sat"),
+                    dayBtn("sun"),
                   ],
                 )
               : const SizedBox(),
@@ -203,7 +203,7 @@ class AddReminderPageState extends State<AddReminderPage> {
               onPressed: () {
                 saveData();
               },
-              child: const Text('Submit'),
+              child: const Text("submit").tr(),
             ),
           ),
         ],

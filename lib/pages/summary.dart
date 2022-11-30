@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,7 +33,8 @@ class SummaryPageState extends State<SummaryPage> {
     String fullPath = "${pDir.path}/${now}_summary.$format";
     FileHandler.saveToPath(fullPath, data);
 
-    final snackBar = SnackBar(content: Text("File saved at: $fullPath"));
+    final snackBar =
+        SnackBar(content: const Text("file_saved").tr(args: [fullPath]));
     showSnack(snackBar);
   }
 
@@ -124,19 +126,19 @@ class SummaryPageState extends State<SummaryPage> {
 
   void showExportDialog(bool doShare) async {
     AlertDialog dialog = AlertDialog(
-      title: const Text('Export Summary'),
-      content: Text(
-          'Please, select a format to ${doShare ? "share" : "export"} your data otherwise press Cancel.'),
+      title: const Text("export_summary").tr(),
+      content: const Text("select_format")
+          .tr(args: [doShare ? "share".tr() : "export".tr()]),
       actions: <Widget>[
-        ElevatedButton(
-          child: const Text('Cancel'),
+        TextButton(
+          child: const Text("cancel").tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        TextButton(
+        ElevatedButton(
           child: const Text('JSON'),
           onPressed: () => Navigator.of(context).pop(1),
         ),
-        TextButton(
+        ElevatedButton(
           child: const Text('CSV'),
           onPressed: () => Navigator.of(context).pop(2),
         ),

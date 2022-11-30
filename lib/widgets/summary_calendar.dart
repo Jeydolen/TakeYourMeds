@@ -1,9 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 import 'package:table_calendar/table_calendar.dart';
-import 'package:take_your_meds/common/file_handler.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
 
 class SummaryCalendar extends StatefulWidget {
@@ -81,22 +85,22 @@ class SummaryCalendarState extends State<SummaryCalendar> {
 
   void removeEvent(MedEvent value) async {
     AlertDialog dialog = AlertDialog(
-      title: const Text('Delete event ?'),
-      content: Text(
-        '''Do you really want to delete this event ?
-        Medication: ${value.quantity}x${value.dose} of ${value.name}
-        Date: ${value.datetime}
-        ''',
-      ),
+      title: const Text("del_event_title").tr(),
+      content: const Text("del_event").tr(args: [
+        value.quantity,
+        value.dose,
+        value.name,
+        value.datetime.toString()
+      ]),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: const Text("cancel").tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          child: const Text('Delete'),
+          child: const Text("delete").tr(),
         )
       ],
     );
@@ -124,19 +128,13 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     }
   }
 
-  Future<List<dynamic>> getMoods() async {
-    String? data = await FileHandler.readContent("moods");
-    List<dynamic> moods = data != null ? jsonDecode(data) : [];
-    return moods;
-  }
-
   @override
   void initState() {
     super.initState();
     medEvents = widget.medEvents;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    moods = getMoods();
+    moods = Utils.fetchMoods();
   }
 
   @override
@@ -151,6 +149,11 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       children: [
         TableCalendar(
           startingDayOfWeek: StartingDayOfWeek.monday,
+          availableCalendarFormats: {
+            CalendarFormat.month: "month".tr(),
+            CalendarFormat.twoWeeks: "two_weeks".tr(),
+            CalendarFormat.week: "week".tr(),
+          },
           firstDay: DateTime.utc(2010, 12, 1),
           lastDay: DateTime.utc(2030, 12, 1),
           focusedDay: DateTime.now(),

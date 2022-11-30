@@ -24,11 +24,23 @@ class MedEvent extends Medication {
     return _time;
   }
 
-  MedEvent(name, dose, unit, notes, uid, this.quantity, this._time, this.reason)
-      : super(name, dose, unit, notes, uid);
+  MedEvent(
+    name,
+    dose,
+    unit,
+    notes,
+    uid,
+    this.quantity,
+    this._time,
+    this.reason,
+  ) : super(name, dose, unit, notes, uid);
 
-  factory MedEvent.fromJson(Map<String, dynamic> json, String quantity,
-      DateTime time, String? reason) {
+  factory MedEvent.fromJson(
+    Map<String, dynamic> json,
+    String quantity,
+    DateTime time,
+    String? reason,
+  ) {
     return MedEvent(
       json["name"],
       json["dose"],

@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:take_your_meds/common/file_handler.dart';
 
 class MedsList extends StatefulWidget {
-  final List<dynamic> json;
   const MedsList({Key? key, required this.json}) : super(key: key);
+  final List<dynamic> json;
 
   @override
   State<StatefulWidget> createState() => MedsListState();
@@ -19,7 +21,7 @@ class MedsListState extends State<MedsList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("No data available, you can add meds here:"),
+            const Text("no_meds").tr(),
             ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
           ],
         ),
@@ -70,16 +72,12 @@ class MedsListState extends State<MedsList> {
   }
 
   void removeMedDialog(dynamic element) async {
-    String alertTitle = 'Do you really want to remove:  ${element["name"]} ?';
-    String alertContent =
-        'If you really want to delete this medication, press Delete otherwise press Cancel.';
-
     AlertDialog dialog = AlertDialog(
-      title: Text(alertTitle),
-      content: Text(alertContent),
+      title: const Text("del_med_title").tr(args: [element["name"]]),
+      content: const Text("del_med").tr(),
       actions: <Widget>[
         TextButton(
-          child: const Text('Cancel'),
+          child: const Text("cancel").tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
@@ -87,7 +85,7 @@ class MedsListState extends State<MedsList> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.red,
           ),
-          child: const Text('Delete'),
+          child: const Text("delete").tr(),
           onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
@@ -112,6 +110,7 @@ class MedsListState extends State<MedsList> {
                 onPressed: () => edit ? {} : onClick(element),
                 child: Row(
                   children: [
+                    // TODO: Better space splitting between categories
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 3,
                       child: Text(element["name"]),
@@ -149,7 +148,7 @@ class MedsListState extends State<MedsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Took medication"),
+        title: const Text("took_med_general").tr(),
         actions: [
           ElevatedButton(
             onPressed: editList,
