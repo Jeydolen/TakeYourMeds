@@ -43,10 +43,11 @@ class ReminderListState extends State<ReminderList> {
             }
           }
 
-          const String title = 'Medication reminder';
-          String body =
-              'You should take your ${element["med_name"] ??= "medication"}';
-          showNotification(title, body, time, d);
+          showNotification(
+              "med_reminder".tr(),
+              "reminder_take".tr(args: [element["med_name"] ??= "medication"]),
+              time,
+              d);
         }
       }
 
@@ -57,9 +58,6 @@ class ReminderListState extends State<ReminderList> {
   }
 
   void showNotificationForDay(jsonEl) {
-    const String title = 'Medication reminder';
-    String body = 'You should take your  ${jsonEl["notes"] ??= "medication"}';
-
     int weekday = 0;
     // Source: https://github.com/ThangVuNguyenViet/clock_app/blob/e87d2548a5890560d07b8d5f89bd1a0119d3707d/lib/providers/alarm_provider.dart
     for (bool day in jsonEl["days"].values) {
@@ -75,7 +73,12 @@ class ReminderListState extends State<ReminderList> {
           dt.hour,
           dt.minute,
         ).toIso8601String();
-        showNotification(title, body, newTime, d);
+        showNotification(
+          "med_reminder".tr(),
+          "reminder_take".tr(args: [jsonEl["med_name"] ??= "medication"]),
+          newTime,
+          d,
+        );
       }
     }
   }
@@ -118,7 +121,7 @@ class ReminderListState extends State<ReminderList> {
     int i = (await futureAlarms).indexOf(element);
 
     setState(() {
-      element['enabled'] = newVal;
+      element["enabled"] = newVal;
     });
 
     (await futureAlarms)[i] = element;
@@ -212,12 +215,12 @@ class ReminderListState extends State<ReminderList> {
                   ? ElevatedButton(
                       onPressed: () {},
                       style: style,
-                      child: Text(day[0]),
+                      child: Text(day.tr()[0]),
                     )
                   : TextButton(
                       onPressed: () {},
                       style: style,
-                      child: Text(day[0]),
+                      child: Text(day.tr()[0]),
                     );
               b.add(t);
             }

@@ -69,9 +69,10 @@ class AddMedPageState extends State<AddMedPage> {
         formField = TextFormField(
           initialValue: field == "notes" ? "/" : null,
           keyboardType: f.inputType,
-          decoration: InputDecoration(labelText: field.capitalize()),
-          validator: (String? value) =>
-              (value == null || value.isEmpty) ? 'Please enter a $field' : null,
+          decoration: InputDecoration(labelText: field.tr().capitalize()),
+          validator: (String? value) => (value == null || value.isEmpty)
+              ? "enter_field".tr(args: [field.tr()])
+              : null,
           inputFormatters: f.inputType == TextInputType.number
               ? <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
@@ -88,7 +89,8 @@ class AddMedPageState extends State<AddMedPage> {
           value: dropdownValue,
           items: Unit.values
               .map((e) => e.string)
-              .map((String v) => DropdownMenuItem(value: v, child: Text(v)))
+              .map(
+                  (String v) => DropdownMenuItem(value: v, child: Text(v.tr())))
               .toList(),
           onChanged: (String? value) {
             setState(() {

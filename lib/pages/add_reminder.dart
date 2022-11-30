@@ -19,13 +19,13 @@ class AddReminderPageState extends State<AddReminderPage> {
   Widget dropDown = const CircularProgressIndicator();
   String currMed = 'none';
   Map<String, bool> days = {
-    "Mon": true,
-    "Tue": false,
-    "Wed": false,
-    "Thu": false,
-    "Fri": false,
-    "Sat": false,
-    "Sun": false,
+    "mon": true,
+    "tue": false,
+    "wed": false,
+    "thu": false,
+    "fri": false,
+    "sat": false,
+    "sun": false,
   };
 
   void saveData() async {
@@ -55,33 +55,33 @@ class AddReminderPageState extends State<AddReminderPage> {
     FileHandler.writeContent("reminders", jsonEncode(currAlarms));
   }
 
-  Widget dayBtn(String text) {
+  Widget dayBtn(String key) {
     ButtonStyle style = ButtonStyle(
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
       ),
     );
 
-    if (!days[text]!) {
+    if (!days[key]!) {
       return TextButton(
         onPressed: () {
           setState(() {
-            days[text] = !days[text]!;
+            days[key] = !days[key]!;
           });
         },
         style: style,
-        child: Text(text),
+        child: Text(key.tr()),
       );
     }
 
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          days[text] = !days[text]!;
+          days[key] = !days[key]!;
         });
       },
       style: style,
-      child: Text(text),
+      child: Text(key.tr()),
     );
   }
 
@@ -187,13 +187,13 @@ class AddReminderPageState extends State<AddReminderPage> {
               ? Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    dayBtn('Mon'),
-                    dayBtn('Tue'),
-                    dayBtn('Wed'),
-                    dayBtn('Thu'),
-                    dayBtn('Fri'),
-                    dayBtn('Sat'),
-                    dayBtn('Sun'),
+                    dayBtn("mon"),
+                    dayBtn("tue"),
+                    dayBtn("wed"),
+                    dayBtn("thu"),
+                    dayBtn("fri"),
+                    dayBtn("sat"),
+                    dayBtn("sun"),
                   ],
                 )
               : const SizedBox(),

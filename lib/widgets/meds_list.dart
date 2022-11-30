@@ -6,8 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
 class MedsList extends StatefulWidget {
-  final List<dynamic> json;
   const MedsList({Key? key, required this.json}) : super(key: key);
+  final List<dynamic> json;
 
   @override
   State<StatefulWidget> createState() => MedsListState();
@@ -72,12 +72,9 @@ class MedsListState extends State<MedsList> {
   }
 
   void removeMedDialog(dynamic element) async {
-    String alertTitle = "del_med_title".tr(args: [element["name"]]);
-    String alertContent = "del_med".tr();
-
     AlertDialog dialog = AlertDialog(
-      title: Text(alertTitle),
-      content: Text(alertContent),
+      title: const Text("del_med_title").tr(args: [element["name"]]),
+      content: const Text("del_med").tr(),
       actions: <Widget>[
         TextButton(
           child: const Text("cancel").tr(),
@@ -113,6 +110,7 @@ class MedsListState extends State<MedsList> {
                 onPressed: () => edit ? {} : onClick(element),
                 child: Row(
                   children: [
+                    // TODO: Better space splitting between categories
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 3,
                       child: Text(element["name"]),

@@ -76,13 +76,8 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   @override
   Widget build(BuildContext context) {
     Icon editIcon = edit ? const Icon(Icons.cancel) : const Icon(Icons.edit);
-    String name = "Name: ${event.name}";
-    String dose = "Dosage: ${event.quantity} x ${event.dose} ${event.unit}";
-    String notes = "Notes: ${(event.notes.isEmpty) ? "/" : event.notes}";
-    String time = "Time: ${event.time}";
 
     final String? rVal = event.reason;
-    String reason = "Reason: ${(rVal == null || rVal.isEmpty) ? "/" : rVal}";
 
     return Scaffold(
         appBar: AppBar(
@@ -100,20 +95,28 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
           child: ListView(
             children: [
               const SizedBox(height: 20),
-              edit ? dropDown : Text(name),
+              edit ? dropDown : const Text("med_name").tr(args: [event.name]),
               const SizedBox(height: 20),
-              Text(dose),
+              const Text("med_dosage_unit").tr(args: [
+                event.quantity,
+                event.dose,
+                event.unit,
+              ]),
               const SizedBox(height: 20),
-              Text(notes),
+              const Text("med_notes").tr(args: [
+                (event.notes.isEmpty) ? "/" : event.notes,
+              ]),
               const SizedBox(height: 20),
-              Text(time),
+              const Text("time").tr(args: [event.time]),
               const SizedBox(height: 20),
-              Text(reason),
+              const Text("med_reason").tr(args: [
+                (rVal == null || rVal.isEmpty) ? "/" : rVal,
+              ]),
               const SizedBox(height: 20),
               edit
                   ? ElevatedButton(
                       onPressed: save,
-                      child: const Text("Save changes"),
+                      child: const Text("save").tr(),
                     )
                   : const SizedBox(),
             ],
