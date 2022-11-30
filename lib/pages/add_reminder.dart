@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/common/medication.dart';
-import 'package:take_your_meds/common/utils.dart';
 
 class AddReminderPage extends StatefulWidget {
   const AddReminderPage({Key? key}) : super(key: key);
@@ -53,7 +52,7 @@ class AddReminderPageState extends State<AddReminderPage> {
     String? alarms = await FileHandler.readContent("reminders");
     List<dynamic> currAlarms = alarms != null ? jsonDecode(alarms) : [];
     currAlarms.add(obj);
-    await FileHandler.writeContent("reminders", jsonEncode(currAlarms));
+    FileHandler.writeContent("reminders", jsonEncode(currAlarms));
   }
 
   Widget dayBtn(String text) {

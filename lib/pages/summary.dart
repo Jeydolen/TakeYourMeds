@@ -199,6 +199,8 @@ class SummaryPageState extends State<SummaryPage> {
         eventsToJson.add(obj);
       }
     }
+
+    FileHandler.writeContent("meds", jsonEncode(eventsToJson));
   }
 
   Future<List<MedEvent>> createEvents(Future<List<dynamic>> data) async {
