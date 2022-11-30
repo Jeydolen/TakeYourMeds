@@ -113,15 +113,15 @@ class MedsListState extends State<MedsList> {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width / 2.2,
+                      width: MediaQuery.of(context).size.width / 3,
                       child: Text(element["name"]),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width / 5,
+                      width: MediaQuery.of(context).size.width / 10,
                       child: Text(element["dose"]),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: MediaQuery.of(context).size.width / 5,
                       child: Text(element["unit"]),
                     ),
                   ],

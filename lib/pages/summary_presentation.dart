@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/medication.dart';
+import 'package:take_your_meds/common/utils.dart';
 
 class SummaryPresentationPage extends StatefulWidget {
-  const SummaryPresentationPage(
-      {Key? key, required this.json, required this.event})
-      : super(key: key);
+  const SummaryPresentationPage({
+    Key? key,
+    required this.json,
+    required this.event,
+  }) : super(key: key);
   final List<dynamic> json;
   final MedEvent event;
 
@@ -45,14 +48,8 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
     }
   }
 
-  void generateDropDown() {
-    List<DropdownMenuItem> a = meds
-        .map((element) => DropdownMenuItem(
-              value: element.uid,
-              child: Text(element.name),
-            ))
-        .toList();
-
+  void generateDropDown(List<Medication> medications) {
+    List<DropdownMenuItem> a = generateDropDownItems(medications);
     setState(() {
       dropDown = a.length == 1
           ? const Text("Can't make it editable because no other meds detected")
@@ -72,7 +69,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   void initState() {
     super.initState();
     event = widget.event;
-    generateDropDown();
+    generateDropDown(meds);
   }
 
   @override
