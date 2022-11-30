@@ -34,8 +34,7 @@ class Utils {
 
   static Future<List<MedEvent>> createEvents(List<dynamic> data) async {
     List<MedEvent> events = [];
-    List<dynamic> json = await data;
-    for (var element in json) {
+    for (var element in data) {
       List<dynamic>? dates = element["dates"];
       if (dates != null) {
         for (var dateObj in dates) {
