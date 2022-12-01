@@ -1,12 +1,13 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:timezone/timezone.dart' as tz;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:take_your_meds/main.dart';
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
 class ReminderList extends StatefulWidget {
@@ -19,13 +20,33 @@ class ReminderList extends StatefulWidget {
 class ReminderListState extends State<ReminderList> {
   late Future<List<dynamic>> futureAlarms;
 
-  @override
-  void initState() {
-    super.initState();
-    futureAlarms = getAlarms();
-  }
-
   Future<List<dynamic>> getAlarms() async {
+    List<dynamic> reminders = await Utils.fetchReminders();
+
+    for (var element in reminders) {
+      if (element["enabled"]) {
+        String? time = element["time"];
+        DateTimeComponents? d;
+
+        if (element["recurrent"]) {
+          if (element["all_days"] != null && element["all_days"]) {
+            d = DateTimeComponents.time;
+          } else {
+            showNotificationForDay(element);
+          }
+        }
+
+        showNotification(
+          "med_reminder".tr(),
+          "reminder_take".tr(args: [element["med_name"] ??= "medication"]),
+          time,
+          d,
+        );
+      }
+    }
+
+    return reminders;
+    /*
     String? jsonString = await FileHandler.readContent("reminders");
 
     if (jsonString != null) {
@@ -55,6 +76,7 @@ class ReminderListState extends State<ReminderList> {
     }
 
     return [];
+    */
   }
 
   void showNotificationForDay(jsonEl) {
@@ -73,6 +95,7 @@ class ReminderListState extends State<ReminderList> {
           dt.hour,
           dt.minute,
         ).toIso8601String();
+
         showNotification(
           "med_reminder".tr(),
           "reminder_take".tr(args: [jsonEl["med_name"] ??= "medication"]),
@@ -273,6 +296,12 @@ class ReminderListState extends State<ReminderList> {
       height: MediaQuery.of(context).size.height / 2.2,
       child: ListView(children: els),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    futureAlarms = getAlarms();
   }
 
   @override

@@ -21,9 +21,7 @@ enum Unit {
   const Unit({required this.string});
   final String string;
 
-  List<String> toList() {
-    return Unit.values.map((e) => e.string).toList();
-  }
+  List<String> toList() => Unit.values.map((e) => e.string).toList();
 }
 
 class AddMedPage extends StatefulWidget {
@@ -39,8 +37,7 @@ class AddMedPageState extends State<AddMedPage> {
   final Map<String, dynamic> formData = {};
 
   void saveData() async {
-    String? meds = await FileHandler.readContent("meds");
-    List<dynamic> currMeds = meds != null ? jsonDecode(meds) : [];
+    List<dynamic> currMeds = await Utils.fetchMeds();
 
     formData["unit"] = dropdownValue;
     Medication med = Medication(

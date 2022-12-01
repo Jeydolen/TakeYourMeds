@@ -33,6 +33,7 @@ class Utils {
 
   static Future<List<dynamic>> fetchMeds() => fetchFile("meds");
   static Future<List<dynamic>> fetchMoods() => fetchFile("moods");
+  static Future<List<dynamic>> fetchReminders() => fetchFile("reminders");
 
   static Future<List<MedEvent>> createEvents(List<dynamic> data) async {
     List<MedEvent> events = [];

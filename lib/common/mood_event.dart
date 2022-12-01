@@ -1,13 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 enum Mood {
-  good(string: "Good", value: 1),
-  meh(string: "Meh", value: 0),
-  bad(string: "Bad", value: -1);
+  good(string: "good", value: 1, moodColor: Colors.green),
+  meh(string: "meh", value: 0, moodColor: Colors.orange),
+  bad(string: "bad", value: -1, moodColor: Colors.red);
 
-  const Mood({required this.string, required this.value});
+  const Mood({
+    required this.string,
+    required this.value,
+    required this.moodColor,
+  });
   final String string;
   final int value;
+  final Color moodColor;
 }
 
 class MoodEvent {

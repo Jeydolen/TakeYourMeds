@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
 class TookMedPresentationPage extends StatefulWidget {
@@ -24,9 +25,9 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
   void saveData() async {
     Navigator.pop(context);
 
-    List<dynamic> a = jsonDecode(await FileHandler.readContent("meds") ?? "");
+    List<dynamic> meds = await Utils.fetchMeds();
 
-    Map<String, dynamic> cMed = a.firstWhere((e) => e["uid"] == json["uid"]);
+    Map<String, dynamic> cMed = meds.firstWhere((e) => e["uid"] == json["uid"]);
     List<dynamic> dates = cMed["dates"] ?? [];
 
     dates.add({
@@ -36,7 +37,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
     });
 
     cMed["dates"] = dates;
-    FileHandler.writeContent("meds", jsonEncode(a));
+    FileHandler.writeContent("meds", jsonEncode(meds));
   }
 
   @override
@@ -111,12 +112,11 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               SizedBox(
                 width: 50,
                 child: TextField(
-                  decoration:
-                      InputDecoration(label: const Text("quantity").tr()),
+                  decoration: InputDecoration(
+                    label: const Text("quantity").tr(),
+                  ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   controller: quantityField,
                 ),
               ),

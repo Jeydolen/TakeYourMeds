@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:table_calendar/table_calendar.dart';
@@ -7,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/med_event.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
 
 class SummaryCalendar extends StatefulWidget {

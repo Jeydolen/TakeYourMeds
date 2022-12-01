@@ -31,6 +31,8 @@
 .pub/
 /build/
 build/
+pubspec.lock
+doc/api/
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -48,3 +50,6 @@ app.*.map.json
 
 #Snyk cache
 .dccache
+
+# Env
+.env*

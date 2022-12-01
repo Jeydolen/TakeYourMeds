@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
@@ -16,8 +17,7 @@ class MoodsWidget extends StatefulWidget {
 
 class MoodsWidgetState extends State<MoodsWidget> {
   void saveMood(Mood mood) async {
-    String? moods = await FileHandler.readContent("moods");
-    List<dynamic> currMoods = moods != null ? jsonDecode(moods) : [];
+    List<dynamic> currMoods = await Utils.fetchMoods();
 
     DateTime now = DateTime.now();
     dynamic obj = {
@@ -32,6 +32,14 @@ class MoodsWidgetState extends State<MoodsWidget> {
     await FileHandler.writeContent("moods", jsonEncode(currMoods));
   }
 
+  Widget moodButton(Mood mood) => ElevatedButton(
+        onPressed: () => saveMood(mood),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: mood.moodColor,
+        ),
+        child: Text(mood.string).tr(),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,29 +47,9 @@ class MoodsWidgetState extends State<MoodsWidget> {
       children: [
         const SizedBox(height: 20),
         Center(
-          child: const Text(
-            "mood",
-            style: TextStyle(fontSize: 25.0),
-          ).tr(),
+          child: const Text("mood", style: TextStyle(fontSize: 25.0)).tr(),
         ),
-        ElevatedButton(
-            onPressed: () => saveMood(Mood.good),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-            ),
-            child: const Text("good").tr()),
-        ElevatedButton(
-            onPressed: () => saveMood(Mood.meh),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-            ),
-            child: const Text("meh").tr()),
-        ElevatedButton(
-            onPressed: () => saveMood(Mood.bad),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
-            child: const Text("bad").tr()),
+        ...Mood.values.map((e) => moodButton(e)).toList()
       ],
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/common/medication.dart';
+import 'package:take_your_meds/common/utils.dart';
 
 class AddReminderPage extends StatefulWidget {
   const AddReminderPage({Key? key}) : super(key: key);
@@ -49,8 +50,7 @@ class AddReminderPageState extends State<AddReminderPage> {
 
     Navigator.pop(context, obj);
 
-    String? alarms = await FileHandler.readContent("reminders");
-    List<dynamic> currAlarms = alarms != null ? jsonDecode(alarms) : [];
+    List<dynamic> currAlarms = await Utils.fetchReminders();
     currAlarms.add(obj);
     FileHandler.writeContent("reminders", jsonEncode(currAlarms));
   }
@@ -92,9 +92,7 @@ class AddReminderPageState extends State<AddReminderPage> {
   }
 
   void generateDropDown() async {
-    // Load file
-    String? medsString = await FileHandler.readContent("meds");
-    List<dynamic> meds = medsString == null ? [] : jsonDecode(medsString);
+    List<dynamic> meds = await Utils.fetchMeds();
 
     List<Medication> medications = [];
     for (var element in meds) {
@@ -142,9 +140,7 @@ class AddReminderPageState extends State<AddReminderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("add_reminder").tr(),
-      ),
+      appBar: AppBar(title: const Text("add_reminder").tr()),
       body: Column(
         children: [
           OutlinedButton(

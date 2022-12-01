@@ -61,9 +61,7 @@ class SummaryPageState extends State<SummaryPage> {
 
   void exportData(SupportedFormats formats, bool doShare) async {
     List<MedEvent> eventList = await summary;
-
-    String? moodStr = await FileHandler.readContent("moods");
-    List<dynamic> moodsList = moodStr != null ? jsonDecode(moodStr) : [];
+    List<dynamic> moodsList = await Utils.fetchMoods();
 
     switch (formats) {
       case SupportedFormats.json:
