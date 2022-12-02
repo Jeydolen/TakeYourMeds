@@ -1,5 +1,0 @@
-class DataStruct {
-  toJSON() {}
-
-  toCSV() {}
-}

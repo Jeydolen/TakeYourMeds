@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cross_file/cross_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
@@ -52,8 +54,8 @@ class SummaryPageState extends State<SummaryPage> {
     String fullPath = "${pDir.path}/${now}_summary.$format";
     File file = File(fullPath);
     file.writeAsString(data);
-    Share.shareFiles(
-      [fullPath],
+    Share.shareXFiles(
+      [XFile(fullPath)],
       subject: "My summary export",
       text: "This is the text for summary export",
     );

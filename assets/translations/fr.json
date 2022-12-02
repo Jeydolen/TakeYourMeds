@@ -62,5 +62,6 @@
   "sun": "Dim",
   "time": "Moment: {}",
   "save": "Sauvegarder",
-  "med_reminder": "Rappel de prise de médicament"
+  "med_reminder": "Rappel de prise de médicament",
+  "reminder_take": "Vous devriez prendre votre {}"
 }
