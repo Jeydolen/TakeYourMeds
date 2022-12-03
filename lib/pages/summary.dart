@@ -8,11 +8,11 @@ import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/med_event.dart';
-import 'package:take_your_meds/common/file_handler.dart';
-import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/utils.dart';
-import 'package:take_your_meds/widgets/cancel_button.dart';
+import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/mood_event.dart';
+import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/widgets/export_dialog.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -127,38 +127,21 @@ class SummaryPageState extends State<SummaryPage> {
     }
   }
 
-  void showExportDialog(bool doShare) async {
-    AlertDialog dialog = AlertDialog(
-      title: const Text("export_summary").tr(),
-      content: const Text("select_format").tr(
-        args: [
-          doShare ? "share".tr() : "export".tr(),
-        ],
-      ),
-      actions: [
-        const CancelButton(),
-        ...SupportedFormats.values
-            .map(
-              (e) => ElevatedButton(
-                child: Text(e.name.toUpperCase()),
-                onPressed: () => Navigator.of(context).pop(e.index),
-              ),
-            )
-            .toList(),
-        Checkbox(
-          value: addMoods,
-          onChanged: (_) {
-            setState(() {
-              addMoods = !addMoods;
-            });
-          },
-        )
-      ],
-    );
+  void changeMoodExport() {
+    setState(() {
+      addMoods = !addMoods;
+    });
+  }
 
+  void showExportDialog(bool doShare) async {
     int? doExport = await showDialog<int>(
       context: context,
-      builder: (BuildContext context) => dialog,
+      builder: (BuildContext _) => StatefulBuilder(
+        builder: ((context, setState) => ExportDialog(
+              doShare: doShare,
+              changeMoodExport: changeMoodExport,
+            )),
+      ),
     );
 
     if (doExport == null) {
