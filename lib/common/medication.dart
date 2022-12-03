@@ -1,5 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 
 enum Field {
   name(string: "name", inputType: TextInputType.text),
@@ -8,13 +9,11 @@ enum Field {
   notes(string: "notes", inputType: TextInputType.text);
 
   const Field({required this.string, required this.inputType});
-  final String string;
   final TextInputType inputType;
+  final String string;
 
   @override
-  String toString() {
-    return string.tr();
-  }
+  String toString() => string.tr();
 }
 
 class Medication {

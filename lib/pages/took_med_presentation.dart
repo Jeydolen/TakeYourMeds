@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/widgets/time_button.dart';
 
 class TookMedPresentationPage extends StatefulWidget {
   const TookMedPresentationPage({Key? key}) : super(key: key);
@@ -62,26 +63,12 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  OutlinedButton(
-                    onPressed: () async {
-                      TimeOfDay? tod = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.fromDateTime(now),
-                      );
-
-                      if (tod != null) {
-                        setState(() {
-                          now = DateTime(
-                            now.year,
-                            now.month,
-                            now.day,
-                            tod.hour,
-                            tod.minute,
-                          );
-                        });
-                      }
+                  TimeButton(
+                    onPressed: (DateTime newDate) {
+                      setState(() {
+                        now = newDate;
+                      });
                     },
-                    child: Text(DateFormat.Hm().add_EEEE().format(now)),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(

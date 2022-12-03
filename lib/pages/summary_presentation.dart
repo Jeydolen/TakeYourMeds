@@ -50,7 +50,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   }
 
   void generateDropDown(List<Medication> medications) {
-    List<DropdownMenuItem> a = generateDropDownItems(medications);
+    List<DropdownMenuItem> a = generateDropdownItems(medications);
     setState(() {
       dropDown = a.length == 1
           ? const Text("one_med_length").tr()

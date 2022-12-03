@@ -11,7 +11,7 @@ extension StringExtension on String {
   }
 }
 
-List<DropdownMenuItem> generateDropDownItems(List<Medication> medications) =>
+List<DropdownMenuItem> generateDropdownItems(List<Medication> medications) =>
     medications
         .map(
           (element) => DropdownMenuItem<String>(

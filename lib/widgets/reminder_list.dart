@@ -39,7 +39,7 @@ class ReminderListState extends State<ReminderList> {
 
         showNotification(
           "med_reminder".tr(),
-          "reminder_take".tr(args: [element["med_name"] ??= "medication"]),
+          "reminder_take".tr(args: [element["med_name"] ??= "medication".tr()]),
           time,
           d,
         );
@@ -47,37 +47,6 @@ class ReminderListState extends State<ReminderList> {
     }
 
     return reminders;
-    /*
-    String? jsonString = await FileHandler.readContent("reminders");
-
-    if (jsonString != null) {
-      List<dynamic> alarms = jsonDecode(jsonString);
-      for (var element in alarms) {
-        if (element["enabled"]) {
-          String? time = element["time"];
-          DateTimeComponents? d;
-
-          if (element["recurrent"]) {
-            if (element["all_days"] != null && element["all_days"]) {
-              d = DateTimeComponents.time;
-            } else {
-              showNotificationForDay(element);
-            }
-          }
-
-          showNotification(
-              "med_reminder".tr(),
-              "reminder_take".tr(args: [element["med_name"] ??= "medication"]),
-              time,
-              d);
-        }
-      }
-
-      return alarms;
-    }
-
-    return [];
-    */
   }
 
   void showNotificationForDay(jsonEl) {
@@ -99,7 +68,7 @@ class ReminderListState extends State<ReminderList> {
 
         showNotification(
           "med_reminder".tr(),
-          "reminder_take".tr(args: [jsonEl["med_name"] ??= "medication"]),
+          "reminder_take".tr(args: [jsonEl["med_name"] ??= "medication".tr()]),
           newTime,
           d,
         );

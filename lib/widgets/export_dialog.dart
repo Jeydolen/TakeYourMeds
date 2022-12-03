@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/supported_formats.dart';
 import 'package:take_your_meds/widgets/cancel_button.dart';
 
 class ExportDialog extends StatefulWidget {

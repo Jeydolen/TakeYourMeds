@@ -1,9 +1,8 @@
 import 'package:intl/intl.dart';
+import 'package:take_your_meds/common/event.dart';
 import 'package:take_your_meds/common/medication.dart';
 
-enum SupportedFormats { json, csv }
-
-class MedEvent extends Medication {
+class MedEvent extends Medication implements Event {
   static final List<String> keys = [
     "quantity",
     "time",
@@ -16,13 +15,8 @@ class MedEvent extends Medication {
   final DateTime _time;
   final String? reason;
 
-  String get time {
-    return DateFormat.Hm().format(_time);
-  }
-
-  DateTime get datetime {
-    return _time;
-  }
+  DateTime get datetime => _time;
+  String get time => DateFormat.Hm().format(_time);
 
   MedEvent(
     name,
@@ -64,6 +58,7 @@ class MedEvent extends Medication {
     return medicationObj;
   }
 
+  @override
   String toCSV() {
     String csv = "";
 

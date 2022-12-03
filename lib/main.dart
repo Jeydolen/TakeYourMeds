@@ -6,7 +6,6 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:take_your_meds/pages/home.dart';
-import 'package:take_your_meds/pages/summary.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
 import 'package:take_your_meds/pages/add_reminder.dart';
@@ -48,14 +47,13 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Take your meds',
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
       locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/',
-      routes: <String, WidgetBuilder>{
+      routes: {
         '/': (BuildContext _) => const HomePage(),
-        '/summary': (BuildContext _) => const SummaryPage(),
         '/add_med': (BuildContext _) => const AddMedPage(),
         '/took_med': (BuildContext _) => const TookMedPage(),
         '/med_presentation': (BuildContext _) =>

@@ -1,11 +1,14 @@
 import 'dart:convert';
-import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/widgets/time_button.dart';
 import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/day.dart';
 
 class AddReminderPage extends StatefulWidget {
   const AddReminderPage({Key? key}) : super(key: key);
@@ -15,9 +18,9 @@ class AddReminderPage extends StatefulWidget {
 }
 
 class AddReminderPageState extends State<AddReminderPage> {
-  bool recurrent = false;
+  Widget dropdown = const CircularProgressIndicator();
   DateTime now = DateTime.now();
-  Widget dropDown = const CircularProgressIndicator();
+  bool recurrent = false;
   String currMed = 'none';
   Map<String, bool> days = {
     "mon": true,
@@ -30,10 +33,10 @@ class AddReminderPageState extends State<AddReminderPage> {
   };
 
   void saveData() async {
-    dynamic obj = {
+    Map<String, dynamic> obj = {
+      "enabled": true,
       "recurrent": recurrent,
       "time": now.toIso8601String(),
-      "enabled": true
     };
 
     if (recurrent) {
@@ -55,7 +58,8 @@ class AddReminderPageState extends State<AddReminderPage> {
     FileHandler.writeContent("reminders", jsonEncode(currAlarms));
   }
 
-  Widget dayBtn(String key) {
+  Widget dayBtn(Day day) {
+    String key = day.string;
     ButtonStyle style = ButtonStyle(
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
@@ -121,7 +125,7 @@ class AddReminderPageState extends State<AddReminderPage> {
     ));
 
     setState(() {
-      dropDown = DropdownButtonFormField<dynamic>(
+      dropdown = DropdownButtonFormField<dynamic>(
         value: currMed,
         onChanged: changeMed,
         items: dropDownMeds,
@@ -143,62 +147,36 @@ class AddReminderPageState extends State<AddReminderPage> {
       appBar: AppBar(title: const Text("add_reminder").tr()),
       body: Column(
         children: [
-          OutlinedButton(
-            onPressed: () async {
-              TimeOfDay? tod = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.fromDateTime(now),
-              );
-
-              if (tod != null) {
-                setState(() {
-                  now = DateTime(
-                    now.year,
-                    now.month,
-                    now.day,
-                    tod.hour,
-                    tod.minute,
-                  );
-                });
-              }
+          TimeButton(
+            onPressed: (DateTime newDate) {
+              setState(() {
+                now = newDate;
+              });
             },
-            child: Text(DateFormat.Hm().format(now)),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("recurrent").tr(),
-              Checkbox(
-                value: recurrent,
-                onChanged: ((value) {
-                  setState(() {
-                    recurrent = !recurrent;
-                  });
-                }),
-              )
-            ],
+          CheckboxListTile(
+            title: const Text("recurrent").tr(),
+            value: recurrent,
+            onChanged: ((value) {
+              setState(() {
+                recurrent = !recurrent;
+              });
+            }),
           ),
-          dropDown,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: dropdown,
+          ),
           recurrent
               ? Wrap(
                   alignment: WrapAlignment.center,
-                  children: [
-                    dayBtn("mon"),
-                    dayBtn("tue"),
-                    dayBtn("wed"),
-                    dayBtn("thu"),
-                    dayBtn("fri"),
-                    dayBtn("sat"),
-                    dayBtn("sun"),
-                  ],
+                  children: Day.values.map((e) => dayBtn(e)).toList(),
                 )
               : const SizedBox(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
-              onPressed: () {
-                saveData();
-              },
+              onPressed: saveData,
               child: const Text("submit").tr(),
             ),
           ),

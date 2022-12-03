@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:take_your_meds/widgets/mood.dart';
-import 'package:take_your_meds/widgets/reminder.dart';
+import 'package:take_your_meds/widgets/reminder_list.dart';
 
 class MiscPage extends StatefulWidget {
   const MiscPage({Key? key}) : super(key: key);
@@ -10,11 +10,6 @@ class MiscPage extends StatefulWidget {
 }
 
 class MiscPageState extends State<MiscPage> {
-  void addAlarm() {
-    // TODO: Update state on new Alarm
-    Navigator.pushNamed(context, '/add_alarm');
-  }
-
   @override
   Widget build(BuildContext context) {
     // Alarms + mood tracker
@@ -22,7 +17,7 @@ class MiscPageState extends State<MiscPage> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-            onPressed: addAlarm,
+            onPressed: () => Navigator.pushNamed(context, '/add_alarm'),
             child: const Icon(Icons.add_alarm),
           ),
         ],

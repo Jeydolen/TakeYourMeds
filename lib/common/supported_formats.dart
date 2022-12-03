@@ -1,0 +1,1 @@
+enum SupportedFormats { json, csv }

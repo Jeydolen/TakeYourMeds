@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:take_your_meds/common/event.dart';
 
 enum Mood {
   good(string: "good", value: 1, moodColor: Colors.green),
@@ -16,8 +17,8 @@ enum Mood {
   final Color moodColor;
 }
 
-class MoodEvent {
-  static final List<String> header = [
+class MoodEvent extends Event {
+  static final List<String> headers = [
     "mood",
     "mood_string",
     "date",
@@ -36,6 +37,7 @@ class MoodEvent {
     return MoodEvent(mood, time);
   }
 
+  @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> obj = {
       "date": DateFormat.yMd().format(_time),
@@ -45,21 +47,5 @@ class MoodEvent {
       "mood_string": mood.string
     };
     return obj;
-  }
-
-  String toCSV() {
-    String csv = "";
-
-    Map json = toJson();
-    for (int i = 0; i < json.length; i++) {
-      if (json[header[i]] != null) {
-        csv += "${json[header[i]]},";
-      } else {
-        csv += ",";
-      }
-    }
-    csv += "\n";
-
-    return csv;
   }
 }

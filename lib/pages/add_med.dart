@@ -1,28 +1,15 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:uuid/uuid.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
+import 'package:uuid/uuid.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import 'package:take_your_meds/common/unit.dart';
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/file_handler.dart';
-
-enum Unit {
-  mg(string: "mg"),
-  g(string: "g"),
-  ml(string: "ml"),
-  cl(string: "cl"),
-  l(string: "l"),
-  drops(string: "drops"),
-  occur(string: "occur.");
-
-  const Unit({required this.string});
-  final String string;
-
-  List<String> toList() => Unit.values.map((e) => e.string).toList();
-}
 
 class AddMedPage extends StatefulWidget {
   const AddMedPage({Key? key}) : super(key: key);

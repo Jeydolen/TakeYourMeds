@@ -41,8 +41,9 @@ class _ClockButtonState extends State<ClockButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
-          minimumSize: const Size(100, 60)),
+        textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
+        minimumSize: const Size(100, 60),
+      ),
       onPressed: () => Navigator.pushNamed(context, '/took_med'),
       child: Text(DateFormat.Hms().format(_now)),
     );

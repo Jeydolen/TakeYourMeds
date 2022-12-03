@@ -23,7 +23,9 @@ class MedsListState extends State<MedsList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("no_meds").tr(),
+            Flexible(
+              child: const Text("no_meds").tr(),
+            ),
             ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
           ],
         ),
