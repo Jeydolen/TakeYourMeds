@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/widgets/cancel_button.dart';
+import 'package:take_your_meds/widgets/delete_button.dart';
 
 class MedsList extends StatefulWidget {
   const MedsList({Key? key, required this.json}) : super(key: key);
@@ -75,20 +77,7 @@ class MedsListState extends State<MedsList> {
     AlertDialog dialog = AlertDialog(
       title: const Text("del_med_title").tr(args: [element["name"]]),
       content: const Text("del_med").tr(),
-      actions: <Widget>[
-        TextButton(
-          child: const Text("cancel").tr(),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.red,
-          ),
-          child: const Text("delete").tr(),
-          onPressed: () => Navigator.of(context).pop(true),
-        ),
-      ],
+      actions: const <Widget>[CancelButton(), DeleteButton()],
     );
 
     bool? doRemove = await showDialog<bool>(

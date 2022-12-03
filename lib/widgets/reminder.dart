@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:take_your_meds/widgets/cancel_button.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 import 'package:easy_localization/easy_localization.dart';
@@ -182,10 +183,7 @@ class ReminderListState extends State<ReminderList> {
         title: const Text("del_reminder_title").tr(),
         content: const Text("del_reminder").tr(),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("cancel").tr(),
-          ),
+          const CancelButton(),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () => Navigator.pop(context, true),
