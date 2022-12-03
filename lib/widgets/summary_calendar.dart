@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/widgets/cancel_button.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
 
 class SummaryCalendar extends StatefulWidget {
@@ -90,10 +91,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
         value.datetime.toString()
       ]),
       actions: [
-        TextButton(
-          child: const Text("cancel").tr(),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        const CancelButton(),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),

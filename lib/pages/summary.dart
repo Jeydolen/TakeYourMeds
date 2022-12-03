@@ -12,6 +12,7 @@ import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/widgets/cancel_button.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -24,8 +25,14 @@ class SummaryPage extends StatefulWidget {
 class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
   late List<dynamic> json;
+  bool addMoods = true;
 
-  void exportDataToString(String data, String format) async {
+  void showSnackBar(String path) {
+    final snack = SnackBar(content: const Text("file_saved").tr(args: [path]));
+    ScaffoldMessenger.of(context).showSnackBar(snack);
+  }
+
+  void saveData(String data, String format) async {
     String now = DateTime.now().toString();
     Directory? pDir = await getExternalStorageDirectory();
     if (pDir == null) {
@@ -34,14 +41,7 @@ class SummaryPageState extends State<SummaryPage> {
 
     String fullPath = "${pDir.path}/${now}_summary.$format";
     FileHandler.saveToPath(fullPath, data);
-
-    final snackBar =
-        SnackBar(content: const Text("file_saved").tr(args: [fullPath]));
-    showSnack(snackBar);
-  }
-
-  void showSnack(SnackBar snack) {
-    ScaffoldMessenger.of(context).showSnackBar(snack);
+    showSnackBar(fullPath);
   }
 
   void shareData(String data, String format) async {
@@ -61,9 +61,12 @@ class SummaryPageState extends State<SummaryPage> {
     );
   }
 
-  void exportData(SupportedFormats formats, bool doShare) async {
+  void convertTo(SupportedFormats formats, bool doShare) async {
     List<MedEvent> eventList = await summary;
-    List<dynamic> moodsList = await Utils.fetchMoods();
+    List<dynamic> moodsList = [];
+    if (addMoods) {
+      moodsList = await Utils.fetchMoods();
+    }
 
     switch (formats) {
       case SupportedFormats.json:
@@ -76,7 +79,7 @@ class SummaryPageState extends State<SummaryPage> {
 
           String data = jsonEncode(json);
           if (!doShare) {
-            exportDataToString(data, "json");
+            saveData(data, "json");
           } else {
             shareData(data, "json");
           }
@@ -112,7 +115,7 @@ class SummaryPageState extends State<SummaryPage> {
           // ----------------------------
 
           if (!doShare) {
-            exportDataToString(data, "csv");
+            saveData(data, "csv");
           } else {
             shareData(data, "csv");
           }
@@ -127,21 +130,29 @@ class SummaryPageState extends State<SummaryPage> {
   void showExportDialog(bool doShare) async {
     AlertDialog dialog = AlertDialog(
       title: const Text("export_summary").tr(),
-      content: const Text("select_format")
-          .tr(args: [doShare ? "share".tr() : "export".tr()]),
-      actions: <Widget>[
-        TextButton(
-          child: const Text("cancel").tr(),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        ElevatedButton(
-          child: const Text('JSON'),
-          onPressed: () => Navigator.of(context).pop(1),
-        ),
-        ElevatedButton(
-          child: const Text('CSV'),
-          onPressed: () => Navigator.of(context).pop(2),
-        ),
+      content: const Text("select_format").tr(
+        args: [
+          doShare ? "share".tr() : "export".tr(),
+        ],
+      ),
+      actions: [
+        const CancelButton(),
+        ...SupportedFormats.values
+            .map(
+              (e) => ElevatedButton(
+                child: Text(e.name.toUpperCase()),
+                onPressed: () => Navigator.of(context).pop(e.index),
+              ),
+            )
+            .toList(),
+        Checkbox(
+          value: addMoods,
+          onChanged: (_) {
+            setState(() {
+              addMoods = !addMoods;
+            });
+          },
+        )
       ],
     );
 
@@ -150,14 +161,11 @@ class SummaryPageState extends State<SummaryPage> {
       builder: (BuildContext context) => dialog,
     );
 
-    switch (doExport) {
-      case 1:
-        return exportData(SupportedFormats.json, doShare);
-      case 2:
-        return exportData(SupportedFormats.csv, doShare);
-      default:
-        return;
+    if (doExport == null) {
+      return;
     }
+
+    convertTo(SupportedFormats.values[doExport], doShare);
   }
 
   void removeEvent(MedEvent? diffEvent) async {
