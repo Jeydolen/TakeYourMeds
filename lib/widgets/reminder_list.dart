@@ -238,6 +238,7 @@ class ReminderListState extends State<ReminderList> {
                   ),
                   row,
                   Switch(
+                    activeColor: Theme.of(context).primaryColor,
                     value: isSwitched,
                     onChanged: recurrent
                         ? (_) => switchSave(_, el)

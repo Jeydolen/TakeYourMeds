@@ -5,6 +5,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'package:take_your_meds/common/theme.dart';
+import 'package:take_your_meds/common/dark_theme.dart';
+
 import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
@@ -50,7 +53,8 @@ class AppState extends State<App> {
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: theme,
+      darkTheme: darkTheme,
       initialRoute: '/',
       routes: {
         '/': (BuildContext _) => const HomePage(),
