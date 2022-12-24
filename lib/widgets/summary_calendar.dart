@@ -142,30 +142,55 @@ class SummaryCalendarState extends State<SummaryCalendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TableCalendar(
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          availableCalendarFormats: {
-            CalendarFormat.month: "month".tr(),
-            CalendarFormat.twoWeeks: "two_weeks".tr(),
-            CalendarFormat.week: "week".tr(),
-          },
-          firstDay: DateTime.utc(2010, 12, 1),
-          lastDay: DateTime.utc(2030, 12, 1),
-          focusedDay: DateTime.now(),
-          currentDay: DateTime.now(),
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          onDaySelected: _onDaySelected,
-          calendarFormat: _calendarFormat,
-          rangeSelectionMode: _rangeSelectionMode,
-          onFormatChanged: (format) {
-            setState(() {
-              _calendarFormat = format;
-            });
-          },
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-          },
-          eventLoader: (day) => _getEventsForDay(day),
+        Container(
+          color: Theme.of(context).canvasColor,
+          child: TableCalendar(
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            availableCalendarFormats: {
+              CalendarFormat.month: "month".tr(),
+              CalendarFormat.twoWeeks: "two_weeks".tr(),
+              CalendarFormat.week: "week".tr(),
+            },
+            firstDay: DateTime.utc(2010, 12, 1),
+            lastDay: DateTime.utc(2030, 12, 1),
+            focusedDay: DateTime.now(),
+            currentDay: DateTime.now(),
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            onDaySelected: _onDaySelected,
+            calendarFormat: _calendarFormat,
+            rangeSelectionMode: _rangeSelectionMode,
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+            calendarStyle: CalendarStyle(
+              markersMaxCount: 5,
+              todayDecoration: BoxDecoration(
+                color: Theme.of(context).primaryColorLight,
+                shape: BoxShape.circle,
+              ),
+              selectedDecoration: BoxDecoration(
+                color: Theme.of(context).primaryColorDark,
+                shape: BoxShape.circle,
+              ),
+              markerDecoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              todayTextStyle: const TextStyle(),
+              outsideTextStyle: const TextStyle(),
+              weekendTextStyle: const TextStyle(),
+            ),
+            daysOfWeekStyle: const DaysOfWeekStyle(
+              weekdayStyle: TextStyle(),
+              weekendStyle: TextStyle(),
+            ),
+            eventLoader: (day) => _getEventsForDay(day),
+          ),
         ),
         const SizedBox(height: 8.0),
         Expanded(
@@ -181,16 +206,15 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                       vertical: 4,
                       horizontal: 12,
                     ),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
                     child: Theme(
                       data: ThemeData(
-                        splashColor: Colors.red,
                         highlightColor: const Color(0xFFFF0000).withOpacity(.5),
                       ),
                       child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        tileColor: Theme.of(context).backgroundColor,
                         onTap: () => showEvent(event),
                         onLongPress: () => removeEvent(event),
                         title: Row(
