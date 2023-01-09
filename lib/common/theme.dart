@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ColorScheme colorScheme = const ColorScheme.light(
   primary: Colors.blue,
   secondary: Colors.blue,
-  onPrimary: Colors.black,
+  onPrimary: Colors.white,
 );
 
 ThemeData theme = ThemeData(
