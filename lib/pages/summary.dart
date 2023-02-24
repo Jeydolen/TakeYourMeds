@@ -35,13 +35,17 @@ class SummaryPageState extends State<SummaryPage> {
 
   void saveData(String data, String format) async {
     String now = DateTime.now().toString();
+    // We want user to get file easily so putting it in Downloads folder.
+    // We are only supporting Android which path is always
+    // /storage/emulated/0/Download/
+
     Directory? pDir = await getExternalStorageDirectory();
     if (pDir == null) {
       return;
     }
 
     String fullPath = "${pDir.path}/${now}_summary.$format";
-    FileHandler.saveToPath(fullPath, data);
+    //FileHandler.saveToPath(fullPath, data);
     showSnackBar(fullPath);
   }
 

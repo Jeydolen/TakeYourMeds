@@ -32,16 +32,23 @@ class MoodsWidgetState extends State<MoodsWidget> {
     await FileHandler.writeContent("moods", jsonEncode(currMoods));
   }
 
-  Widget moodButton(Mood mood) => ElevatedButton(
-        onPressed: () => saveMood(mood),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: mood.moodColor,
-        ),
-        child: Text(mood.string).tr(),
-      );
+  Widget moodButton(Mood mood) {
+    return ElevatedButton(
+      onPressed: () => saveMood(mood),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: mood.moodColor,
+      ),
+      child: Text(mood.string).tr(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Mood> moodValues = List.from(Mood.values);
+    moodValues.remove(Mood.none);
+
+    List<Widget> moods = moodValues.map((e) => moodButton(e)).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -49,7 +56,7 @@ class MoodsWidgetState extends State<MoodsWidget> {
         Center(
           child: const Text("mood", style: TextStyle(fontSize: 25.0)).tr(),
         ),
-        ...Mood.values.map((e) => moodButton(e)).toList()
+        ...moods
       ],
     );
   }

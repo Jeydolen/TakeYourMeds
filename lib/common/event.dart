@@ -1,7 +1,10 @@
+import 'med_event.dart';
+import 'medication.dart';
+
 abstract class Event {
   // Headers for csv export
-  static final List<String> headers = [];
-
+  //static final List<String> headers = [];
+  static final List headers = [...Medication.keys, ...MedEvent.keys];
   Map<String, dynamic> toJson() {
     return {};
   }
