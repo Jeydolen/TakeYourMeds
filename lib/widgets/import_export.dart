@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:take_your_meds/main.dart';
 import 'package:take_your_meds/pages/misc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';

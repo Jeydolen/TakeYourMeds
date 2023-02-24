@@ -49,7 +49,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
+        _focusedDay = selectedDay;
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
     }
@@ -153,7 +153,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
             },
             firstDay: DateTime.utc(2010, 12, 1),
             lastDay: DateTime.utc(2030, 12, 1),
-            focusedDay: DateTime.now(),
+            focusedDay: _focusedDay,
             currentDay: DateTime.now(),
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             onDaySelected: _onDaySelected,

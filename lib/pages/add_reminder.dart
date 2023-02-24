@@ -51,11 +51,13 @@ class AddReminderPageState extends State<AddReminderPage> {
       obj['med_name'] = currMed;
     }
 
-    Navigator.pop(context, obj);
-
     List<dynamic> currAlarms = await Utils.fetchReminders();
     currAlarms.add(obj);
     FileHandler.writeContent("reminders", jsonEncode(currAlarms));
+
+    if (mounted) {
+      Navigator.pop(context, obj);
+    }
   }
 
   Widget dayBtn(Day day) {

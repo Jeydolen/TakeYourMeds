@@ -23,6 +23,13 @@ class MiscPageState extends State<MiscPage> {
     });
   }
 
+  void addReminder() async {
+    var result = await Navigator.pushNamed(context, '/add_alarm');
+    if (result != null) {
+      reloadPage();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Alarms + mood tracker
@@ -31,7 +38,7 @@ class MiscPageState extends State<MiscPage> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/add_alarm'),
+            onPressed: addReminder,
             child: const Icon(Icons.add_alarm),
           ),
         ],
