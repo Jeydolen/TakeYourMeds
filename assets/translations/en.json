@@ -65,5 +65,12 @@
   "med_reminder": "Take your medication reminder",
   "reminder_take": "You should take your {}",
   "summary_contains_mood": "Add mood to summary",
-  "medication": "medication"
+  "medication": "medication",
+  "invalid_format": "This file uses an invalid format",
+  "aborted": "Operation aborted !",
+  "import": "Import",
+  "import_confirmation": "Do you really want to import this file ?",
+  "import_text": "Please note that this operation will replace application internal data",
+  "import_success": "Import successful",
+  "export_data": "Export your data"
 }

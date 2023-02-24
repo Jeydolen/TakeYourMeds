@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:take_your_meds/main.dart';
+import 'package:take_your_meds/pages/misc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -53,7 +55,7 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
     dynamic json = await MediaStore.importItem();
     if (json == null || (json is! Map)) {
       if (mounted) {
-        showSnackBar(const Text("This file use an invalid format"));
+        showSnackBar(const Text("invalid_format").tr());
       }
       return;
     }
@@ -62,7 +64,7 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
     bool doImport = await showWarningDialog();
 
     if (!doImport) {
-      showSnackBar(const Text("Operation aborted !"));
+      showSnackBar(const Text("aborted").tr());
       return;
     }
 
@@ -95,6 +97,11 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
         FileHandler.writeContent("reminders", jsonEncode(validReminders));
       }
     }
+
+    showSnackBar(const Text("import_success").tr());
+    if (mounted) {
+      MiscPage.reloadPage(context);
+    }
   }
 
   Future<bool> showWarningDialog() async {
@@ -102,17 +109,15 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
       context: context,
       builder: (BuildContext _) => StatefulBuilder(
         builder: ((context, setState) => AlertDialog(
-              title:
-                  const Text("Do you really want to import from this file ?"),
-              content: const Text(
-                  "Please note that this operation will replace application internal data"),
+              title: const Text("import_confirmation").tr(),
+              content: const Text("import_text").tr(),
               actions: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const CancelButton(),
                     ElevatedButton(
-                      child: const Text("Import"),
+                      child: const Text("import").tr(),
                       onPressed: () => Navigator.of(context).pop(true),
                     ),
                   ],
@@ -253,8 +258,8 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TextButton(onPressed: import, child: Text("Import data")),
-        TextButton(onPressed: export, child: Text("Export all data")),
+        TextButton(onPressed: import, child: const Text("import").tr()),
+        TextButton(onPressed: export, child: const Text("export_data").tr()),
       ],
     );
   }

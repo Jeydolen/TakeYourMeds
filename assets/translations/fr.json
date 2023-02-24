@@ -65,5 +65,12 @@
   "med_reminder": "Rappel de prise de médicament",
   "reminder_take": "Vous devriez prendre votre {}",
   "summary_contains_mood": "Rajouter le suivi d'humeur dans le résumé",
-  "medication": "médicament"
+  "medication": "médicament",
+  "invalid_format": "Ce fichier utilise un format invalide",
+  "aborted": "Opération annulée !",
+  "import": "Importer",
+  "import_confirmation": "Voulez-vous vraiment importer ce fichier ?",
+  "import_text": "Veuillez noter que cette opération remplacera les données internes de l'application",
+  "import_success": "Import réussi",
+  "export_data": "Exporter vos données"
 }

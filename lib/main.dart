@@ -39,16 +39,28 @@ Future<void> main() async {
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<AppState>()!.restartApp();
+  }
+
   @override
   State<StatefulWidget> createState() => AppState();
 }
 
 class AppState extends State<App> {
   static Widget currentPage = const HomePage();
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      key: key,
       title: 'Take your meds',
       locale: context.locale,
       supportedLocales: context.supportedLocales,
