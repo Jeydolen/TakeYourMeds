@@ -36,6 +36,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
 
   List<MedEvent> _getEventsForDay(DateTime day) {
     List<MedEvent> eventsForDay = [];
+
     for (var event in medEvents) {
       DateTime date = event.datetime;
       if (isSameDay(date, day)) {
@@ -51,11 +52,13 @@ class SummaryCalendarState extends State<SummaryCalendar> {
         _selectedDay = selectedDay;
         _focusedDay = selectedDay;
       });
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+      List<MedEvent> events = _getEventsForDay(selectedDay);
+      events.sort(((b, a) => a.datetime.compareTo(b.datetime)));
+      _selectedEvents.value = events;
     }
   }
 
-  void showEvent(MedEvent value) async {
+  Future<MedEvent?> showEvent(MedEvent value) async {
     MedEvent? result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -67,11 +70,8 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     );
 
     if (result != null) {
-      // Removing old event from list
-      medEvents.remove(value);
-
-      // Add new version of event
-      medEvents.add(result);
+      // Replacing old value with new event
+      medEvents[medEvents.indexOf(value)] = result;
 
       // Update
       _selectedEvents.value = _getEventsForDay(_selectedDay!);
@@ -79,16 +79,18 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       // Saving new list
       widget.removeEvent(result);
     }
+
+    return result;
   }
 
-  void removeEvent(MedEvent value) async {
+  Future<bool?> removeEvent(MedEvent value) async {
     AlertDialog dialog = AlertDialog(
       title: const Text("del_event_title").tr(),
       content: const Text("del_event").tr(args: [
         value.quantity,
         value.dose,
         value.name,
-        value.datetime.toString()
+        DateFormat.yMMMEd().add_Hm().format(value.datetime)
       ]),
       actions: [
         const CancelButton(),
@@ -121,6 +123,21 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       // Saving new list
       widget.removeEvent(value);
     }
+
+    return doRemove;
+  }
+
+  void showSummaryForDay() {
+    Navigator.pushNamed(
+      context,
+      "/expanded_summary",
+      arguments: {
+        "events": _getEventsForDay(_focusedDay),
+        "day": _focusedDay,
+        "show_event": showEvent,
+        "remove_event": removeEvent
+      },
+    );
   }
 
   @override
@@ -192,7 +209,17 @@ class SummaryCalendarState extends State<SummaryCalendar> {
             eventLoader: (day) => _getEventsForDay(day),
           ),
         ),
-        const SizedBox(height: 8.0),
+        SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: TextButton(
+            onPressed: showSummaryForDay,
+            style: TextButton.styleFrom(
+              backgroundColor: Theme.of(context).canvasColor,
+            ),
+            child: const Text("expand_summary").tr(),
+          ),
+        ),
         Expanded(
           child: ValueListenableBuilder<List<MedEvent>>(
             valueListenable: _selectedEvents,

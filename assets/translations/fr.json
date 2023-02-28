@@ -72,5 +72,13 @@
   "import_confirmation": "Voulez-vous vraiment importer ce fichier ?",
   "import_text": "Veuillez noter que cette opération remplacera les données internes de l'application",
   "import_success": "Import réussi",
-  "export_data": "Exporter vos données"
+  "export_data": "Exporter vos données",
+  "expand_summary": "Étendre le résumé pour le jour sélectionné",
+  "expanded_summary": "Résumé étendu pour le {}",
+  "ordered_by": "Ordonné par {}",
+  "meds": "médicaments",
+  "timeAscending": "temps croissant",
+  "timeDescending": "temps décroissant",
+  "nothing_show": "Rien à montrer",
+  "total": "Total"
 }

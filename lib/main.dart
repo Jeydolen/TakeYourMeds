@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:take_your_meds/pages/expanded_summary.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -75,6 +76,7 @@ class AppState extends State<App> {
         '/med_presentation': (BuildContext _) =>
             const TookMedPresentationPage(),
         '/add_alarm': (BuildContext _) => const AddReminderPage(),
+        '/expanded_summary': (BuildContext _) => const ExpandedSummaryPage(),
       },
     );
   }
