@@ -80,5 +80,6 @@
   "timeAscending": "time ascending",
   "timeDescending": "time descending",
   "nothing_show": "Nothing to show",
-  "total": "Total"
+  "total": "Total",
+  "last_med_taken": "Last med taken: {} at {}"
 }

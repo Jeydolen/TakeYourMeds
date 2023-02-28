@@ -39,6 +39,13 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
 
     cMed["dates"] = dates;
     FileHandler.writeContent("meds", jsonEncode(meds));
+
+    Map<String, dynamic> lastTakenMed = {
+      "name": "${cMed["name"]} ${cMed["dose"]} ${cMed["unit"]}",
+      "date": now.toIso8601String()
+    };
+
+    FileHandler.writeContent("last_taken", jsonEncode(lastTakenMed));
   }
 
   @override

@@ -80,5 +80,6 @@
   "timeAscending": "temps croissant",
   "timeDescending": "temps décroissant",
   "nothing_show": "Rien à montrer",
-  "total": "Total"
+  "total": "Total",
+  "last_med_taken": "Dernier médicament pris: {} à {}"
 }
