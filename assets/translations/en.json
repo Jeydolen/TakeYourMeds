@@ -72,5 +72,13 @@
   "import_confirmation": "Do you really want to import this file ?",
   "import_text": "Please note that this operation will replace application internal data",
   "import_success": "Import successful",
-  "export_data": "Export your data"
+  "export_data": "Export your data",
+  "expand_summary": "Expand summary for current day",
+  "expanded_summary": "Expanded summary for {}",
+  "ordered_by": "Ordered by {}",
+  "meds": "meds",
+  "timeAscending": "time ascending",
+  "timeDescending": "time descending",
+  "nothing_show": "Nothing to show",
+  "total": "Total"
 }
