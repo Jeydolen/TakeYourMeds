@@ -92,28 +92,48 @@ class MedsListState extends State<MedsList> {
     }
   }
 
+  void updateFavorite(Map<String, dynamic> element) async {
+    if (!edit) {
+      return;
+    }
+
+    element["favorite"] =
+        element["favorite"] is! bool ? true : !element["favorite"];
+
+    setState(() {
+      json[json.indexOf(element)] = element;
+    });
+
+    FileHandler.writeContent("meds", jsonEncode(json));
+  }
+
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
     return json
         .map((element) => ListTile(
               contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
               key: UniqueKey(),
               title: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      element["color"] is int ? Color(element["color"]) : null,
+                ),
                 onPressed: () => edit ? {} : onClick(element),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // TODO: Better space splitting between categories
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Text(element["name"]),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 10,
-                      child: Text(element["dose"]),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 5,
-                      child: Text(element["unit"]),
-                    ),
+                    Text(element["name"]),
+                    Text(element["dose"]),
+                    Text(element["unit"]).tr(),
+                    edit == true
+                        ? TextButton(
+                            onPressed: () => updateFavorite(element),
+                            child: element["favorite"] == true
+                                ? const Icon(Icons.star)
+                                : const Icon(Icons.star_outline),
+                          )
+                        : element["favorite"] == true
+                            ? const Icon(Icons.star)
+                            : const Icon(Icons.star_outline)
                   ],
                 ),
               ),

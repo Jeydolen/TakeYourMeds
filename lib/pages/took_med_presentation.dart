@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
@@ -41,11 +42,16 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
     FileHandler.writeContent("meds", jsonEncode(meds));
 
     Map<String, dynamic> lastTakenMed = {
-      "name": "${cMed["name"]} ${cMed["dose"]} ${cMed["unit"]}",
+      "name": "${cMed["name"]} ${cMed["dose"]}",
+      "unit": cMed["unit"],
       "date": now.toIso8601String()
     };
 
     FileHandler.writeContent("last_taken", jsonEncode(lastTakenMed));
+
+    if (cMed["favorite"] == true) {
+      FileHandler.writeContent("last_favorite_taken", jsonEncode(lastTakenMed));
+    }
   }
 
   @override
@@ -60,7 +66,10 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               const SizedBox(height: 20),
               const Text("med_name").tr(args: [json["name"]]),
               const SizedBox(height: 20),
-              const Text("med_dosage").tr(args: [json["dose"], json["unit"]]),
+              const Text("med_dosage").tr(args: [
+                json["dose"],
+                tr(json["unit"]),
+              ]),
               const SizedBox(height: 20),
               const Text("med_notes").tr(args: [
                 (json["notes"] == null || json["notes"].isEmpty)

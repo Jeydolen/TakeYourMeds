@@ -14,32 +14,55 @@ class LastMedTaken extends StatefulWidget {
 
 class LastMedTakenState extends State<LastMedTaken> {
   Widget lastTaken = const SizedBox();
+  Widget lastFavoriteTaken = const SizedBox();
 
   @override
   void initState() {
     super.initState();
-    getLastTaken();
+    initValues();
   }
 
-  void getLastTaken() async {
-    String? lastMedTaken = await FileHandler.readContent("last_taken");
+  void initValues() async {
+    Widget lastTakenWidget = await getLastTaken("last_taken") ?? SizedBox();
+    Widget lastFavoriteWidget =
+        await getLastTaken("last_favorite_taken") ?? SizedBox();
+    setState(() {
+      lastTaken = lastTakenWidget;
+      lastFavoriteTaken = lastFavoriteWidget;
+    });
+  }
+
+  Future<Widget?> getLastTaken(String filename) async {
+    String? lastMedTaken = await FileHandler.readContent(filename);
     if (lastMedTaken == null) {
-      return;
+      return null;
     }
 
     dynamic jsonTaken = jsonDecode(lastMedTaken);
     if (jsonTaken is Map<String, dynamic>) {
-      setState(() {
-        lastTaken = const Text("last_med_taken").tr(args: [
-          jsonTaken["name"],
-          DateFormat.Hm().format(DateTime.parse(jsonTaken["date"]))
-        ]);
-      });
+      return Text(
+        filename,
+        style: const TextStyle(fontSize: 18),
+      ).tr(args: [
+        jsonTaken["name"] + " " + tr(jsonTaken["unit"]),
+        DateFormat.Hm().format(DateTime.parse(jsonTaken["date"]))
+      ]);
     }
+
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return lastTaken;
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: lastTaken,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: lastFavoriteTaken,
+      ),
+    ]);
   }
 }
