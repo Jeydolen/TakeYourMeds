@@ -7,6 +7,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:take_your_meds/common/mediastore.dart';
 import 'package:take_your_meds/common/supported_formats.dart';
 
 import 'package:take_your_meds/common/utils.dart';
@@ -35,18 +36,11 @@ class SummaryPageState extends State<SummaryPage> {
 
   void saveData(String data, String format) async {
     String now = DateTime.now().toString();
-    // We want user to get file easily so putting it in Downloads folder.
-    // We are only supporting Android which path is always
-    // /storage/emulated/0/Download/
-
-    Directory? pDir = await getExternalStorageDirectory();
-    if (pDir == null) {
-      return;
-    }
-
+    Directory? pDir = await getTemporaryDirectory();
     String fullPath = "${pDir.path}/${now}_summary.$format";
-    //FileHandler.saveToPath(fullPath, data);
-    showSnackBar(fullPath);
+
+    FileHandler.saveToPath(fullPath, data);
+    MediaStore.addItem(file: File(fullPath), name: "${now}_summary.$format");
   }
 
   void shareData(String data, String format) async {
@@ -77,10 +71,10 @@ class SummaryPageState extends State<SummaryPage> {
       case SupportedFormats.json:
         {
           // Mood data
-          List<dynamic> json = moodsList.toList();
+          Map<String, dynamic> json = {"moods": moodsList.toList()};
 
           // Medication data
-          json.addAll(eventList.map((e) => e.toJson()).toList());
+          json["meds"] = (eventList.map((e) => e.toJson()).toList());
 
           String data = jsonEncode(json);
           if (!doShare) {
