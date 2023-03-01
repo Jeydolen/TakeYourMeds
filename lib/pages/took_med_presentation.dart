@@ -39,6 +39,18 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
 
     cMed["dates"] = dates;
     FileHandler.writeContent("meds", jsonEncode(meds));
+
+    Map<String, dynamic> lastTakenMed = {
+      "name": "${cMed["name"]} ${cMed["dose"]}",
+      "unit": cMed["unit"],
+      "date": now.toIso8601String()
+    };
+
+    FileHandler.writeContent("last_taken", jsonEncode(lastTakenMed));
+
+    if (cMed["favorite"] == true) {
+      FileHandler.writeContent("last_favorite_taken", jsonEncode(lastTakenMed));
+    }
   }
 
   @override
@@ -53,7 +65,10 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               const SizedBox(height: 20),
               const Text("med_name").tr(args: [json["name"]]),
               const SizedBox(height: 20),
-              const Text("med_dosage").tr(args: [json["dose"], json["unit"]]),
+              const Text("med_dosage").tr(args: [
+                json["dose"],
+                tr(json["unit"]),
+              ]),
               const SizedBox(height: 20),
               const Text("med_notes").tr(args: [
                 (json["notes"] == null || json["notes"].isEmpty)

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:uuid/uuid.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:take_your_meds/common/unit.dart';
 import 'package:take_your_meds/common/utils.dart';
@@ -22,6 +23,7 @@ class AddMedPageState extends State<AddMedPage> {
   String dropdownValue = Unit.values.first.string;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> formData = {};
+  Color? color;
 
   void saveData() async {
     List<dynamic> currMeds = await Utils.fetchMeds();
@@ -34,12 +36,47 @@ class AddMedPageState extends State<AddMedPage> {
       formData["notes"],
       const Uuid().v4(),
     );
-    currMeds.add(med.toJson());
+
+    Map<String, dynamic> medJson = med.toJson();
+    if (mounted && color != null && color != Theme.of(context).canvasColor) {
+      medJson["color"] = color!.value;
+    }
+    currMeds.add(medJson);
 
     // ignore: use_build_context_synchronously
     Navigator.pop(context, currMeds);
 
     FileHandler.writeContent("meds", jsonEncode(currMeds));
+  }
+
+  void changeColor() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Pick a color!'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor:
+                  color ?? Theme.of(context).canvasColor, //default color
+              onColorChanged: (Color color) {
+                setState(() {
+                  this.color = color;
+                });
+              },
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('DONE'),
+              onPressed: () {
+                Navigator.of(context).pop(); //dismiss the color picker
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   List genFormFields() {
@@ -103,6 +140,20 @@ class AddMedPageState extends State<AddMedPage> {
                 child: Column(
                   children: [
                     ...genFormFields(),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        const Text("color").tr(),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: color,
+                          ),
+                          onPressed: changeColor,
+                          child: const SizedBox(),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
