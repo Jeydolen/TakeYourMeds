@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
