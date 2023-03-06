@@ -93,10 +93,6 @@ class MedsListState extends State<MedsList> {
   }
 
   void updateFavorite(Map<String, dynamic> element) async {
-    if (!edit) {
-      return;
-    }
-
     element["favorite"] =
         element["favorite"] is! bool ? true : !element["favorite"];
 
@@ -108,45 +104,50 @@ class MedsListState extends State<MedsList> {
   }
 
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
-    return json
-        .map((element) => ListTile(
-              contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-              key: UniqueKey(),
-              title: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor:
-                      element["color"] is int ? Color(element["color"]) : null,
-                ),
-                onPressed: () => edit ? {} : onClick(element),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(element["name"]),
-                    Text(element["dose"]),
-                    Text(element["unit"]).tr(),
-                    edit == true
-                        ? TextButton(
-                            onPressed: () => updateFavorite(element),
-                            child: element["favorite"] == true
-                                ? const Icon(Icons.star)
-                                : const Icon(Icons.star_outline),
-                          )
-                        : element["favorite"] == true
-                            ? const Icon(Icons.star)
-                            : const Icon(Icons.star_outline)
-                  ],
-                ),
-              ),
-              trailing: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: edit ? Colors.red : null,
-                  padding: const EdgeInsets.all(0),
-                ),
-                child: Icon(edit ? Icons.delete : Icons.drag_handle),
-                onPressed: () => edit ? onClick(element) : {},
-              ),
-            ))
-        .toList();
+    return json.map((element) {
+      Color backgroundColor = element["color"] is int
+          ? Color(element["color"])
+          : Theme.of(context).canvasColor;
+
+      Color foregroundColor =
+          backgroundColor.computeLuminance() > .5 ? Colors.black : Colors.white;
+
+      ButtonStyle btnStyle =
+          TextButton.styleFrom(foregroundColor: foregroundColor);
+
+      return ListTile(
+        tileColor: backgroundColor,
+        contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+        key: UniqueKey(),
+        title: TextButton(
+          style: btnStyle,
+          onPressed: () => edit ? {} : onClick(element),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(element["name"]),
+              Text(element["dose"]),
+              Text(element["unit"]).tr(),
+              TextButton(
+                style: btnStyle,
+                onPressed: () => updateFavorite(element),
+                child: element["favorite"] == true
+                    ? const Icon(Icons.star)
+                    : const Icon(Icons.star_outline),
+              )
+            ],
+          ),
+        ),
+        trailing: TextButton(
+          style: btnStyle,
+          child: Icon(
+            edit ? Icons.delete : Icons.drag_handle,
+            color: foregroundColor,
+          ),
+          onPressed: () => edit ? onClick(element) : {},
+        ),
+      );
+    }).toList();
   }
 
   @override

@@ -48,7 +48,7 @@ class LastMedTakenState extends State<LastMedTaken> {
           style: const TextStyle(fontSize: 18),
         ).tr(args: [
           jsonTaken["name"] + " " + tr(jsonTaken["unit"]),
-          DateFormat.Hm().format(DateTime.parse(jsonTaken["date"]))
+          DateFormat.Hm().add_EEEE().format(DateTime.parse(jsonTaken["date"]))
         ]),
       );
     }
@@ -63,6 +63,7 @@ class LastMedTakenState extends State<LastMedTaken> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: lastTaken,
       ),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: lastFavoriteTaken,
