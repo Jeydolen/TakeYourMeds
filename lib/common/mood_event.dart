@@ -15,16 +15,22 @@ enum Mood {
   });
 
   static String? getStringFromValue(int value) {
-    Mood mood = Mood.values.firstWhere(
-      (element) => element.value == value,
-      orElse: () => Mood.none,
-    );
+    Mood mood = Mood.fromValue(value);
 
     if (mood == Mood.none) {
       return null;
     }
 
     return mood.string;
+  }
+
+  static Mood fromValue(int value) {
+    Mood mood = Mood.values.firstWhere(
+      (element) => element.value == value,
+      orElse: () => Mood.none,
+    );
+
+    return mood;
   }
 
   final String string;

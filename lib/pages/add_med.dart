@@ -55,11 +55,10 @@ class AddMedPageState extends State<AddMedPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Pick a color!'),
           content: SingleChildScrollView(
             child: ColorPicker(
-              pickerColor:
-                  color ?? Theme.of(context).canvasColor, //default color
+              enableAlpha: false,
+              pickerColor: color ?? Theme.of(context).canvasColor,
               onColorChanged: (Color color) {
                 setState(() {
                   this.color = color;
@@ -67,11 +66,11 @@ class AddMedPageState extends State<AddMedPage> {
               },
             ),
           ),
-          actions: <Widget>[
+          actions: [
             ElevatedButton(
-              child: const Text('DONE'),
+              child: const Text("submit").tr(),
               onPressed: () {
-                Navigator.of(context).pop(); //dismiss the color picker
+                Navigator.of(context).pop();
               },
             ),
           ],

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/mood_event.dart';
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/widgets/event_list.dart';
 
 class ExpandedSummaryPage extends StatefulWidget {
@@ -18,7 +20,8 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
   List<Widget> events = [];
   Function? showEvt;
   Function? removeEvt;
-  DateTime day = DateTime.now();
+  late DateTime day;
+  List<dynamic>? moods;
 
   void showEvent(MedEvent event) async {
     if (showEvt != null) {
@@ -42,36 +45,21 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    dynamic events = ModalRoute.of(context)!.settings.arguments;
-    if (events["events"] is List<MedEvent>) {
-      medEvents = events["events"];
-    }
-
-    if (events["day"] is DateTime) {
-      day = events["day"];
-    }
-
-    if (events["show_event"] is Function) {
-      showEvt = events["show_event"];
-    }
-
-    if (events["remove_event"] is Function) {
-      removeEvt = events["remove_event"];
-    }
-
-    // Do not forget to update view
-    populateSummary();
+  Future<void> getMoods() async {
+    var res = await Utils.fetchMoods();
+    setState(() {
+      moods = res;
+    });
   }
 
-  void populateSummary() {
-    Widget body = Center(
-      child: const Text("nothing_show").tr(),
-    );
+  void populateSummary() async {
+    if (moods == null) {
+      await getMoods();
+    }
 
-    if (medEvents.isNotEmpty) {
+    Widget body = Center(child: const Text("nothing_show").tr());
+
+    if (medEvents.isNotEmpty && mounted) {
       List<Map<String, dynamic>> total = [];
       for (MedEvent event in medEvents) {
         int index = total.indexWhere((element) => element["uid"] == event.uid);
@@ -118,6 +106,36 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
         totalWidgets.add(widget);
       }
 
+      List<Widget> moodWidgets = [];
+      for (Map<String, dynamic> el in moods!) {
+        Duration timeDiff = DateTime.parse(el["iso8601_date"]).difference(day);
+        // Getting only moods for current day
+        if (timeDiff.isNegative || timeDiff > const Duration(days: 1)) {
+          continue;
+        }
+        Mood mood = Mood.fromValue(el["mood"]);
+        var widget = Container(
+          margin: const EdgeInsets.symmetric(
+            vertical: 4,
+            horizontal: 12,
+          ),
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            tileColor: mood.moodColor,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(tr(mood.string)),
+                Text(el["time"]),
+              ],
+            ),
+          ),
+        );
+        moodWidgets.add(widget);
+      }
+
       body = ListView(
         children: [
           Padding(
@@ -125,6 +143,13 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
             child: Center(child: const Text("total").tr()),
           ),
           ...totalWidgets,
+          moodWidgets.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Center(child: const Text("mood").tr()),
+                )
+              : const SizedBox(),
+          ...moodWidgets,
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(child: const Text("summary").tr()),
@@ -139,8 +164,48 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
       );
     }
 
+    if (mounted) {
+      setState(() {
+        view = body;
+      });
+    }
+  }
+
+  DateTime dateAtMidnight(DateTime time) {
+    return DateTime(time.year, time.month, time.day);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    dynamic events = ModalRoute.of(context)!.settings.arguments;
+    if (events["events"] is List<MedEvent>) {
+      medEvents = events["events"];
+    }
+
+    if (events["day"] is DateTime) {
+      day = dateAtMidnight(events["day"]);
+      getMoods();
+    }
+
+    if (events["show_event"] is Function) {
+      showEvt = events["show_event"];
+    }
+
+    if (events["remove_event"] is Function) {
+      removeEvt = events["remove_event"];
+    }
+
+    // Do not forget to update view
+    populateSummary();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
     setState(() {
-      view = body;
+      day = dateAtMidnight(DateTime.now());
     });
   }
 

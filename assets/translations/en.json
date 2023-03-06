@@ -32,7 +32,7 @@
   "bad": "Bad",
   "del_reminder_title": "Delete reminder?",
   "del_reminder": "Are you sure you really want to delete this reminder?",
-  "no_reminder": "No reminders created yet.",
+  "no_reminder": "No reminders.",
   "reminders": "Reminders",
   "del_event_title": "Delete event ?",
   "del_event": "Do you really want to delete this event ?\nMedication: {}x{} of {}\nDate: {}",

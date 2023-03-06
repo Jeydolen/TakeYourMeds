@@ -32,7 +32,7 @@
   "bad": "Mauvais",
   "del_reminder_title": "Supprimer le rappel ?",
   "del_reminder": "Êtes-vous sûr de vouloir supprimer ce rappel ?",
-  "no_reminder": "Pas de rappel encore créé.",
+  "no_reminder": "Pas de rappel.",
   "reminders": "Rappels",
   "del_event_title": "Supprimer l'événement ?",
   "del_event": "Voulez vous vraiment supprimer cet événement ?\nMédicament: {}x{} de {}\nDate: {}",
