@@ -23,9 +23,10 @@ class LastMedTakenState extends State<LastMedTaken> {
   }
 
   void initValues() async {
-    Widget lastTakenWidget = await getLastTaken("last_taken") ?? SizedBox();
+    Widget lastTakenWidget =
+        await getLastTaken("last_taken") ?? const SizedBox();
     Widget lastFavoriteWidget =
-        await getLastTaken("last_favorite_taken") ?? SizedBox();
+        await getLastTaken("last_favorite_taken") ?? const SizedBox();
     setState(() {
       lastTaken = lastTakenWidget;
       lastFavoriteTaken = lastFavoriteWidget;
@@ -39,14 +40,17 @@ class LastMedTakenState extends State<LastMedTaken> {
     }
 
     dynamic jsonTaken = jsonDecode(lastMedTaken);
-    if (jsonTaken is Map<String, dynamic>) {
-      return Text(
-        filename,
-        style: const TextStyle(fontSize: 18),
-      ).tr(args: [
-        jsonTaken["name"] + " " + tr(jsonTaken["unit"]),
-        DateFormat.Hm().format(DateTime.parse(jsonTaken["date"]))
-      ]);
+    if (jsonTaken is Map<String, dynamic> && mounted) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width * .8,
+        child: Text(
+          filename,
+          style: const TextStyle(fontSize: 18),
+        ).tr(args: [
+          jsonTaken["name"] + " " + tr(jsonTaken["unit"]),
+          DateFormat.Hm().format(DateTime.parse(jsonTaken["date"]))
+        ]),
+      );
     }
 
     return null;

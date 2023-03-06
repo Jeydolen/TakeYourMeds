@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart' hide NavigationBar;
-import 'package:take_your_meds/pages/misc.dart';
-
-import 'package:take_your_meds/pages/summary.dart';
+import 'package:flutter/material.dart';
 import 'package:take_your_meds/widgets/last_med_taken.dart';
-import 'package:take_your_meds/widgets/navigation_bar.dart';
 import 'package:take_your_meds/widgets/clock_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,41 +10,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static int selectedId = 0;
-  static final List<Widget> _pages = [
-    Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [ClockButton(), LastMedTaken()],
-      ),
-    ),
-    const SummaryPage(),
-    const MiscPage(),
-  ];
+  Key key = UniqueKey();
 
-  void change(int index) {
+  void addMed() async {
+    Navigator.pushNamed(context, '/add_med');
+  }
+
+  void takeMed() {
+    // Rebuild last med taken
     setState(() {
-      selectedId = index;
+      key = UniqueKey();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget? actionButton = selectedId == 0
-        ? ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(15),
-            ),
-            onPressed: () => Navigator.pushNamed(context, '/add_med'),
-            child: const Icon(Icons.add),
-          )
-        : null;
-
     return Scaffold(
-      body: _pages.elementAt(selectedId),
-      bottomNavigationBar: NavigationBar(onClick: change),
-      floatingActionButton: actionButton,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClockButton(takeMed),
+            LastMedTaken(key: key),
+          ],
+        ),
+      ),
+      floatingActionButton: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(15),
+        ),
+        onPressed: addMed,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

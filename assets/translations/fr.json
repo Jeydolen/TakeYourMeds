@@ -81,7 +81,7 @@
   "timeDescending": "temps décroissant",
   "nothing_show": "Rien à montrer",
   "total": "Total",
-  "last_taken": "Dernier médicament pris: {} à {}",
-  "last_favorite_taken": "Dernier médicament important pris: {} à {}",
+  "last_taken": "Dernier médicament: {} à {}",
+  "last_favorite_taken": "Dernier médicament important: {} à {}",
   "color": "Couleur: "
 }

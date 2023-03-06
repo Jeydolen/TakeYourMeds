@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ClockButton extends StatefulWidget {
-  const ClockButton({Key? key}) : super(key: key);
+  const ClockButton(this.takeMed, {Key? key}) : super(key: key);
 
+  final Function takeMed;
   @override
   State<ClockButton> createState() => _ClockButtonState();
 }
@@ -14,6 +15,13 @@ class ClockButton extends StatefulWidget {
 class _ClockButtonState extends State<ClockButton> {
   DateTime _now = DateTime.now();
   late Timer _timer;
+
+  void takeMed() async {
+    await Navigator.pushNamed(context, '/took_med');
+
+    // TODO: Only rebuild when med is taken
+    widget.takeMed();
+  }
 
   void _updateTime() {
     setState(() {
@@ -44,7 +52,7 @@ class _ClockButtonState extends State<ClockButton> {
         textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
         minimumSize: const Size(100, 60),
       ),
-      onPressed: () => Navigator.pushNamed(context, '/took_med'),
+      onPressed: takeMed,
       child: Text(DateFormat.Hms().format(_now)),
     );
   }

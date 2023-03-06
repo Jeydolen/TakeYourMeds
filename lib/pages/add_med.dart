@@ -43,8 +43,9 @@ class AddMedPageState extends State<AddMedPage> {
     }
     currMeds.add(medJson);
 
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context, currMeds);
+    if (mounted) {
+      Navigator.pop(context, currMeds);
+    }
 
     FileHandler.writeContent("meds", jsonEncode(currMeds));
   }

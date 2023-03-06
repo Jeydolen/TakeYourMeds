@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:take_your_meds/app.dart';
 import 'package:take_your_meds/pages/expanded_summary.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -32,23 +33,23 @@ Future<void> main() async {
     EasyLocalization(
       path: 'assets/translations',
       supportedLocales: const [Locale('fr'), Locale('en')],
-      child: const App(),
+      child: const Main(),
     ),
   );
 }
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+class Main extends StatefulWidget {
+  const Main({Key? key}) : super(key: key);
 
   static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<AppState>()!.restartApp();
+    context.findAncestorStateOfType<MainState>()!.restartApp();
   }
 
   @override
-  State<StatefulWidget> createState() => AppState();
+  State<StatefulWidget> createState() => MainState();
 }
 
-class AppState extends State<App> {
+class MainState extends State<Main> {
   static Widget currentPage = const HomePage();
   Key key = UniqueKey();
 
@@ -70,7 +71,7 @@ class AppState extends State<App> {
       darkTheme: darkTheme,
       initialRoute: '/',
       routes: {
-        '/': (BuildContext _) => const HomePage(),
+        '/': (BuildContext _) => const App(),
         '/add_med': (BuildContext _) => const AddMedPage(),
         '/took_med': (BuildContext _) => const TookMedPage(),
         '/med_presentation': (BuildContext _) =>

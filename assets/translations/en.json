@@ -81,7 +81,7 @@
   "timeDescending": "time descending",
   "nothing_show": "Nothing to show",
   "total": "Total",
-  "last_taken": "Last med taken: {} at {}",
-  "last_favorite_taken": "Last important med taken: {} at {}",
+  "last_taken": "Last med: {} at {}",
+  "last_favorite_taken": "Last important med: {} at {}",
   "color": "Color: "
 }
