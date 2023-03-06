@@ -7,7 +7,7 @@ I'm (@Jeydolen) not really experienced with github open source projects so I won
 
 ## Features
 Take your meds currently provide:
-* Addition of medication (could be any product actually even water) with custom notes.
-* Mood tracker (currently showing only when exporting).
+* Addition of medication (could be anything actually even water) with custom notes.
+* Mood tracker (you can view it day per day in your expanded summary).
 * Notifications system to be reminded to take medication.
 * Export and share of data in JSON and CSV.
