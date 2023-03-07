@@ -16,12 +16,28 @@ class ExpandedSummaryPage extends StatefulWidget {
 
 class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
   Widget view = const CircularProgressIndicator();
+  List<dynamic> events = [];
   List<MedEvent> medEvents = [];
-  List<Widget> events = [];
   Function? showEvt;
   Function? removeEvt;
+  Function? getEvtForDay;
   late DateTime day;
   List<dynamic>? moods;
+
+  void gotoDate(DateTime date) {
+    // Recreate page with other day
+    Navigator.pushReplacementNamed(
+      context,
+      "/expanded_summary",
+      arguments: {
+        "day": date,
+        "show_event": showEvt,
+        "remove_event": removeEvt,
+        "get_events_for_day": getEvtForDay,
+        "med_events": medEvents
+      },
+    );
+  }
 
   void showEvent(MedEvent event) async {
     if (showEvt != null) {
@@ -179,14 +195,17 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     dynamic events = ModalRoute.of(context)!.settings.arguments;
-    if (events["events"] is List<MedEvent>) {
-      medEvents = events["events"];
+
+    if (events["get_events_for_day"] is Function) {
+      getEvtForDay = events["get_events_for_day"];
     }
 
     if (events["day"] is DateTime) {
       day = dateAtMidnight(events["day"]);
       getMoods();
     }
+
+    medEvents = getEvtForDay!(day);
 
     if (events["show_event"] is Function) {
       showEvt = events["show_event"];
@@ -209,15 +228,67 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
     });
   }
 
+  String dateToString(DateTime date) {
+    return DateFormat.yMd().format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
-    String dayOfEvents = DateFormat.yMd().format(day);
+    String dayOfEvents = dateToString(day);
+    DateTime dayBefore = day.subtract(const Duration(days: 1));
+    DateTime dayAfter = day.add(const Duration(days: 1));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("expanded_summary").tr(args: [dayOfEvents]),
+    // https://stackoverflow.com/questions/55050463/how-to-detect-swipe-in-flutter
+    return SizedBox.expand(
+      child: GestureDetector(
+        onPanUpdate: (details) {
+          // Swiping in right direction.
+          if (details.delta.dx > 0) {
+            gotoDate(dayBefore);
+          }
+
+          // Swiping in left direction.
+          if (details.delta.dx < 0) {
+            gotoDate(dayAfter);
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("expanded_summary").tr(args: [dayOfEvents]),
+          ),
+          bottomNavigationBar: Container(
+            color: Theme.of(context).canvasColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    gotoDate(dayBefore);
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(Icons.arrow_back),
+                      Text(dateToString(dayBefore)),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    gotoDate(dayAfter);
+                  },
+                  child: Row(
+                    children: [
+                      Text(dateToString(dayAfter)),
+                      const Icon(Icons.arrow_forward)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          body: view,
+        ),
       ),
-      body: view,
     );
   }
 }

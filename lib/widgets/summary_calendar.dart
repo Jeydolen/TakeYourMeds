@@ -132,10 +132,10 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       context,
       "/expanded_summary",
       arguments: {
-        "events": _getEventsForDay(_focusedDay),
         "day": _focusedDay,
         "show_event": showEvent,
-        "remove_event": removeEvent
+        "remove_event": removeEvent,
+        "get_events_for_day": _getEventsForDay
       },
     );
   }
