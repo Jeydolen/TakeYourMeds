@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:take_your_meds/common/medication.dart';
+
 import 'package:take_your_meds/common/utils.dart';
-import 'package:take_your_meds/widgets/delete_button.dart';
+import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/widgets/time_button.dart';
+import 'package:take_your_meds/widgets/delete_button.dart';
 
 class Reminder extends StatefulWidget {
   const Reminder(this.reminder, {super.key});
@@ -21,7 +22,8 @@ class ReminderState extends State<Reminder> {
   late bool recurrent;
   DateTime? time;
   Widget? dropdown;
-  String? currMed;
+  String currMed = "none";
+  List<Medication>? medList;
 
   Map<String, bool> days = {
     "mon": true,
@@ -37,9 +39,14 @@ class ReminderState extends State<Reminder> {
   void initState() {
     super.initState();
 
-    reminderTime = DateTime.parse(widget.reminder["time"]);
-    recurrent = widget.reminder["recurrent"];
-    currMed = widget.reminder["med_name"];
+    Map reminder = widget.reminder;
+    reminderTime = DateTime.parse(reminder["time"]);
+    recurrent = reminder["recurrent"];
+
+    if (reminder["med_uid"] != null) {
+      currMed = widget.reminder["med_uid"];
+    }
+
     generateDropDown();
   }
 
@@ -57,11 +64,11 @@ class ReminderState extends State<Reminder> {
     });
   }
 
-  void changeMed(med) {
+  void changeMed(medUid) {
     setState(() {
-      currMed = med;
+      currMed = medUid;
     });
-    widget.reminder["med_name"] = currMed;
+    widget.reminder["med_uid"] = currMed;
   }
 
   void generateDropDown() async {
@@ -80,12 +87,11 @@ class ReminderState extends State<Reminder> {
       );
     }
 
-    List<DropdownMenuItem> dropDownMeds = medications
-        .map((element) => DropdownMenuItem<String>(
-              value: element.name,
-              child: Text(element.name),
-            ))
-        .toList();
+    setState(() {
+      medList = medications;
+    });
+
+    List<DropdownMenuItem> dropDownMeds = generateDropdownItems(medications);
 
     // Adding default value
     dropDownMeds.add(DropdownMenuItem<String>(
@@ -197,7 +203,6 @@ class ReminderState extends State<Reminder> {
             const SizedBox(height: 10),
             CheckboxListTile(
               title: const Text("recurrent").tr(),
-              activeColor: Theme.of(context).primaryColor,
               value: recurrent,
               onChanged: (value) {
                 setState(() {
@@ -233,7 +238,10 @@ class ReminderState extends State<Reminder> {
 
   @override
   Widget build(BuildContext context) {
-    String medName = widget.reminder["med_name"];
+    String medName = widget.reminder["med_uid"] ??= "none";
+    if (medList != null && medName != "none") {
+      medName = medList!.firstWhere((element) => element.uid == medName).name;
+    }
 
     if (medName == "none") {
       medName = "medication".tr();

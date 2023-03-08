@@ -20,12 +20,33 @@ class ReminderList extends StatefulWidget {
 }
 
 class ReminderListState extends State<ReminderList> {
-  late Future<List<dynamic>> futureAlarms;
+  List<dynamic>? reminders;
+  List<dynamic>? futureAlarms;
 
-  Future<List<dynamic>> getAlarms() async {
+  @override
+  void initState() {
+    super.initState();
+    fetchReminders();
+    getAlarms();
+  }
+
+  Future<void> fetchReminders() async {
     List<dynamic> reminders = await Utils.fetchReminders();
 
-    for (var element in reminders) {
+    if (mounted) {
+      setState(() {
+        this.reminders = reminders;
+      });
+    }
+  }
+
+  Future<void> getAlarms() async {
+    if (reminders == null) {
+      await fetchReminders();
+    }
+    //List<dynamic> reminders = await Utils.fetchReminders();
+
+    for (var element in reminders!) {
       if (element["enabled"]) {
         String? time = element["time"];
         DateTimeComponents? d;
@@ -47,7 +68,7 @@ class ReminderListState extends State<ReminderList> {
       }
     }
 
-    return reminders;
+    //return reminders;
   }
 
   void showNotificationForDay(jsonEl) {
@@ -140,9 +161,14 @@ class ReminderListState extends State<ReminderList> {
   }
 
   void replaceReminder(newVal, element) async {
+    int i = reminders!.indexOf(element);
+    reminders![i] = newVal;
+    await FileHandler.writeContent("reminders", jsonEncode(reminders!));
+    /*
     int i = (await futureAlarms).indexOf(element);
     (await futureAlarms)[i] = newVal;
     await FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
+    */
   }
 
   void showReminder(dynamic element) async {
@@ -163,7 +189,9 @@ class ReminderListState extends State<ReminderList> {
       replaceReminder(result, element);
 
       // Tell ui to rebuild
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -189,136 +217,129 @@ class ReminderListState extends State<ReminderList> {
     }
 
     if (remove) {
-      (await futureAlarms).removeAt((await futureAlarms).indexOf(element));
-      setState(() {});
-      FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
+      reminders!.removeAt(reminders!.indexOf(element));
+
+      if (mounted) {
+        setState(() {});
+      }
+
+      FileHandler.writeContent("reminders", jsonEncode(reminders!));
     }
   }
 
-  List<Widget> generateElements(List<dynamic> json) => json.map(
-        (el) {
-          bool isSwitched = el['enabled'];
-          bool recurrent = el["recurrent"] ??= false;
-          bool isExpired = DateTime.now().isAfter(DateTime.parse(el['time']));
+  List<Widget> generateElements(List<dynamic> json) {
+    return json.map(
+      (el) {
+        bool isSwitched = el['enabled'];
+        bool recurrent = el["recurrent"] ??= false;
 
-          // If alarm is past now then disable
-          if (!recurrent && isExpired) {
-            isSwitched = false;
+        DateTime reminderTime = DateTime.parse(el['time']);
+        bool isExpired = DateTime.now().isAfter(reminderTime);
+
+        // If alarm is past now then disable
+        if (!recurrent && isExpired) {
+          isSwitched = false;
+        }
+
+        List<Widget> dayBtns = [];
+        if (recurrent) {
+          for (MapEntry<String, dynamic> entry in el["days"].entries) {
+            String day = entry.key;
+            bool enabled = entry.value;
+
+            ButtonStyle style = ButtonStyle(
+              padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+              minimumSize: const MaterialStatePropertyAll(Size.zero),
+              fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+              ),
+            );
+
+            Widget t = enabled
+                ? ElevatedButton(
+                    onPressed: () {},
+                    style: style,
+                    child: Text(day.tr()[0]),
+                  )
+                : TextButton(
+                    onPressed: () {},
+                    style: style,
+                    child: Text(day.tr()[0]),
+                  );
+            dayBtns.add(t);
           }
+        }
 
-          List<Widget> b = [];
-          if (recurrent) {
-            for (MapEntry<String, dynamic> entry in el["days"].entries) {
-              String day = entry.key;
-              bool enabled = entry.value;
+        Widget row = SizedBox(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Wrap(children: dayBtns),
+        );
 
-              ButtonStyle style = ButtonStyle(
-                padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-                minimumSize: const MaterialStatePropertyAll(Size.zero),
-                fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
+        return ListTile(
+          contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          key: UniqueKey(),
+          title: TextButton(
+            onPressed: () => showReminder(el),
+            onLongPress: () => deleteReminder(el),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3.6,
+                  child: Text(
+                    DateFormat.Hm().add_EEEE().format(reminderTime),
                   ),
                 ),
-              );
-
-              Widget t = enabled
-                  ? ElevatedButton(
-                      onPressed: () {},
-                      style: style,
-                      child: Text(day.tr()[0]),
-                    )
-                  : TextButton(
-                      onPressed: () {},
-                      style: style,
-                      child: Text(day.tr()[0]),
-                    );
-              b.add(t);
-            }
-          }
-          Widget row = SizedBox(
-            width: MediaQuery.of(context).size.width / 2,
-            child: Wrap(children: b),
-          );
-
-          return ListTile(
-            contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-            key: UniqueKey(),
-            title: TextButton(
-              onPressed: () => showReminder(el),
-              onLongPress: () => deleteReminder(el),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 3.6,
-                    child: Text(
-                      DateFormat.Hm().add_EEEE().format(
-                            DateTime.parse(el['time']),
-                          ),
-                    ),
-                  ),
-                  row,
-                  Switch(
-                    activeColor: Theme.of(context).primaryColor,
-                    value: isSwitched,
-                    onChanged: (_) => switchSave(_, el, isRecurrent: recurrent),
-                  )
-                ],
-              ),
+                row,
+                Switch(
+                  value: isSwitched,
+                  onChanged: (_) => switchSave(_, el, isRecurrent: recurrent),
+                )
+              ],
             ),
-          );
-        },
-      ).toList();
+          ),
+        );
+      },
+    ).toList();
+  }
 
-  Widget listAlarms(json) {
+  Widget listAlarms(List json) {
     List<Widget> els = generateElements(json);
 
     if (els.isEmpty) {
-      return SizedBox(
-        child: const Text("no_reminder").tr(),
-      );
+      return const Text("no_reminder").tr();
     }
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 2.2,
+      // Full 2 recurrent reminder size
+      height: MediaQuery.of(context).size.height / 2.5,
+      width: MediaQuery.of(context).size.width,
       child: ListView(children: els),
     );
   }
 
   @override
-  void initState() {
-    super.initState();
-    futureAlarms = getAlarms();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: futureAlarms,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * .5,
-            child: Column(
-              children: [
-                Center(
-                  child: const Text(
-                    "reminders",
-                    style: TextStyle(fontSize: 25.0),
-                  ).tr(),
-                ),
-                listAlarms(snapshot.data),
-              ],
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
+    if (reminders == null) {
+      return const CircularProgressIndicator();
+    }
 
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator();
-      },
+    return Column(
+      children: [
+        Center(
+          child: const Text(
+            "reminders",
+            style: TextStyle(fontSize: 25.0),
+          ).tr(),
+        ),
+        Wrap(
+          children: [
+            listAlarms(reminders!),
+          ],
+        )
+      ],
     );
   }
 }
