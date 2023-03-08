@@ -158,6 +158,7 @@ class AddReminderPageState extends State<AddReminderPage> {
           ),
           CheckboxListTile(
             title: const Text("recurrent").tr(),
+            activeColor: Theme.of(context).primaryColor,
             value: recurrent,
             onChanged: ((value) {
               setState(() {

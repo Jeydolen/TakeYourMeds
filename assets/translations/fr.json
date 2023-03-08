@@ -83,5 +83,7 @@
   "total": "Total",
   "last_taken": "Dernier médicament: {} à {}",
   "last_favorite_taken": "Dernier médicament important: {} à {}",
-  "color": "Couleur: "
+  "color": "Couleur: ",
+  "reminder_for": "Rappel pour {}",
+  "enabled": "Activé"
 }
