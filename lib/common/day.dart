@@ -1,13 +1,22 @@
 enum Day {
-  monday("mon"),
-  tuesday("tue"),
-  wednesday("wed"),
-  thursday("thu"),
-  friday("fri"),
-  saturday("sat"),
-  sunday("sun");
+  monday("mon", 1),
+  tuesday("tue", 2),
+  wednesday("wed", 3),
+  thursday("thu", 4),
+  friday("fri", 5),
+  saturday("sat", 6),
+  sunday("sun", 7);
 
-  const Day(this.string);
+  const Day(this.string, this.weekDay);
 
+  static Day? fromString(String s) {
+    try {
+      return Day.values.firstWhere((day) => day.string == s);
+    } on Exception catch (_) {
+      return null;
+    }
+  }
+
+  final int weekDay;
   final String string;
 }

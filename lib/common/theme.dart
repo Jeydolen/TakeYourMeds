@@ -7,6 +7,7 @@ ColorScheme colorScheme = const ColorScheme.light(
 );
 
 ThemeData theme = ThemeData(
+  toggleableActiveColor: Colors.blue,
   brightness: Brightness.light,
   primarySwatch: Colors.blue,
   primaryColor: Colors.blue,

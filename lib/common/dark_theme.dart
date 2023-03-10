@@ -7,6 +7,7 @@ ColorScheme colorScheme = const ColorScheme.dark(
 );
 
 ThemeData darkTheme = ThemeData(
+  toggleableActiveColor: Colors.blue,
   brightness: Brightness.dark,
   primarySwatch: Colors.blue,
   primaryColor: Colors.blue,

@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:take_your_meds/app.dart';
-import 'package:take_your_meds/pages/expanded_summary.dart';
+import 'package:take_your_meds/pages/alarm.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import 'package:take_your_meds/app.dart';
 
 import 'package:take_your_meds/common/theme.dart';
 import 'package:take_your_meds/common/dark_theme.dart';
 
-import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
 import 'package:take_your_meds/pages/add_reminder.dart';
+import 'package:take_your_meds/pages/expanded_summary.dart';
 import 'package:take_your_meds/pages/took_med_presentation.dart';
 
 FlutterLocalNotificationsPlugin flnp = FlutterLocalNotificationsPlugin();
@@ -23,12 +24,25 @@ const AndroidInitializationSettings initializationSettingsAndroid =
 const InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
 
+Future onSelectNotification(String? payload) async {
+  await Navigator.push(
+    Main.navKey.currentState!.context,
+    MaterialPageRoute(builder: (_) => Alarm(payload: payload)),
+  );
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await flnp.initialize(initializationSettings);
+  await flnp.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: (details) {
+      onSelectNotification(details.payload);
+    },
+  );
   await EasyLocalization.ensureInitialized();
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Europe/Brussels'));
+
   runApp(
     EasyLocalization(
       path: 'assets/translations',
@@ -38,30 +52,15 @@ Future<void> main() async {
   );
 }
 
-class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  static final navKey = GlobalKey<NavigatorState>();
 
-  static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<MainState>()!.restartApp();
-  }
-
-  @override
-  State<StatefulWidget> createState() => MainState();
-}
-
-class MainState extends State<Main> {
-  static Widget currentPage = const HomePage();
-  Key key = UniqueKey();
-
-  void restartApp() {
-    setState(() {
-      key = UniqueKey();
-    });
-  }
+  const Main({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navKey,
       key: key,
       title: 'Take your meds',
       locale: context.locale,
@@ -71,13 +70,13 @@ class MainState extends State<Main> {
       darkTheme: darkTheme,
       initialRoute: '/',
       routes: {
-        '/': (BuildContext _) => const App(),
-        '/add_med': (BuildContext _) => const AddMedPage(),
-        '/took_med': (BuildContext _) => const TookMedPage(),
-        '/med_presentation': (BuildContext _) =>
-            const TookMedPresentationPage(),
-        '/add_alarm': (BuildContext _) => const AddReminderPage(),
-        '/expanded_summary': (BuildContext _) => const ExpandedSummaryPage(),
+        '/': (_) => const App(),
+        '/add_med': (_) => const AddMedPage(),
+        '/took_med': (_) => const TookMedPage(),
+        '/med_presentation': (_) => const TookMedPresentationPage(),
+        '/add_alarm': (_) => const AddReminderPage(),
+        '/expanded_summary': (_) => const ExpandedSummaryPage(),
+        '/alarm': (_) => const Alarm(),
       },
     );
   }

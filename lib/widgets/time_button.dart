@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class TimeButton extends StatefulWidget {
-  const TimeButton({super.key, required this.onPressed});
+  const TimeButton({super.key, required this.onPressed, this.initialTime});
 
   final Function onPressed;
+  final DateTime? initialTime;
 
   @override
   State<StatefulWidget> createState() => TimeButtonState();
@@ -13,6 +14,15 @@ class TimeButton extends StatefulWidget {
 
 class TimeButtonState extends State<TimeButton> {
   DateTime now = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.initialTime != null) {
+      now = widget.initialTime!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

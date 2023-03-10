@@ -83,5 +83,10 @@
   "total": "Total",
   "last_taken": "Dernier médicament: {} à {}",
   "last_favorite_taken": "Dernier médicament important: {} à {}",
-  "color": "Couleur: "
+  "color": "Couleur: ",
+  "reminder_for": "Rappel pour {}",
+  "enabled": "Activé",
+  "i_understand": "Je comprends",
+  "tap_to_add_to_summary": "Tappez pour ajouter au résumé",
+  "no_empty_value": "La valeur ne peut pas être vide!"
 }

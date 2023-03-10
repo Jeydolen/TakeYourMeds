@@ -1,15 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:take_your_meds/widgets/cancel_button.dart';
+import 'package:flutter/material.dart' hide Notification;
 
-import 'package:timezone/timezone.dart' as tz;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'package:take_your_meds/main.dart';
+import 'package:take_your_meds/common/day.dart';
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/common/notification.dart';
+import 'package:take_your_meds/common/notification_handler.dart';
+
+import 'package:take_your_meds/widgets/reminder.dart';
+import 'package:take_your_meds/widgets/cancel_button.dart';
 
 class ReminderList extends StatefulWidget {
   const ReminderList({super.key});
@@ -19,133 +21,155 @@ class ReminderList extends StatefulWidget {
 }
 
 class ReminderListState extends State<ReminderList> {
-  late Future<List<dynamic>> futureAlarms;
+  List<dynamic>? reminders;
+  List<dynamic>? futureAlarms;
 
-  Future<List<dynamic>> getAlarms() async {
+  @override
+  void initState() {
+    super.initState();
+    fetchReminders();
+    getAlarms();
+  }
+
+  Future<void> fetchReminders() async {
     List<dynamic> reminders = await Utils.fetchReminders();
 
-    for (var element in reminders) {
-      if (element["enabled"]) {
-        String? time = element["time"];
-        DateTimeComponents? d;
-
-        if (element["recurrent"]) {
-          if (element["all_days"] != null && element["all_days"]) {
-            d = DateTimeComponents.time;
-          } else {
-            showNotificationForDay(element);
-          }
-        }
-
-        showNotification(
-          "med_reminder".tr(),
-          "reminder_take".tr(args: [element["med_name"] ??= "medication".tr()]),
-          time,
-          d,
-        );
-      }
-    }
-
-    return reminders;
-  }
-
-  void showNotificationForDay(jsonEl) {
-    int weekday = 0;
-    // Source: https://github.com/ThangVuNguyenViet/clock_app/blob/e87d2548a5890560d07b8d5f89bd1a0119d3707d/lib/providers/alarm_provider.dart
-    for (bool day in jsonEl["days"].values) {
-      weekday += 1;
-
-      if (day) {
-        DateTimeComponents d = DateTimeComponents.dayOfWeekAndTime;
-        DateTime dt = DateTime.parse(jsonEl["time"]);
-        String newTime = tz.TZDateTime.local(
-          dt.year,
-          dt.month,
-          dt.day - dt.weekday + weekday,
-          dt.hour,
-          dt.minute,
-        ).toIso8601String();
-
-        showNotification(
-          "med_reminder".tr(),
-          "reminder_take".tr(args: [jsonEl["med_name"] ??= "medication".tr()]),
-          newTime,
-          d,
-        );
-      }
+    if (mounted) {
+      setState(() {
+        this.reminders = reminders;
+      });
     }
   }
 
-  void showNotification(
-    String title,
-    String body,
-    String? time,
-    DateTimeComponents? d,
-  ) {
-    time ??= DateTime.now().toIso8601String();
-
-    try {
-      DateTime.parse(time);
-    } on Exception catch (_) {
-      return;
+  Future<void> getAlarms() async {
+    if (reminders == null) {
+      await fetchReminders();
     }
 
-    DateTime dtn = DateTime.now().subtract(const Duration(seconds: 1));
-    DateTime pdt = DateTime.parse(time);
-    if (dtn.isAfter(pdt) && d == null) {
-      return;
+    for (var reminder in reminders!) {
+      if (reminder["enabled"] == false) {
+        continue;
+      }
+
+      await sheduleReminder(reminder);
+    }
+  }
+
+  Future<bool> sheduleReminder(reminder) async {
+    String? timeString = reminder["time"];
+    DateTime time =
+        timeString != null ? DateTime.parse(timeString) : DateTime.now();
+
+    String? medName;
+    if (reminder["med_uid"] != null) {
+      List<dynamic> medsJson = await Utils.fetchMeds();
+      dynamic med = medsJson.firstWhere(
+        (med) => med["uid"] == reminder["med_uid"],
+        orElse: () => null,
+      );
+
+      if (med != null) {
+        medName = "${med["name"]} ${med["dose"]} x ${med["unit"]}";
+      }
     }
 
-    const AndroidNotificationDetails aND = AndroidNotificationDetails(
-      'com.jeydolen.take_your_meds',
-      'User reminder',
+    String title = "med_reminder".tr();
+    String body = "reminder_take".tr(args: [medName ??= "medication".tr()]);
+
+    if (medName != "medication".tr()) {
+      body += "\n ${"tap_to_add_to_summary".tr()}";
+    }
+
+    // Includes false and null
+    if (reminder["recurrent"] != true) {
+      Notification notification = Notification(
+        title,
+        body,
+        time: time,
+        payload: reminder["med_uid"],
+      );
+      NotificationHandler.showNotification(notification);
+      return false;
+    }
+
+    List<Day> days = [];
+
+    // Construct day array
+    Map<String, dynamic> reminderDays = reminder["days"];
+
+    for (MapEntry entryDay in reminderDays.entries) {
+      if (entryDay.value == true) {
+        days.add(Day.fromString(entryDay.key)!);
+      }
+    }
+
+    Notification notification = Notification(
+      title,
+      body,
+      time: time,
+      days: days,
+      payload: reminder["med_uid"],
     );
-    const NotificationDetails nD = NotificationDetails(android: aND);
 
-    flnp.zonedSchedule(0, title, body,
-        tz.TZDateTime.parse(tz.local, time).add(const Duration(seconds: 1)), nD,
-        androidAllowWhileIdle: false,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: d);
+    NotificationHandler.showPeriodicNotification(notification);
+    return true;
   }
 
-  void switchSave(newVal, element) async {
-    int i = (await futureAlarms).indexOf(element);
-
+  void switchSave(newVal, element, {bool? isRecurrent}) {
     setState(() {
       element["enabled"] = newVal;
     });
 
-    (await futureAlarms)[i] = element;
-    await FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
+    if (isRecurrent == false) {
+      DateTime now = DateTime.now();
+      DateTime time = DateTime.parse(element["time"]);
+      DateTime updatedT = DateTime(
+        now.year,
+        now.month,
+        now.day + 1,
+        time.hour,
+        time.minute,
+        time.second,
+      );
+
+      element["time"] = updatedT.toIso8601String();
+    }
+
+    replaceReminder(element, element);
   }
 
-  void updateReminder(newVal, element) async {
-    int i = (await futureAlarms).indexOf(element);
+  void replaceReminder(newVal, element) async {
+    int i = reminders!.indexOf(element);
+    reminders![i] = newVal;
 
-    setState(() {
-      element['enabled'] = newVal;
-    });
+    // Reschedule reminder
+    sheduleReminder(newVal);
 
-    DateTime now = DateTime.now();
-    DateTime time = DateTime.parse(element["time"]);
-    DateTime updatedT = DateTime(
-      now.year,
-      now.month,
-      now.day + 1,
-      time.hour,
-      time.minute,
-      time.second,
+    await FileHandler.writeContent("reminders", jsonEncode(reminders!));
+  }
+
+  void showReminder(dynamic element) async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => Reminder(element)),
     );
 
-    element["time"] = updatedT.toIso8601String();
+    if (result == true) {
+      deleteReminder(element);
+    }
 
-    (await futureAlarms)[i] = element;
-    await FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
+    if (result is Map) {
+      // Update reminder
+      replaceReminder(result, element);
+
+      // Tell ui to rebuild
+      if (mounted) {
+        setState(() {});
+      }
+    }
   }
 
-  void deleteReminder(element) async {
+  void deleteReminder(dynamic element) async {
     bool? remove = await showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -167,138 +191,125 @@ class ReminderListState extends State<ReminderList> {
     }
 
     if (remove) {
-      (await futureAlarms).removeAt((await futureAlarms).indexOf(element));
-      setState(() {});
-      FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
+      reminders!.removeAt(reminders!.indexOf(element));
+
+      if (mounted) {
+        setState(() {});
+      }
+
+      await FileHandler.writeContent("reminders", jsonEncode(reminders!));
     }
   }
 
-  List<Widget> generateElements(List<dynamic> json) => json.map(
-        (el) {
-          bool isSwitched = el['enabled'];
-          bool recurrent = el["recurrent"] ??= false;
-          bool isExpired = DateTime.now().isAfter(DateTime.parse(el['time']));
+  List<Widget> generateElements(List<dynamic> json) {
+    return json.map(
+      (el) {
+        bool isSwitched = el['enabled'];
+        bool recurrent = el["recurrent"] ??= false;
 
-          // If alarm is past now then disable
-          if (!recurrent && isExpired) {
-            isSwitched = false;
-          }
+        DateTime reminderTime = DateTime.parse(el['time']);
+        bool isExpired = DateTime.now().isAfter(reminderTime);
 
-          List<Widget> b = [];
-          if (recurrent) {
-            for (MapEntry<String, dynamic> entry in el["days"].entries) {
-              String day = entry.key;
-              bool enabled = entry.value;
+        // If alarm is past now then disable
+        if (!recurrent && isExpired) {
+          isSwitched = false;
+        }
 
-              ButtonStyle style = ButtonStyle(
-                padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-                minimumSize: const MaterialStatePropertyAll(Size.zero),
-                fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
+        List<Widget> dayBtns = [];
+        if (recurrent) {
+          for (MapEntry<String, dynamic> entry in el["days"].entries) {
+            String day = entry.key;
+            bool enabled = entry.value;
+
+            ButtonStyle style = ButtonStyle(
+              padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+              minimumSize: const MaterialStatePropertyAll(Size.zero),
+              fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
                 ),
-              );
-
-              Widget t = enabled
-                  ? ElevatedButton(
-                      onPressed: () {},
-                      style: style,
-                      child: Text(day.tr()[0]),
-                    )
-                  : TextButton(
-                      onPressed: () {},
-                      style: style,
-                      child: Text(day.tr()[0]),
-                    );
-              b.add(t);
-            }
-          }
-          Widget row = SizedBox(
-            width: MediaQuery.of(context).size.width / 2,
-            child: Wrap(children: b),
-          );
-
-          return ListTile(
-            contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-            key: UniqueKey(),
-            title: TextButton(
-              onPressed: () {},
-              onLongPress: () => deleteReminder(el),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 3.6,
-                    child: Text(
-                      DateFormat.Hm().add_EEEE().format(
-                            DateTime.parse(el['time']),
-                          ),
-                    ),
-                  ),
-                  row,
-                  Switch(
-                    activeColor: Theme.of(context).primaryColor,
-                    value: isSwitched,
-                    onChanged: recurrent
-                        ? (_) => switchSave(_, el)
-                        : (_) => updateReminder(_, el),
-                  )
-                ],
               ),
-            ),
-          );
-        },
-      ).toList();
+            );
 
-  Widget listAlarms(json) {
+            Widget t = enabled
+                ? ElevatedButton(
+                    onPressed: () {},
+                    style: style,
+                    child: Text(day.tr()[0]),
+                  )
+                : TextButton(
+                    onPressed: () {},
+                    style: style,
+                    child: Text(day.tr()[0]),
+                  );
+            dayBtns.add(t);
+          }
+        }
+
+        Widget row = SizedBox(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Wrap(children: dayBtns),
+        );
+
+        DateFormat dateFormat = DateFormat.Hm();
+        if (!recurrent) {
+          dateFormat.add_EEEE();
+        }
+
+        return ListTile(
+          contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          key: UniqueKey(),
+          title: TextButton(
+            onPressed: () => showReminder(el),
+            onLongPress: () => deleteReminder(el),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3.6,
+                  child: Text(dateFormat.format(reminderTime)),
+                ),
+                row,
+                Switch(
+                  value: isSwitched,
+                  onChanged: (_) => switchSave(_, el, isRecurrent: recurrent),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    ).toList();
+  }
+
+  Widget listAlarms(List json) {
     List<Widget> els = generateElements(json);
 
     if (els.isEmpty) {
-      return SizedBox(
-        child: const Text("no_reminder").tr(),
-      );
+      return const Text("no_reminder").tr();
     }
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 2.2,
+      // Full 2 recurrent reminder size
+      height: MediaQuery.of(context).size.height / 2.5,
+      width: MediaQuery.of(context).size.width,
       child: ListView(children: els),
     );
   }
 
   @override
-  void initState() {
-    super.initState();
-    futureAlarms = getAlarms();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: futureAlarms,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * .5,
-            child: Column(
-              children: [
-                Center(
-                  child: const Text(
-                    "reminders",
-                    style: TextStyle(fontSize: 25.0),
-                  ).tr(),
-                ),
-                listAlarms(snapshot.data),
-              ],
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
+    if (reminders == null) {
+      return const CircularProgressIndicator();
+    }
 
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator();
-      },
+    return Column(
+      children: [
+        Center(
+          child: const Text("reminders", style: TextStyle(fontSize: 25.0)).tr(),
+        ),
+        Wrap(children: [listAlarms(reminders!)])
+      ],
     );
   }
 }

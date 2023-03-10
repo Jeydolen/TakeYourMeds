@@ -20,8 +20,9 @@ class AddReminderPage extends StatefulWidget {
 class AddReminderPageState extends State<AddReminderPage> {
   Widget dropdown = const CircularProgressIndicator();
   DateTime now = DateTime.now();
-  bool recurrent = false;
+  List<dynamic>? reminders;
   String currMed = 'none';
+  bool recurrent = false;
   Map<String, bool> days = {
     "mon": true,
     "tue": false,
@@ -31,6 +32,15 @@ class AddReminderPageState extends State<AddReminderPage> {
     "sat": false,
     "sun": false,
   };
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchReminders();
+    // Load dropdown
+    generateDropDown();
+  }
 
   void saveData() async {
     Map<String, dynamic> obj = {
@@ -48,12 +58,14 @@ class AddReminderPageState extends State<AddReminderPage> {
     }
 
     if (currMed != 'none') {
-      obj['med_name'] = currMed;
+      obj['med_uid'] = currMed;
     }
 
-    List<dynamic> currAlarms = await Utils.fetchReminders();
-    currAlarms.add(obj);
-    FileHandler.writeContent("reminders", jsonEncode(currAlarms));
+    if (reminders == null) {
+      await fetchReminders();
+    }
+    reminders!.add(obj);
+    await FileHandler.writeContent("reminders", jsonEncode(reminders));
 
     if (mounted) {
       Navigator.pop(context, obj);
@@ -113,12 +125,7 @@ class AddReminderPageState extends State<AddReminderPage> {
       );
     }
 
-    List<DropdownMenuItem> dropDownMeds = medications
-        .map((element) => DropdownMenuItem<String>(
-              value: element.name,
-              child: Text(element.name),
-            ))
-        .toList();
+    List<DropdownMenuItem> dropDownMeds = generateDropdownItems(medications);
 
     // Adding default value
     dropDownMeds.add(DropdownMenuItem<String>(
@@ -135,12 +142,11 @@ class AddReminderPageState extends State<AddReminderPage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Load dropdown
-    generateDropDown();
+  Future<void> fetchReminders() async {
+    List<dynamic> reminders = await Utils.fetchReminders();
+    setState(() {
+      this.reminders = reminders;
+    });
   }
 
   @override
@@ -159,11 +165,11 @@ class AddReminderPageState extends State<AddReminderPage> {
           CheckboxListTile(
             title: const Text("recurrent").tr(),
             value: recurrent,
-            onChanged: ((value) {
+            onChanged: (value) {
               setState(() {
                 recurrent = !recurrent;
               });
-            }),
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -175,12 +181,10 @@ class AddReminderPageState extends State<AddReminderPage> {
                   children: Day.values.map((e) => dayBtn(e)).toList(),
                 )
               : const SizedBox(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: saveData,
-              child: const Text("submit").tr(),
-            ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: saveData,
+            child: const Text("submit").tr(),
           ),
         ],
       ),
