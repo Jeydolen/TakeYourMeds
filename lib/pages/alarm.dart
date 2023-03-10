@@ -88,7 +88,7 @@ class AlarmState extends State<Alarm> {
       ElevatedButton(
         onPressed: leavePage,
         child: const Text("i_understand").tr(),
-      )
+      ),
     ];
 
     if (med != null) {

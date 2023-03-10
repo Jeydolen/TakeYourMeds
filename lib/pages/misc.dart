@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:take_your_meds/widgets/mood.dart';
 import 'package:take_your_meds/widgets/import_export.dart';
-import 'package:take_your_meds/widgets/reminder_list.dart';
 
 class MiscPage extends StatefulWidget {
   const MiscPage({Key? key}) : super(key: key);
@@ -24,29 +24,16 @@ class MiscPageState extends State<MiscPage> {
     });
   }
 
-  void addReminder() async {
-    var result = await Navigator.pushNamed(context, '/add_alarm');
-    if (result != null) {
-      reloadPage();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // Alarms + mood tracker
     return Scaffold(
       key: key,
       appBar: AppBar(
-        actions: [
-          ElevatedButton(
-            onPressed: addReminder,
-            child: const Icon(Icons.add_alarm),
-          ),
-        ],
+        title: const Text("misc").tr(),
       ),
       body: ListView(
         children: const [
-          ReminderList(),
           MoodsWidget(),
           ImportExportWidget(),
         ],

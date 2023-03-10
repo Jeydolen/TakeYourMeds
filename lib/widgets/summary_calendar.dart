@@ -52,6 +52,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
         _selectedDay = selectedDay;
         _focusedDay = selectedDay;
       });
+
       List<MedEvent> events = _getEventsForDay(selectedDay);
       events.sort(((b, a) => a.datetime.compareTo(b.datetime)));
       _selectedEvents.value = events;
@@ -62,7 +63,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     MedEvent? result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => SummaryPresentationPage(
+        builder: (_) => SummaryPresentationPage(
           json: widget.json,
           event: value,
         ),
@@ -105,7 +106,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     // Show confirmation dialog
     bool? doRemove = await showDialog<bool>(
       context: context,
-      builder: (BuildContext _) => dialog,
+      builder: (_) => dialog,
     );
 
     if (doRemove == true) {
@@ -114,11 +115,6 @@ class SummaryCalendarState extends State<SummaryCalendar> {
 
       // Telling listener to update
       _selectedEvents.value = _getEventsForDay(_selectedDay!);
-
-      // Workaround to rebuild calendar
-      setState(() {
-        _calendarFormat = _calendarFormat;
-      });
 
       // Saving new list
       widget.removeEvent(value);
@@ -181,9 +177,6 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                 _calendarFormat = format;
               });
             },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
             calendarStyle: CalendarStyle(
               markersMaxCount: 5,
               todayDecoration: BoxDecoration(
@@ -224,41 +217,41 @@ class SummaryCalendarState extends State<SummaryCalendar> {
           child: ValueListenableBuilder<List<MedEvent>>(
             valueListenable: _selectedEvents,
             builder: (context, value, _) {
-              return ListView.builder(
-                itemCount: value.length,
-                itemBuilder: (context, index) {
-                  MedEvent event = value[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 12,
+              List<Widget> events = [];
+
+              for (var event in value) {
+                events.add(Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 12,
+                  ),
+                  child: Theme(
+                    data: ThemeData(
+                      highlightColor: const Color(0xFFFF0000).withOpacity(.5),
                     ),
-                    child: Theme(
-                      data: ThemeData(
-                        highlightColor: const Color(0xFFFF0000).withOpacity(.5),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        tileColor: Theme.of(context).backgroundColor,
-                        onTap: () => showEvent(event),
-                        onLongPress: () => removeEvent(event),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(event.name),
-                            Text(
-                              '${event.quantity}x ${event.dose} ${event.unit}',
-                            ),
-                            Text(event.time),
-                          ],
-                        ),
+                      tileColor: Theme.of(context).backgroundColor,
+                      onTap: () => showEvent(event),
+                      onLongPress: () => removeEvent(event),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(event.name),
+                          Text(
+                            '${event.quantity}x ${event.dose} ${event.unit}',
+                          ),
+                          Text(event.time),
+                        ],
                       ),
                     ),
-                  );
-                },
-              );
+                  ),
+                ));
+              }
+
+              return ListView(children: events);
             },
           ),
         ),

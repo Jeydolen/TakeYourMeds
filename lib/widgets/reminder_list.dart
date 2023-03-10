@@ -202,62 +202,69 @@ class ReminderListState extends State<ReminderList> {
   }
 
   List<Widget> generateElements(List<dynamic> json) {
-    return json.map(
-      (el) {
-        bool isSwitched = el['enabled'];
-        bool recurrent = el["recurrent"] ??= false;
+    List<Widget> elements = [];
+    elements.add(
+      Center(
+        child: const Text("reminders", style: TextStyle(fontSize: 25.0)).tr(),
+      ),
+    );
 
-        DateTime reminderTime = DateTime.parse(el['time']);
-        bool isExpired = DateTime.now().isAfter(reminderTime);
+    for (var el in json) {
+      bool isSwitched = el['enabled'];
+      bool recurrent = el["recurrent"] ??= false;
 
-        // If alarm is past now then disable
-        if (!recurrent && isExpired) {
-          isSwitched = false;
-        }
+      DateTime reminderTime = DateTime.parse(el['time']);
+      bool isExpired = DateTime.now().isAfter(reminderTime);
 
-        List<Widget> dayBtns = [];
-        if (recurrent) {
-          for (MapEntry<String, dynamic> entry in el["days"].entries) {
-            String day = entry.key;
-            bool enabled = entry.value;
+      // If alarm is past now then disable
+      if (!recurrent && isExpired) {
+        isSwitched = false;
+      }
 
-            ButtonStyle style = ButtonStyle(
-              padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-              minimumSize: const MaterialStatePropertyAll(Size.zero),
-              fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
+      List<Widget> dayBtns = [];
+      if (recurrent) {
+        for (MapEntry<String, dynamic> entry in el["days"].entries) {
+          String day = entry.key;
+          bool enabled = entry.value;
+
+          ButtonStyle style = ButtonStyle(
+            padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+            minimumSize: const MaterialStatePropertyAll(Size.zero),
+            fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
               ),
-            );
+            ),
+          );
 
-            Widget t = enabled
-                ? ElevatedButton(
-                    onPressed: () {},
-                    style: style,
-                    child: Text(day.tr()[0]),
-                  )
-                : TextButton(
-                    onPressed: () {},
-                    style: style,
-                    child: Text(day.tr()[0]),
-                  );
-            dayBtns.add(t);
-          }
+          Widget t = enabled
+              ? ElevatedButton(
+                  onPressed: () {},
+                  style: style,
+                  child: Text(day.tr()[0]),
+                )
+              : TextButton(
+                  onPressed: () {},
+                  style: style,
+                  child: Text(day.tr()[0]),
+                );
+          dayBtns.add(t);
         }
+      }
 
-        Widget row = SizedBox(
-          width: MediaQuery.of(context).size.width / 2,
-          child: Wrap(children: dayBtns),
-        );
+      Widget row = SizedBox(
+        width: MediaQuery.of(context).size.width / 2,
+        child: Wrap(children: dayBtns),
+      );
 
-        DateFormat dateFormat = DateFormat.Hm();
-        if (!recurrent) {
-          dateFormat.add_EEEE();
-        }
+      DateFormat dateFormat = DateFormat.Hm();
+      if (!recurrent) {
+        dateFormat.add_EEEE();
+      }
 
-        return ListTile(
+      elements.add(
+        ListTile(
           contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
           key: UniqueKey(),
           title: TextButton(
@@ -277,24 +284,15 @@ class ReminderListState extends State<ReminderList> {
               ],
             ),
           ),
-        );
-      },
-    ).toList();
-  }
-
-  Widget listAlarms(List json) {
-    List<Widget> els = generateElements(json);
-
-    if (els.isEmpty) {
-      return const Text("no_reminder").tr();
+        ),
+      );
     }
 
-    return SizedBox(
-      // Full 2 recurrent reminder size
-      height: MediaQuery.of(context).size.height / 2.5,
-      width: MediaQuery.of(context).size.width,
-      child: ListView(children: els),
-    );
+    if (elements.length == 1) {
+      elements.add(Center(child: const Text("no_reminder").tr()));
+    }
+
+    return elements;
   }
 
   @override
@@ -303,13 +301,6 @@ class ReminderListState extends State<ReminderList> {
       return const CircularProgressIndicator();
     }
 
-    return Column(
-      children: [
-        Center(
-          child: const Text("reminders", style: TextStyle(fontSize: 25.0)).tr(),
-        ),
-        Wrap(children: [listAlarms(reminders!)])
-      ],
-    );
+    return ListView(children: generateElements(reminders!));
   }
 }

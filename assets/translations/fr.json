@@ -88,5 +88,6 @@
   "enabled": "Activé",
   "i_understand": "Je comprends",
   "tap_to_add_to_summary": "Tappez pour ajouter au résumé",
-  "no_empty_value": "La valeur ne peut pas être vide!"
+  "no_empty_value": "La valeur ne peut pas être vide!",
+  "misc": "Divers"
 }

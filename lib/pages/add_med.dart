@@ -134,43 +134,44 @@ class AddMedPageState extends State<AddMedPage> {
       body: ListView(
         children: [
           Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    ...genFormFields(),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        const Text("color").tr(),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: color,
-                          ),
-                          onPressed: changeColor,
-                          child: const SizedBox(),
-                        )
-                      ],
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  ...genFormFields(),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      const Text("color").tr(),
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: color,
+                        ),
+                        onPressed: changeColor,
+                        child: const SizedBox(),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Validate will return true if the form is valid, or false if
+                        // the form is invalid.
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          saveData();
+                        }
+                      },
+                      child: const Text("submit").tr(),
                     ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Validate will return true if the form is valid, or false if
-                          // the form is invalid.
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            saveData();
-                          }
-                        },
-                        child: const Text("submit").tr(),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

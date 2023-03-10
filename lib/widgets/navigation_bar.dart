@@ -27,6 +27,7 @@ class NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home),
@@ -35,6 +36,10 @@ class NavigationBarState extends State<NavigationBar> {
         BottomNavigationBarItem(
           icon: const Icon(Icons.preview),
           label: "summary".tr(),
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.alarm),
+          label: "reminders".tr(),
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.miscellaneous_services),

@@ -6,15 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:take_your_meds/common/mediastore.dart';
-import 'package:take_your_meds/common/supported_formats.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/mediastore.dart';
 import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/export_dialog.dart';
+import 'package:take_your_meds/common/supported_formats.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -28,11 +27,6 @@ class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
   late List<dynamic> json;
   bool addMoods = true;
-
-  void showSnackBar(String path) {
-    final snack = SnackBar(content: const Text("file_saved").tr(args: [path]));
-    ScaffoldMessenger.of(context).showSnackBar(snack);
-  }
 
   void saveData(String data, String format) async {
     String now = DateTime.now().toString();
@@ -135,8 +129,8 @@ class SummaryPageState extends State<SummaryPage> {
   void showExportDialog(bool doShare) async {
     int? doExport = await showDialog<int>(
       context: context,
-      builder: (BuildContext _) => StatefulBuilder(
-        builder: ((context, setState) => ExportDialog(
+      builder: (_) => StatefulBuilder(
+        builder: ((__, ___) => ExportDialog(
               doShare: doShare,
               changeMoodExport: changeMoodExport,
             )),

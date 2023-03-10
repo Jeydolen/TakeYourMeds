@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:take_your_meds/main.dart';
 import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/misc.dart';
+import 'package:take_your_meds/pages/reminders.dart';
 
 import 'package:take_your_meds/pages/summary.dart';
 import 'package:take_your_meds/widgets/navigation_bar.dart';
@@ -18,6 +19,7 @@ class _AppState extends State<App> {
   static final List<Widget> _pages = [
     const HomePage(),
     const SummaryPage(),
+    const RemindersPage(),
     const MiscPage(),
   ];
 
