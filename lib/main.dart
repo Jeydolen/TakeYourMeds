@@ -36,7 +36,6 @@ Future<void> main() async {
   await flnp.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (details) {
-      print(details.payload);
       onSelectNotification(details.payload);
     },
   );

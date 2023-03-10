@@ -9,7 +9,6 @@ class Notification {
 
   Notification(this.title, this.body,
       {DateTime? time, List<Day>? days, this.payload}) {
-    print("Notification payload: $payload");
     if (time != null) {
       this.time = time;
     }
