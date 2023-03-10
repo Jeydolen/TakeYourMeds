@@ -85,5 +85,8 @@
   "last_favorite_taken": "Last important med: {} at {}",
   "color": "Color: ",
   "reminder_for": "Reminder for {}",
-  "enabled": "Enabled"
+  "enabled": "Enabled",
+  "i_understand": "I understand",
+  "tap_to_add_to_summary": "Tap to add to summary",
+  "no_empty_value": "Value can't be empty!"
 }

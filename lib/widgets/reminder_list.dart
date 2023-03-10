@@ -1,16 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:take_your_meds/widgets/cancel_button.dart';
-import 'package:take_your_meds/widgets/reminder.dart';
+import 'package:flutter/material.dart' hide Notification;
 
-import 'package:timezone/timezone.dart' as tz;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'package:take_your_meds/main.dart';
+import 'package:take_your_meds/common/day.dart';
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/common/notification.dart';
+import 'package:take_your_meds/common/notification_handler.dart';
+
+import 'package:take_your_meds/widgets/reminder.dart';
+import 'package:take_your_meds/widgets/cancel_button.dart';
 
 class ReminderList extends StatefulWidget {
   const ReminderList({super.key});
@@ -44,100 +45,77 @@ class ReminderListState extends State<ReminderList> {
     if (reminders == null) {
       await fetchReminders();
     }
-    //List<dynamic> reminders = await Utils.fetchReminders();
 
-    for (var element in reminders!) {
-      if (element["enabled"]) {
-        String? time = element["time"];
-        DateTimeComponents? d;
-
-        if (element["recurrent"]) {
-          if (element["all_days"] != null && element["all_days"]) {
-            d = DateTimeComponents.time;
-          } else {
-            showNotificationForDay(element);
-          }
-        }
-
-        showNotification(
-          "med_reminder".tr(),
-          "reminder_take".tr(args: [element["med_name"] ??= "medication".tr()]),
-          time,
-          d,
-        );
+    for (var reminder in reminders!) {
+      if (reminder["enabled"] == false) {
+        continue;
       }
-    }
 
-    //return reminders;
-  }
-
-  void showNotificationForDay(jsonEl) {
-    int weekday = 0;
-    // Source: https://github.com/ThangVuNguyenViet/clock_app/blob/e87d2548a5890560d07b8d5f89bd1a0119d3707d/lib/providers/alarm_provider.dart
-    for (bool day in jsonEl["days"].values) {
-      weekday += 1;
-
-      if (day) {
-        DateTimeComponents d = DateTimeComponents.dayOfWeekAndTime;
-        DateTime dt = DateTime.parse(jsonEl["time"]);
-        String newTime = tz.TZDateTime.local(
-          dt.year,
-          dt.month,
-          dt.day - dt.weekday + weekday,
-          dt.hour,
-          dt.minute,
-        ).toIso8601String();
-
-        showNotification(
-          "med_reminder".tr(),
-          "reminder_take".tr(args: [jsonEl["med_name"] ??= "medication".tr()]),
-          newTime,
-          d,
-        );
-      }
+      await sheduleReminder(reminder);
     }
   }
 
-  void showNotification(
-    String title,
-    String body,
-    String? time,
-    DateTimeComponents? d,
-  ) {
-    time ??= DateTime.now().toIso8601String();
+  Future<bool> sheduleReminder(reminder) async {
+    String? timeString = reminder["time"];
+    DateTime time =
+        timeString != null ? DateTime.parse(timeString) : DateTime.now();
 
-    try {
-      DateTime.parse(time);
-    } on Exception catch (_) {
-      return;
+    String? medName;
+    if (reminder["med_uid"] != null) {
+      List<dynamic> medsJson = await Utils.fetchMeds();
+      dynamic med = medsJson.firstWhere(
+        (med) => med["uid"] == reminder["med_uid"],
+        orElse: () => null,
+      );
+
+      if (med != null) {
+        medName = "${med["name"]} ${med["dose"]} x ${med["unit"]}";
+      }
     }
 
-    DateTime dtn = DateTime.now().subtract(const Duration(seconds: 1));
-    DateTime pdt = DateTime.parse(time);
-    if (dtn.isAfter(pdt) && d == null) {
-      return;
+    String title = "med_reminder".tr();
+    String body = "reminder_take".tr(args: [medName ??= "medication".tr()]);
+
+    if (medName != "medication".tr()) {
+      body += "\n ${"tap_to_add_to_summary".tr()}";
     }
 
-    const AndroidNotificationDetails aND = AndroidNotificationDetails(
-      'com.jeydolen.take_your_meds',
-      'User reminder',
-    );
-    const NotificationDetails nD = NotificationDetails(android: aND);
+    // Includes false and null
+    if (reminder["recurrent"] != true) {
+      Notification notification = Notification(
+        title,
+        body,
+        time: time,
+        payload: reminder["med_uid"],
+      );
+      NotificationHandler.showNotification(notification);
+      return false;
+    }
 
-    flnp.zonedSchedule(
-      0,
+    List<Day> days = [];
+
+    // Construct day array
+    Map<String, dynamic> reminderDays = reminder["days"];
+
+    for (MapEntry entryDay in reminderDays.entries) {
+      if (entryDay.value == true) {
+        days.add(Day.fromString(entryDay.key)!);
+      }
+    }
+
+    Notification notification = Notification(
       title,
       body,
-      tz.TZDateTime.parse(tz.local, time).add(const Duration(seconds: 1)),
-      nD,
-      androidAllowWhileIdle: false,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: d,
+      time: time,
+      days: days,
+      payload: reminder["med_uid"],
     );
+
+    NotificationHandler.showPeriodicNotification(notification);
+    return true;
   }
 
-  void switchSave(newVal, element, {bool? isRecurrent}) async {
+  void switchSave(newVal, element, {bool? isRecurrent}) {
     setState(() {
       element["enabled"] = newVal;
     });
@@ -163,21 +141,17 @@ class ReminderListState extends State<ReminderList> {
   void replaceReminder(newVal, element) async {
     int i = reminders!.indexOf(element);
     reminders![i] = newVal;
+
+    // Reschedule reminder
+    sheduleReminder(newVal);
+
     await FileHandler.writeContent("reminders", jsonEncode(reminders!));
-    /*
-    int i = (await futureAlarms).indexOf(element);
-    (await futureAlarms)[i] = newVal;
-    await FileHandler.writeContent("reminders", jsonEncode(await futureAlarms));
-    */
   }
 
   void showReminder(dynamic element) async {
     var result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-            Reminder(element as Map<String, dynamic>),
-      ),
+      MaterialPageRoute(builder: (_) => Reminder(element)),
     );
 
     if (result == true) {
@@ -223,7 +197,7 @@ class ReminderListState extends State<ReminderList> {
         setState(() {});
       }
 
-      FileHandler.writeContent("reminders", jsonEncode(reminders!));
+      await FileHandler.writeContent("reminders", jsonEncode(reminders!));
     }
   }
 
@@ -278,6 +252,11 @@ class ReminderListState extends State<ReminderList> {
           child: Wrap(children: dayBtns),
         );
 
+        DateFormat dateFormat = DateFormat.Hm();
+        if (!recurrent) {
+          dateFormat.add_EEEE();
+        }
+
         return ListTile(
           contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
           key: UniqueKey(),
@@ -288,9 +267,7 @@ class ReminderListState extends State<ReminderList> {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 3.6,
-                  child: Text(
-                    DateFormat.Hm().add_EEEE().format(reminderTime),
-                  ),
+                  child: Text(dateFormat.format(reminderTime)),
                 ),
                 row,
                 Switch(
@@ -329,16 +306,9 @@ class ReminderListState extends State<ReminderList> {
     return Column(
       children: [
         Center(
-          child: const Text(
-            "reminders",
-            style: TextStyle(fontSize: 25.0),
-          ).tr(),
+          child: const Text("reminders", style: TextStyle(fontSize: 25.0)).tr(),
         ),
-        Wrap(
-          children: [
-            listAlarms(reminders!),
-          ],
-        )
+        Wrap(children: [listAlarms(reminders!)])
       ],
     );
   }

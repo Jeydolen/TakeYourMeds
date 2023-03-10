@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.pushNamed(context, '/add_med');
   }
 
-  void takeMed() {
+  void rebuild() {
     // Rebuild last med taken
     setState(() {
       key = UniqueKey();
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ClockButton(takeMed),
+            ClockButton(rebuild),
             LastMedTaken(key: key),
           ],
         ),

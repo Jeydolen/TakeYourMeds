@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:take_your_meds/main.dart';
 import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/misc.dart';
 
@@ -24,6 +25,20 @@ class _AppState extends State<App> {
     setState(() {
       selectedId = index;
     });
+  }
+
+  void checkIfStartedFromNotification() async {
+    var details = await flnp.getNotificationAppLaunchDetails();
+    if (details!.didNotificationLaunchApp) {
+      onSelectNotification(details.notificationResponse?.payload);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkIfStartedFromNotification();
   }
 
   @override

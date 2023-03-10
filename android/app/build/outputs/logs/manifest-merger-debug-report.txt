@@ -5,39 +5,39 @@ INJECTED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:1:1-69:12
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:1:1-69:12
 MERGED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:1:1-69:12
-MERGED from [:flutter_ringtone_player] F:\Data\Github\take_your_meds\build\flutter_ringtone_player\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-19:12
-MERGED from [:android_alarm_manager_plus] F:\Data\Github\take_your_meds\build\android_alarm_manager_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-32:12
-MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-14:12
-MERGED from [:path_provider_android] F:\Data\Github\take_your_meds\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.window:window-java:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\610c567ea67cea81afcaf97ab39b7ab4\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
-MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.core:core-ktx:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\19fd4be38065ec8d7358ae40a806ec88\transformed\jetified-core-ktx-1.7.0\AndroidManifest.xml:2:1-9:12
-MERGED from [androidx.appcompat:appcompat:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2cd1259bdd352f2c855f027a1dd99a63\transformed\appcompat-1.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.fragment:fragment:1.3.6] F:\Program Files (x86)\Gradle\caches\transforms-3\4aad56f9708b93fa18d7067c392069db\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.activity:activity:1.2.4] F:\Program Files (x86)\Gradle\caches\transforms-3\ffdd2e33d98ec68d43562757762a901a\transformed\jetified-activity-1.2.4\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.tracing:tracing:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f3ec1c5d6e03730cfd1af3aad085dfc2\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.media:media:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\779c1b9772dba958a7e4594218d39ba2\transformed\media-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.appcompat:appcompat-resources:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\4befbe01d52fcf0c97980d68f87e194e\transformed\jetified-appcompat-resources-1.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\2080d1356ae3124d4ab669312222710c\transformed\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f3f3367cb88057b8707bb2fb5b0e3f6c\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.loader:loader:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\6a1516b5bc8aca7deb3515e81ee8876a\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\cbcb02110f6a3676d560c996b9d8fecd\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\e34d4011fe1a02f6effffb157e5cff40\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.customview:customview:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\ec265aa9e7c89855d7365637c686282d\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\3d57f9b12a17b66c70b6f3fd30f1cbde\transformed\core-1.7.0\AndroidManifest.xml:17:1-26:12
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\882edde083e22b35171828f01f863f31\transformed\lifecycle-runtime-2.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\39b8daa0cadeb489e2ce016b73287af5\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\fef90603285fbf331e18ba864b291af0\transformed\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.savedstate:savedstate:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\21100acdbd7782953e520d0494efed76\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2f8ce7b40adda6032263956ec1196ade\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\65e1f148a384541eac1bffa3df204bc8\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\08668c98b73dce0b087d976663d988c9\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\920a5e2b78ee39e100372c78a9bb05a5\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.arch.core:core-runtime:2.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\74a583f633fae95486583b3962113794\transformed\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\823d55b350b4bd7b94a3343a12fe3f52\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.annotation:annotation-experimental:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\28ed99bf43e3defe5859ecf1e3567924\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [:shared_preferences_android] F:\Data\Github\take_your_meds\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
+MERGED from [:android_alarm_manager_plus] F:\Data\Github\take_your_meds\build\android_alarm_manager_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-34:12
+MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-16:12
+MERGED from [:path_provider_android] F:\Data\Github\take_your_meds\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.window:window-java:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\d9246279612b620282003f5311da9dee\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.core:core-ktx:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\82d95bc04b5366036e49a6c076ca118d\transformed\jetified-core-ktx-1.7.0\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.appcompat:appcompat:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\072291a3cdf7f48fa80ca9f34f0218cb\transformed\appcompat-1.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.3.6] F:\Program Files (x86)\Gradle\caches\transforms-3\3c6a64ef44ca6dc177848930eea699a8\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.2.4] F:\Program Files (x86)\Gradle\caches\transforms-3\d75862b59281fba3fabc64d259edcfab\transformed\jetified-activity-1.2.4\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.tracing:tracing:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\e55b3e69389665e04a9f93ce0a302bbb\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\49140911a6267cd82dce3794fbb09cb7\transformed\media-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\04aedf511cd770993106663b859436c2\transformed\jetified-appcompat-resources-1.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\55c4153de073f65e6b101843bf352256\transformed\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0ec4ae3b8817d74a940e4c984d4e58d7\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\2562407cbff8364b6942f2c53f0ac64e\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\4cdbbe3340f2b024747b313508a46ca9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\24a901c3f5ddbdc68559e1184bf44059\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\ec80eaf1ee6aa235ccb567bff7bf0a29\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0c7cc9b9966f5ea4abf749a894bb657a\transformed\core-1.7.0\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\83bfcb003aadb4a1095aab3b2d6b4e28\transformed\lifecycle-runtime-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0b202e6228c0298f781fb5cf79be3d51\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\9d4410109a88105e7286c4948c0a0433\transformed\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\58c4ad5025228a53832b6b174ae7e7df\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\954ac1de3e1ac01448ae6470b35f3680\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\11f6bbb43ffa32d05216d50f1b61d4fa\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f94089eb617fe49478b290a49cf56ea7\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2545f52f56a0065360ba3f42b11f26ca\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\cf9d1e7ef90e1280b02d9d4a814c9db4\transformed\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\1a70c0620d6d8aa4c2d256472cbb09f9\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\dd2b44d673fd236dac1730807a993af4\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -57,20 +57,20 @@ INJECTED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifes
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:1:11-69
 application
 ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:3:5-60:19
-MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
-MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-30:19
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-30:19
-MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-12:19
-MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-12:19
-MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:24:5-31:19
-MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:24:5-31:19
-MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\3d57f9b12a17b66c70b6f3fd30f1cbde\transformed\core-1.7.0\AndroidManifest.xml:24:5-89
-MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\3d57f9b12a17b66c70b6f3fd30f1cbde\transformed\core-1.7.0\AndroidManifest.xml:24:5-89
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\65e1f148a384541eac1bffa3df204bc8\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\65e1f148a384541eac1bffa3df204bc8\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-19:19
+MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-19:19
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-32:19
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-32:19
+MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-14:19
+MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-14:19
+MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:24:5-31:19
+MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:24:5-31:19
+MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0c7cc9b9966f5ea4abf749a894bb657a\transformed\core-1.7.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0c7cc9b9966f5ea4abf749a894bb657a\transformed\core-1.7.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\11f6bbb43ffa32d05216d50f1b61d4fa\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\11f6bbb43ffa32d05216d50f1b61d4fa\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\3d57f9b12a17b66c70b6f3fd30f1cbde\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+		ADDED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0c7cc9b9966f5ea4abf749a894bb657a\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
 	android:label
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:4:9-39
 	android:icon
@@ -159,8 +159,8 @@ ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xm
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:62:22-78
 uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
 ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:65:5-80
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-81
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-81
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-81
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-81
 	android:name
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:65:22-78
 uses-permission#android.permission.WAKE_LOCK
@@ -169,80 +169,80 @@ ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xm
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:66:22-65
 uses-permission#android.permission.SCHEDULE_EXACT_ALARM
 ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:68:5-78
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-79
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-79
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:12:5-79
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:12:5-79
 	android:name
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml:68:22-76
 uses-sdk
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\main\AndroidManifest.xml
-MERGED from [:flutter_ringtone_player] F:\Data\Github\take_your_meds\build\flutter_ringtone_player\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:flutter_ringtone_player] F:\Data\Github\take_your_meds\build\flutter_ringtone_player\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:android_alarm_manager_plus] F:\Data\Github\take_your_meds\build\android_alarm_manager_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:android_alarm_manager_plus] F:\Data\Github\take_your_meds\build\android_alarm_manager_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:path_provider_android] F:\Data\Github\take_your_meds\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:path_provider_android] F:\Data\Github\take_your_meds\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [androidx.window:window-java:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\610c567ea67cea81afcaf97ab39b7ab4\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
-MERGED from [androidx.window:window-java:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\610c567ea67cea81afcaf97ab39b7ab4\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
-MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core-ktx:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\19fd4be38065ec8d7358ae40a806ec88\transformed\jetified-core-ktx-1.7.0\AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.core:core-ktx:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\19fd4be38065ec8d7358ae40a806ec88\transformed\jetified-core-ktx-1.7.0\AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.appcompat:appcompat:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2cd1259bdd352f2c855f027a1dd99a63\transformed\appcompat-1.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2cd1259bdd352f2c855f027a1dd99a63\transformed\appcompat-1.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.3.6] F:\Program Files (x86)\Gradle\caches\transforms-3\4aad56f9708b93fa18d7067c392069db\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.3.6] F:\Program Files (x86)\Gradle\caches\transforms-3\4aad56f9708b93fa18d7067c392069db\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.activity:activity:1.2.4] F:\Program Files (x86)\Gradle\caches\transforms-3\ffdd2e33d98ec68d43562757762a901a\transformed\jetified-activity-1.2.4\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.activity:activity:1.2.4] F:\Program Files (x86)\Gradle\caches\transforms-3\ffdd2e33d98ec68d43562757762a901a\transformed\jetified-activity-1.2.4\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.tracing:tracing:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f3ec1c5d6e03730cfd1af3aad085dfc2\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.tracing:tracing:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f3ec1c5d6e03730cfd1af3aad085dfc2\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.media:media:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\779c1b9772dba958a7e4594218d39ba2\transformed\media-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.media:media:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\779c1b9772dba958a7e4594218d39ba2\transformed\media-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat-resources:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\4befbe01d52fcf0c97980d68f87e194e\transformed\jetified-appcompat-resources-1.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat-resources:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\4befbe01d52fcf0c97980d68f87e194e\transformed\jetified-appcompat-resources-1.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\2080d1356ae3124d4ab669312222710c\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\2080d1356ae3124d4ab669312222710c\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f3f3367cb88057b8707bb2fb5b0e3f6c\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f3f3367cb88057b8707bb2fb5b0e3f6c\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\6a1516b5bc8aca7deb3515e81ee8876a\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\6a1516b5bc8aca7deb3515e81ee8876a\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\cbcb02110f6a3676d560c996b9d8fecd\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\cbcb02110f6a3676d560c996b9d8fecd\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\e34d4011fe1a02f6effffb157e5cff40\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\e34d4011fe1a02f6effffb157e5cff40\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.customview:customview:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\ec265aa9e7c89855d7365637c686282d\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\ec265aa9e7c89855d7365637c686282d\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\3d57f9b12a17b66c70b6f3fd30f1cbde\transformed\core-1.7.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\3d57f9b12a17b66c70b6f3fd30f1cbde\transformed\core-1.7.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\882edde083e22b35171828f01f863f31\transformed\lifecycle-runtime-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\882edde083e22b35171828f01f863f31\transformed\lifecycle-runtime-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\39b8daa0cadeb489e2ce016b73287af5\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\39b8daa0cadeb489e2ce016b73287af5\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\fef90603285fbf331e18ba864b291af0\transformed\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\fef90603285fbf331e18ba864b291af0\transformed\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\21100acdbd7782953e520d0494efed76\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\21100acdbd7782953e520d0494efed76\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2f8ce7b40adda6032263956ec1196ade\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2f8ce7b40adda6032263956ec1196ade\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\65e1f148a384541eac1bffa3df204bc8\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\65e1f148a384541eac1bffa3df204bc8\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\08668c98b73dce0b087d976663d988c9\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\08668c98b73dce0b087d976663d988c9\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\920a5e2b78ee39e100372c78a9bb05a5\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\920a5e2b78ee39e100372c78a9bb05a5\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\74a583f633fae95486583b3962113794\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\74a583f633fae95486583b3962113794\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.interpolator:interpolator:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\823d55b350b4bd7b94a3343a12fe3f52\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\823d55b350b4bd7b94a3343a12fe3f52\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\28ed99bf43e3defe5859ecf1e3567924\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.annotation:annotation-experimental:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\28ed99bf43e3defe5859ecf1e3567924\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [:shared_preferences_android] F:\Data\Github\take_your_meds\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] F:\Data\Github\take_your_meds\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:android_alarm_manager_plus] F:\Data\Github\take_your_meds\build\android_alarm_manager_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:android_alarm_manager_plus] F:\Data\Github\take_your_meds\build\android_alarm_manager_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:path_provider_android] F:\Data\Github\take_your_meds\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:path_provider_android] F:\Data\Github\take_your_meds\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.window:window-java:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\d9246279612b620282003f5311da9dee\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
+MERGED from [androidx.window:window-java:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\d9246279612b620282003f5311da9dee\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
+MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\82d95bc04b5366036e49a6c076ca118d\transformed\jetified-core-ktx-1.7.0\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\82d95bc04b5366036e49a6c076ca118d\transformed\jetified-core-ktx-1.7.0\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\072291a3cdf7f48fa80ca9f34f0218cb\transformed\appcompat-1.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\072291a3cdf7f48fa80ca9f34f0218cb\transformed\appcompat-1.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] F:\Program Files (x86)\Gradle\caches\transforms-3\3c6a64ef44ca6dc177848930eea699a8\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] F:\Program Files (x86)\Gradle\caches\transforms-3\3c6a64ef44ca6dc177848930eea699a8\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.4] F:\Program Files (x86)\Gradle\caches\transforms-3\d75862b59281fba3fabc64d259edcfab\transformed\jetified-activity-1.2.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.4] F:\Program Files (x86)\Gradle\caches\transforms-3\d75862b59281fba3fabc64d259edcfab\transformed\jetified-activity-1.2.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\e55b3e69389665e04a9f93ce0a302bbb\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\e55b3e69389665e04a9f93ce0a302bbb\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\49140911a6267cd82dce3794fbb09cb7\transformed\media-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\49140911a6267cd82dce3794fbb09cb7\transformed\media-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\04aedf511cd770993106663b859436c2\transformed\jetified-appcompat-resources-1.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\04aedf511cd770993106663b859436c2\transformed\jetified-appcompat-resources-1.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\55c4153de073f65e6b101843bf352256\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\55c4153de073f65e6b101843bf352256\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0ec4ae3b8817d74a940e4c984d4e58d7\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0ec4ae3b8817d74a940e4c984d4e58d7\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\2562407cbff8364b6942f2c53f0ac64e\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\2562407cbff8364b6942f2c53f0ac64e\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\4cdbbe3340f2b024747b313508a46ca9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\4cdbbe3340f2b024747b313508a46ca9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\24a901c3f5ddbdc68559e1184bf44059\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\24a901c3f5ddbdc68559e1184bf44059\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\ec80eaf1ee6aa235ccb567bff7bf0a29\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\ec80eaf1ee6aa235ccb567bff7bf0a29\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0c7cc9b9966f5ea4abf749a894bb657a\transformed\core-1.7.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.7.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0c7cc9b9966f5ea4abf749a894bb657a\transformed\core-1.7.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\83bfcb003aadb4a1095aab3b2d6b4e28\transformed\lifecycle-runtime-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\83bfcb003aadb4a1095aab3b2d6b4e28\transformed\lifecycle-runtime-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0b202e6228c0298f781fb5cf79be3d51\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\0b202e6228c0298f781fb5cf79be3d51\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\9d4410109a88105e7286c4948c0a0433\transformed\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\9d4410109a88105e7286c4948c0a0433\transformed\jetified-lifecycle-viewmodel-savedstate-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\58c4ad5025228a53832b6b174ae7e7df\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\58c4ad5025228a53832b6b174ae7e7df\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\954ac1de3e1ac01448ae6470b35f3680\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\954ac1de3e1ac01448ae6470b35f3680\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\11f6bbb43ffa32d05216d50f1b61d4fa\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] F:\Program Files (x86)\Gradle\caches\transforms-3\11f6bbb43ffa32d05216d50f1b61d4fa\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f94089eb617fe49478b290a49cf56ea7\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\f94089eb617fe49478b290a49cf56ea7\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2545f52f56a0065360ba3f42b11f26ca\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] F:\Program Files (x86)\Gradle\caches\transforms-3\2545f52f56a0065360ba3f42b11f26ca\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\cf9d1e7ef90e1280b02d9d4a814c9db4\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\cf9d1e7ef90e1280b02d9d4a814c9db4\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\1a70c0620d6d8aa4c2d256472cbb09f9\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] F:\Program Files (x86)\Gradle\caches\transforms-3\1a70c0620d6d8aa4c2d256472cbb09f9\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\dd2b44d673fd236dac1730807a993af4\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] F:\Program Files (x86)\Gradle\caches\transforms-3\dd2b44d673fd236dac1730807a993af4\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.xml
 INJECTED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.xml
 	android:targetSdkVersion
@@ -256,82 +256,82 @@ ADDED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.x
 	android:name
 		ADDED from F:\Data\Github\take_your_meds\android\app\src\debug\AndroidManifest.xml:6:22-64
 provider#dev.fluttercommunity.plus.share.ShareFileProvider
-ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-18:20
 	android:grantUriPermissions
-		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-47
 	android:authorities
-		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-74
+		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-74
 	android:exported
-		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
 	android:name
-		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-77
+		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-77
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-15:68
+ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-17:68
 	android:resource
-		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-65
+		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:17:17-65
 	android:name
-		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:14:17-67
+		ADDED from [:share_plus] F:\Data\Github\take_your_meds\build\share_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
 uses-permission#android.permission.VIBRATE
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-66
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-66
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-63
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-63
 uses-permission#android.permission.USE_FULL_SCREEN_INTENT
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-81
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-81
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-78
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-78
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-77
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-77
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-74
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-74
 receiver#com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:14:9-16:40
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:16:9-18:40
 	android:exported
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-37
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-37
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-91
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-91
 receiver#com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:17:9-19:40
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:19:9-21:40
 	android:exported
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:19:13-37
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-37
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-97
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:20:13-97
 receiver#com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:20:9-29:20
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:22:9-31:20
 	android:exported
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:22:13-37
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:24:13-37
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-101
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-101
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.MY_PACKAGE_REPLACED+action:name:android.intent.action.QUICKBOOT_POWERON+action:name:com.htc.intent.action.QUICKBOOT_POWERON
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-28:29
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:25:13-30:29
 action#android.intent.action.MY_PACKAGE_REPLACED
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:25:17-84
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:27:17-84
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:25:25-81
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:27:25-81
 action#android.intent.action.QUICKBOOT_POWERON
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:26:17-82
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:28:17-82
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:26:25-79
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:28:25-79
 action#com.htc.intent.action.QUICKBOOT_POWERON
-ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:27:17-82
+ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:29:17-82
 	android:name
-		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:27:25-79
+		ADDED from [:flutter_local_notifications] F:\Data\Github\take_your_meds\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:29:25-79
 activity#io.flutter.plugins.urllauncher.WebViewActivity
-ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-11:74
+ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-13:74
 	android:exported
-		ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-37
+		ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-37
 	android:theme
-		ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-71
+		ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-71
 	android:name
-		ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-74
+		ADDED from [:url_launcher_android] F:\Data\Github\take_your_meds\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-74
 uses-library#androidx.window.extensions
-ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
 	android:required
-		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
 	android:name
-		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
 uses-library#androidx.window.sidecar
-ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
 	android:required
-		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
 	android:name
-		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\0117f5bb4a27613bccb0990e10699ef8\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+		ADDED from [androidx.window:window:1.0.0-beta04] F:\Program Files (x86)\Gradle\caches\transforms-3\6475af5839899d0cb402495168a50a21\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51

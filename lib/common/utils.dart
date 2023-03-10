@@ -21,6 +21,25 @@ List<DropdownMenuItem> generateDropdownItems(List<Medication> medications) =>
         )
         .toList();
 
+Future<void> setLastMedTaken(Map<String, dynamic> med, {DateTime? time}) async {
+  time ??= DateTime.now();
+
+  Map<String, dynamic> lastTakenMed = {
+    "name": "${med["name"]} ${med["dose"]}",
+    "unit": med["unit"],
+    "date": time.toIso8601String()
+  };
+
+  await FileHandler.writeContent("last_taken", jsonEncode(lastTakenMed));
+
+  if (med["favorite"] == true) {
+    await FileHandler.writeContent(
+      "last_favorite_taken",
+      jsonEncode(lastTakenMed),
+    );
+  }
+}
+
 class Utils {
   static Future<List<dynamic>> fetchFile(String fileName) async {
     String? jsonString = await FileHandler.readContent(fileName);

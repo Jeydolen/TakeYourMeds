@@ -22,8 +22,16 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
   String today = DateFormat.Hm().add_EEEE().format(DateTime.now());
   TextEditingController quantityField = TextEditingController(text: "1");
   TextEditingController reasonField = TextEditingController(text: "/");
+  bool _validate = false;
 
   void saveData() async {
+    if (quantityField.text.isEmpty) {
+      setState(() {
+        _validate = true;
+      });
+      return;
+    }
+
     Navigator.pop(context);
 
     List<dynamic> meds = await Utils.fetchMeds();
@@ -40,17 +48,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
     cMed["dates"] = dates;
     FileHandler.writeContent("meds", jsonEncode(meds));
 
-    Map<String, dynamic> lastTakenMed = {
-      "name": "${cMed["name"]} ${cMed["dose"]}",
-      "unit": cMed["unit"],
-      "date": now.toIso8601String()
-    };
-
-    FileHandler.writeContent("last_taken", jsonEncode(lastTakenMed));
-
-    if (cMed["favorite"] == true) {
-      FileHandler.writeContent("last_favorite_taken", jsonEncode(lastTakenMed));
-    }
+    setLastMedTaken(cMed, time: now);
   }
 
   @override
@@ -116,6 +114,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
                 child: TextField(
                   decoration: InputDecoration(
                     label: const Text("quantity").tr(),
+                    errorText: _validate ? "no_empty_value".tr() : null,
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
