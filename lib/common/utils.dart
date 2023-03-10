@@ -21,12 +21,17 @@ List<DropdownMenuItem> generateDropdownItems(List<Medication> medications) =>
         )
         .toList();
 
-Future<void> setLastMedTaken(Map<String, dynamic> med, {DateTime? time}) async {
+Future<void> setLastMedTaken(
+  Map<String, dynamic> med, {
+  DateTime? time,
+  String? quantity,
+}) async {
   time ??= DateTime.now();
 
   Map<String, dynamic> lastTakenMed = {
     "name": "${med["name"]} ${med["dose"]}",
     "unit": med["unit"],
+    "quantity": quantity ?? "1",
     "date": time.toIso8601String()
   };
 

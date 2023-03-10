@@ -41,14 +41,17 @@ class LastMedTakenState extends State<LastMedTaken> {
 
     dynamic jsonTaken = jsonDecode(lastMedTaken);
     if (jsonTaken is Map<String, dynamic> && mounted) {
+      String quantity = jsonTaken["quantity"] ?? "";
+      DateTime date = DateTime.parse(jsonTaken["date"]);
+
       return SizedBox(
         width: MediaQuery.of(context).size.width * .8,
         child: Text(
           filename,
           style: const TextStyle(fontSize: 18),
         ).tr(args: [
-          jsonTaken["name"] + " " + tr(jsonTaken["unit"]),
-          DateFormat.Hm().add_EEEE().format(DateTime.parse(jsonTaken["date"]))
+          "$quantity x ${jsonTaken["name"]} ${tr(jsonTaken["unit"])}",
+          DateFormat.Hm().add_EEEE().format(date)
         ]),
       );
     }

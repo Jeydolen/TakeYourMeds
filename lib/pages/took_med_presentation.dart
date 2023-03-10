@@ -48,7 +48,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
     cMed["dates"] = dates;
     FileHandler.writeContent("meds", jsonEncode(meds));
 
-    setLastMedTaken(cMed, time: now);
+    setLastMedTaken(cMed, time: now, quantity: quantityField.text);
   }
 
   @override

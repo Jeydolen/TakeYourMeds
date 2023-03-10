@@ -56,7 +56,7 @@ class AlarmState extends State<Alarm> {
     med!["dates"] = dates;
     await FileHandler.writeContent("meds", jsonEncode(meds));
 
-    await setLastMedTaken(med!);
+    await setLastMedTaken(med!, quantity: quantityField.text);
 
     if (mounted) {
       // Known bug: When Navigator.pop() is called main page is not updated
