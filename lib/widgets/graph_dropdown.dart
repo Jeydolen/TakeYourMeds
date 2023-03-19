@@ -78,7 +78,7 @@ class GraphDropdownState extends State<GraphDropdown> {
 
   void changeYear(dynamic year) {
     setState(() {
-      selectedMonth = year;
+      selectedYear = year;
     });
 
     widget.updateTime(selectedYear, selectedMonth);
