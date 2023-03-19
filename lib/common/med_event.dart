@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:take_your_meds/common/event.dart';
 import 'package:take_your_meds/common/medication.dart';
 
-class MedEvent extends Medication implements Event {
+class MedEvent implements Event {
   static final List<String> keys = [
     "quantity",
     "time",
@@ -11,36 +11,33 @@ class MedEvent extends Medication implements Event {
     "reason"
   ];
   static final List header = [...Medication.keys, ...MedEvent.keys];
-  final String quantity;
+  final int quantity;
   final DateTime _time;
   final String? reason;
+  Medication medication;
 
   DateTime get datetime => _time;
   String get time => DateFormat.Hm().format(_time);
+  String get uid => medication.uid;
 
-  MedEvent(
-    name,
-    dose,
-    unit,
-    notes,
-    uid,
-    this.quantity,
-    this._time,
-    this.reason,
-  ) : super(name, dose, unit, notes, uid);
+  MedEvent(this.medication, this.quantity, this._time, this.reason);
 
   factory MedEvent.fromJson(
     Map<String, dynamic> json,
-    String quantity,
+    int quantity,
     DateTime time,
     String? reason,
   ) {
-    return MedEvent(
+    Medication med = Medication(
       json["name"],
       json["dose"],
       json["unit"],
       json["notes"] ?? "/",
       json["uid"],
+    );
+
+    return MedEvent(
+      med,
       quantity,
       time,
       reason,
@@ -49,7 +46,7 @@ class MedEvent extends Medication implements Event {
 
   @override
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> medicationObj = Map.of(super.toJson());
+    Map<String, dynamic> medicationObj = medication.toJson();
     medicationObj["time"] = time;
     medicationObj["date"] = DateFormat.yMd().format(_time);
     medicationObj["iso8601_date"] = _time.toIso8601String();

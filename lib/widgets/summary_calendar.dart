@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/utils.dart' hide isSameDay;
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/widgets/cancel_button.dart';
 import 'package:take_your_meds/pages/summary_presentation.dart';
@@ -84,14 +84,14 @@ class SummaryCalendarState extends State<SummaryCalendar> {
     return result;
   }
 
-  Future<bool?> removeEvent(MedEvent value) async {
+  Future<bool?> removeEvent(MedEvent event) async {
     AlertDialog dialog = AlertDialog(
       title: const Text("del_event_title").tr(),
       content: const Text("del_event").tr(args: [
-        value.quantity,
-        value.dose,
-        value.name,
-        DateFormat.yMMMEd().add_Hm().format(value.datetime)
+        event.quantity.toString(),
+        event.medication.dose,
+        event.medication.name,
+        DateFormat.yMMMEd().add_Hm().format(event.datetime)
       ]),
       actions: [
         const CancelButton(),
@@ -111,13 +111,13 @@ class SummaryCalendarState extends State<SummaryCalendar> {
 
     if (doRemove == true) {
       // Removing event from list
-      medEvents.remove(value);
+      medEvents.remove(event);
 
       // Telling listener to update
       _selectedEvents.value = _getEventsForDay(_selectedDay!);
 
       // Saving new list
-      widget.removeEvent(value);
+      widget.removeEvent(event);
     }
 
     return doRemove;
@@ -239,9 +239,9 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(event.name),
+                          Text(event.medication.name),
                           Text(
-                            '${event.quantity}x ${event.dose} ${event.unit}',
+                            '${event.quantity}x ${event.medication.dose} ${event.medication.unit}',
                           ),
                           Text(event.time),
                         ],

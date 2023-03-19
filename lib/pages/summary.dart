@@ -12,6 +12,7 @@ import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/mediastore.dart';
 import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/pages/graphs.dart';
 import 'package:take_your_meds/widgets/export_dialog.dart';
 import 'package:take_your_meds/common/supported_formats.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
@@ -27,6 +28,13 @@ class SummaryPageState extends State<SummaryPage> {
   late Future<List<MedEvent>> summary;
   late List<dynamic> json;
   bool addMoods = true;
+
+  void showGraph() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const GraphsPage()),
+    );
+  }
 
   void saveData(String data, String format) async {
     String now = DateTime.now().toString();
@@ -191,7 +199,7 @@ class SummaryPageState extends State<SummaryPage> {
 
   Future<List<MedEvent>> createEvents(Future<List<dynamic>> data) async {
     json = await data;
-    return await Utils.createEvents(json);
+    return Utils.createEvents(json);
   }
 
   @override
@@ -221,6 +229,10 @@ class SummaryPageState extends State<SummaryPage> {
         return Scaffold(
           appBar: AppBar(
             actions: [
+              ElevatedButton(
+                onPressed: showGraph,
+                child: const Icon(Icons.bar_chart),
+              ),
               ElevatedButton(
                 onPressed: () => showExportDialog(false),
                 child: const Icon(Icons.save),
