@@ -198,7 +198,6 @@ class GraphsPageState extends State<GraphsPage> {
 
   Map<String, Color> buildLegend() {
     Map<String, Color> medsToColor = {};
-
     Map<String, dynamic> previousDate = {
       "year": selectedYear,
       "month": selectedMonth
@@ -258,8 +257,9 @@ class GraphsPageState extends State<GraphsPage> {
         child: buttonChild,
       );
 
+      int filteredMed = filteredMeds.indexWhere((el) => el.uid == med.uid);
       // If med is filtered, removing checkbox
-      if (filteredMeds.indexWhere((el) => el.uid == med.uid) != -1) {
+      if (filteredMed != -1) {
         buttonChild.children.removeLast();
       }
 
