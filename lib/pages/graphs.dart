@@ -27,12 +27,8 @@ class GraphsPageState extends State<GraphsPage> {
   List<MedEvent>? medEvents;
   List<List<MedEvent>>? filteredEvents;
   List<Medication> filteredMeds = [];
-  List<Color> graphColors = [
-    Colors.black,
-    Colors.blue,
-    Colors.red,
-  ];
   Map<String, Color>? medsToColor;
+  Map<String, dynamic>? previousDate;
 
   @override
   void initState() {
@@ -195,7 +191,7 @@ class GraphsPageState extends State<GraphsPage> {
     return Color((random.nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
   }
 
-  Color generateContrastedColor(List<Color> previousColors) {
+  Color generateContrastedColor() {
     Color generatedColor = generateColor();
     return generatedColor;
   }
@@ -203,13 +199,12 @@ class GraphsPageState extends State<GraphsPage> {
   Map<String, Color> buildLegend() {
     Map<String, Color> medsToColor = {};
 
-    // Force colors to stay same between rebuilds
-    if (this.medsToColor != null) {
-      medsToColor = this.medsToColor!;
-    }
+    Map<String, dynamic> previousDate = {
+      "year": selectedYear,
+      "month": selectedMonth
+    };
 
     List<Medication> meds = [];
-
     for (MedEvent event in medEvents!) {
       DateTime eventTime = event.datetime;
       Medication eventMed = event.medication;
@@ -222,10 +217,17 @@ class GraphsPageState extends State<GraphsPage> {
         }
 
         if (!medsToColor.containsKey(eventMed.name)) {
-          medsToColor[eventMed.name] =
-              generateContrastedColor(medsToColor.values.toList());
+          medsToColor[eventMed.name] = generateContrastedColor();
         }
       }
+    }
+
+    // changing colors only if new Date
+    if (this.medsToColor != null &&
+        (this.previousDate == null ||
+            (this.previousDate!["year"] == selectedYear &&
+                this.previousDate!["month"] == selectedMonth))) {
+      medsToColor = this.medsToColor!;
     }
 
     List<Widget> legendEls = [];
@@ -240,7 +242,7 @@ class GraphsPageState extends State<GraphsPage> {
             width: 12,
             height: 12,
             decoration: BoxDecoration(
-              color: entry.value,
+              color: entry.value as Color,
               borderRadius: const BorderRadius.all(Radius.circular(4)),
             ),
           ),
@@ -266,14 +268,8 @@ class GraphsPageState extends State<GraphsPage> {
 
     setState(() {
       legend = Wrap(children: legendEls);
-    });
-
-    if (this.medsToColor != null) {
-      return this.medsToColor!;
-    }
-
-    setState(() {
       this.medsToColor = medsToColor;
+      this.previousDate = previousDate;
     });
 
     return medsToColor;
@@ -294,7 +290,7 @@ class GraphsPageState extends State<GraphsPage> {
     List<String> dates = [];
     List<BarChartGroupData> barGroups = [];
     List<BarChartRodData> barRods = [];
-    Map<String, Color> meds = buildLegend();
+    Map<String, dynamic> meds = buildLegend();
 
     for (int i = 0; i < events.length; i++) {
       List<MedEvent> eventsInDay = events[i];
