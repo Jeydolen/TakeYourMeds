@@ -89,5 +89,18 @@
   "i_understand": "I understand",
   "tap_to_add_to_summary": "Tap to add to summary",
   "no_empty_value": "Value can't be empty!",
-  "misc": "Miscellaneous"
+  "misc": "Miscellaneous",
+  "january" :"january",
+  "february":"february",
+  "march":"march",
+  "april":"april",
+  "may":"may",
+  "june":"june",
+  "july":"july",
+  "august":"august",
+  "september":"september",
+  "october":"october",
+  "november":"november",
+  "december":"december",
+  "year": "Year"
 }

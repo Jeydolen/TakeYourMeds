@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/widgets/event_list.dart';
@@ -80,18 +81,19 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
       for (MedEvent event in medEvents) {
         int index = total.indexWhere((element) => element["uid"] == event.uid);
         if (index == -1) {
+          Medication eventMed = event.medication;
           Map<String, dynamic> el = {
             "uid": event.uid,
-            "name": "${event.name} ${event.dose} ${event.unit}",
-            "unit": event.unit,
-            "dose": int.parse(event.dose),
-            "quantity": int.parse(event.quantity)
+            "name": "${eventMed.name} ${eventMed.dose} ${eventMed.unit}",
+            "unit": eventMed.unit,
+            "dose": int.parse(eventMed.dose),
+            "quantity": event.quantity,
           };
 
           total.add(el);
         } else {
           Map<String, dynamic> el = total[index];
-          el["quantity"] = el["quantity"] + int.parse(event.quantity);
+          el["quantity"] = el["quantity"] + event.quantity;
 
           total[index] = el;
         }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/med_event.dart';
+import 'package:take_your_meds/common/medication.dart';
 
 enum SortOrder {
   meds,
@@ -52,6 +53,7 @@ class EventListState extends State<EventList> {
   List<Widget> populateList(List<MedEvent> medEvents) {
     List<Widget> evts = [];
     for (MedEvent event in medEvents) {
+      Medication eventMed = event.medication;
       var widget = Container(
         margin: const EdgeInsets.symmetric(
           vertical: 4,
@@ -71,9 +73,9 @@ class EventListState extends State<EventList> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(event.name),
+                Text(eventMed.name),
                 Text(
-                  '${event.quantity}x ${event.dose} ${event.unit}',
+                  '${event.quantity}x ${eventMed.dose} ${eventMed.unit}',
                 ),
                 Text(event.time),
               ],

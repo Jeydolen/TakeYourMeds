@@ -89,5 +89,18 @@
   "i_understand": "Je comprends",
   "tap_to_add_to_summary": "Tappez pour ajouter au résumé",
   "no_empty_value": "La valeur ne peut pas être vide!",
-  "misc": "Divers"
+  "misc": "Divers",
+  "january" :"janvier",
+  "february":"février",
+  "march":"mars",
+  "april":"avril",
+  "may":"mai",
+  "june":"juin",
+  "july":"juillet",
+  "august":"août",
+  "september":"septembre",
+  "october":"octobre",
+  "november":"novembre",
+  "december":"decembre",
+  "year": "Année"
 }

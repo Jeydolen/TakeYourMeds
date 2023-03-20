@@ -78,6 +78,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
     Icon editIcon = edit ? const Icon(Icons.cancel) : const Icon(Icons.edit);
 
     final String? rVal = event.reason;
+    final Medication eventMed = event.medication;
 
     return Scaffold(
         appBar: AppBar(
@@ -95,16 +96,18 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
           child: ListView(
             children: [
               const SizedBox(height: 20),
-              edit ? dropDown : const Text("med_name").tr(args: [event.name]),
+              edit
+                  ? dropDown
+                  : const Text("med_name").tr(args: [eventMed.name]),
               const SizedBox(height: 20),
               const Text("med_dosage_unit").tr(args: [
-                event.quantity,
-                event.dose,
-                event.unit,
+                event.quantity.toString(),
+                eventMed.dose,
+                eventMed.unit,
               ]),
               const SizedBox(height: 20),
               const Text("med_notes").tr(args: [
-                (event.notes.isEmpty) ? "/" : event.notes,
+                (eventMed.notes.isEmpty) ? "/" : eventMed.notes,
               ]),
               const SizedBox(height: 20),
               const Text("time").tr(args: [event.time]),

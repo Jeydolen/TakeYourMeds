@@ -5,7 +5,7 @@ description: An app that help people to take their medicine.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.10.2
+version: 1.11.1
 
 repository: https://github.com/Jeydolen/TakeYourMeds
 
@@ -34,7 +34,7 @@ dependencies:
   easy_localization: ^3.0.1
   cross_file: ^0.3.3+2
   flutter_colorpicker: ^1.0.3
-  
+  fl_chart : ^0.61.0
 
 dev_dependencies:
   flutter_test:
