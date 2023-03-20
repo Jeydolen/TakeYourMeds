@@ -26,6 +26,13 @@ class GraphsPageState extends State<GraphsPage> {
   late List<Medication> meds;
   List<MedEvent>? medEvents;
   List<List<MedEvent>>? filteredEvents;
+  List<Medication> filteredMeds = [];
+  List<Color> graphColors = [
+    Colors.black,
+    Colors.blue,
+    Colors.red,
+  ];
+  Map<String, Color>? medsToColor;
 
   @override
   void initState() {
@@ -33,7 +40,7 @@ class GraphsPageState extends State<GraphsPage> {
 
     getMedEvents();
     getMeds();
-    buildDropdowns();
+    buildPage();
   }
 
   Future<void> getMeds() async {
@@ -112,6 +119,10 @@ class GraphsPageState extends State<GraphsPage> {
     return filteredEvents;
   }
 
+  void filterMed(Medication med) {
+    filterEvents(med: med);
+  }
+
   void filterEvents({int? year, Month? month, Medication? med}) {
     if (medEvents == null) {
       return;
@@ -127,6 +138,23 @@ class GraphsPageState extends State<GraphsPage> {
 
     List<List<MedEvent>> mergedEvents = mergeEvents(currentMonthEvents);
 
+    if (med != null) {
+      int index = filteredMeds.indexWhere((el) => el.uid == med.uid);
+
+      // Med not already disabled
+      if (index == -1) {
+        filteredMeds.add(med);
+      } else {
+        filteredMeds.remove(med);
+      }
+
+      for (List<MedEvent> eventsInDay in mergedEvents) {
+        for (Medication filterMed in filteredMeds) {
+          eventsInDay.removeWhere((el) => el.medication.uid == filterMed.uid);
+        }
+      }
+    }
+
     setState(() {
       filteredEvents = mergedEvents;
     });
@@ -140,7 +168,7 @@ class GraphsPageState extends State<GraphsPage> {
     });
   }
 
-  void buildDropdowns() async {
+  void buildPage() async {
     if (medEvents == null) {
       await getMedEvents();
     }
@@ -161,9 +189,26 @@ class GraphsPageState extends State<GraphsPage> {
     return;
   }
 
-  Map<String, Color> buildLegend() {
-    Map<String, Color> meds = {};
+  Color generateColor() {
     Random random = Random();
+
+    return Color((random.nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
+  }
+
+  Color generateContrastedColor(List<Color> previousColors) {
+    Color generatedColor = generateColor();
+    return generatedColor;
+  }
+
+  Map<String, Color> buildLegend() {
+    Map<String, Color> medsToColor = {};
+
+    // Force colors to stay same between rebuilds
+    if (this.medsToColor != null) {
+      medsToColor = this.medsToColor!;
+    }
+
+    List<Medication> meds = [];
 
     for (MedEvent event in medEvents!) {
       DateTime eventTime = event.datetime;
@@ -172,42 +217,66 @@ class GraphsPageState extends State<GraphsPage> {
       // Taking only meds for selected month
       if (eventTime.year == selectedYear &&
           eventTime.month == selectedMonth.integer) {
-        if (!meds.containsKey(eventMed.name)) {
-          meds[eventMed.name] =
-              Color((random.nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
+        if (meds.indexWhere((el) => el.uid == event.uid) == -1) {
+          meds.add(event.medication);
+        }
+
+        if (!medsToColor.containsKey(eventMed.name)) {
+          medsToColor[eventMed.name] =
+              generateContrastedColor(medsToColor.values.toList());
         }
       }
     }
 
     List<Widget> legendEls = [];
-    for (MapEntry entry in meds.entries) {
-      legendEls.add(
-        TextButton(
-          onPressed: () {},
-          child: Row(
-            children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(
-                  color: entry.value,
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                ),
-              ),
-              const SizedBox(width: 4),
-              Text(entry.key),
-              const SizedBox(width: 10),
-            ],
+    for (int i = 0; i < medsToColor.length; i++) {
+      MapEntry entry = medsToColor.entries.toList()[i];
+      Medication med = meds[i];
+
+      var buttonChild = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: entry.value,
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            ),
           ),
-        ),
+          const SizedBox(width: 4),
+          Text(entry.key),
+          const SizedBox(width: 10),
+          const Icon(Icons.check_box),
+        ],
       );
+
+      Widget button = TextButton(
+        onPressed: () => filterMed(med),
+        child: buttonChild,
+      );
+
+      // If med is filtered, removing checkbox
+      if (filteredMeds.indexWhere((el) => el.uid == med.uid) != -1) {
+        buttonChild.children.removeLast();
+      }
+
+      legendEls.add(button);
     }
 
     setState(() {
-      legend = Row(children: legendEls);
+      legend = Wrap(children: legendEls);
     });
 
-    return meds;
+    if (this.medsToColor != null) {
+      return this.medsToColor!;
+    }
+
+    setState(() {
+      this.medsToColor = medsToColor;
+    });
+
+    return medsToColor;
   }
 
   void buildChart() {
