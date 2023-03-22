@@ -188,7 +188,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                 shape: BoxShape.circle,
               ),
               markerDecoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).colorScheme.background,
                 shape: BoxShape.circle,
               ),
               todayTextStyle: const TextStyle(),
@@ -233,7 +233,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      tileColor: Theme.of(context).backgroundColor,
+                      tileColor: Theme.of(context).colorScheme.background,
                       onTap: () => showEvent(event),
                       onLongPress: () => removeEvent(event),
                       title: Row(

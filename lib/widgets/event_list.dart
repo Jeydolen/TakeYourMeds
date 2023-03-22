@@ -67,7 +67,7 @@ class EventListState extends State<EventList> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            tileColor: Theme.of(context).backgroundColor,
+            tileColor: Theme.of(context).colorScheme.background,
             onTap: () => showEvent(event),
             onLongPress: () => deleteEvent(event),
             title: Row(
