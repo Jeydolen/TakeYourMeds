@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/file_handler.dart';
-import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/utils.dart';
-import 'package:take_your_meds/common/day.dart';
+import 'package:take_your_meds/common/enums/day.dart';
+import 'package:take_your_meds/common/medication.dart';
+import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/time_button.dart';
 
 class AddReminderPage extends StatefulWidget {

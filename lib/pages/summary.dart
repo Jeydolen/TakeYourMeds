@@ -14,7 +14,7 @@ import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/pages/graphs.dart';
 import 'package:take_your_meds/widgets/export_dialog.dart';
-import 'package:take_your_meds/common/supported_formats.dart';
+import 'package:take_your_meds/common/enums/supported_formats.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
 class SummaryPage extends StatefulWidget {

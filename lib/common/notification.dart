@@ -1,4 +1,4 @@
-import 'package:take_your_meds/common/day.dart';
+import 'package:take_your_meds/common/enums/day.dart';
 
 class Notification {
   String title;

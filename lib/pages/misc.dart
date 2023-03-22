@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import 'package:take_your_meds/widgets/mood.dart';
+import 'package:take_your_meds/widgets/moods.dart';
 import 'package:take_your_meds/widgets/import_export.dart';
 
 class MiscPage extends StatefulWidget {

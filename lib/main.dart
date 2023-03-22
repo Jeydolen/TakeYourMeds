@@ -8,8 +8,8 @@ import 'package:timezone/timezone.dart' as tz;
 
 import 'package:take_your_meds/app.dart';
 
-import 'package:take_your_meds/common/theme.dart';
-import 'package:take_your_meds/common/dark_theme.dart';
+import 'package:take_your_meds/common/theme/theme.dart';
+import 'package:take_your_meds/common/theme/dark_theme.dart';
 
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';

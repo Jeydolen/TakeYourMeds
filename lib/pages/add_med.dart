@@ -7,8 +7,8 @@ import 'package:uuid/uuid.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'package:take_your_meds/common/unit.dart';
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/enums/unit.dart';
 import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
@@ -128,9 +128,7 @@ class AddMedPageState extends State<AddMedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("add_med").tr(),
-      ),
+      appBar: AppBar(title: const Text("add_med").tr()),
       body: ListView(
         children: [
           Form(
