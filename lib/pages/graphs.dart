@@ -21,8 +21,8 @@ class GraphsPageState extends State<GraphsPage> {
   Widget chart = const CircularProgressIndicator();
   Widget legend = const SizedBox();
   Widget dropdowns = const SizedBox();
-  late int selectedYear;
-  late Month selectedMonth;
+  int selectedYear = DateTime.now().year;
+  Month selectedMonth = Month.values[DateTime.now().month - 1];
   late List<Medication> meds;
   List<MedEvent>? medEvents;
   List<List<MedEvent>>? filteredEvents;
@@ -169,16 +169,12 @@ class GraphsPageState extends State<GraphsPage> {
       await getMedEvents();
     }
 
-    DateTime now = DateTime.now();
     setState(() {
       dropdowns = GraphDropdown(
         events: medEvents ??= [],
         update: filterEvents,
         updateTime: updateTime,
       );
-
-      selectedMonth = Month.values[now.month - 1];
-      selectedYear = now.year;
     });
 
     filterEvents();
@@ -351,7 +347,15 @@ class GraphsPageState extends State<GraphsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("data_for").tr(
+          args: [
+            DateFormat.yM().format(
+              DateTime(selectedYear, selectedMonth.integer),
+            ),
+          ],
+        ),
+      ),
       body: ListView(
         children: [
           Padding(

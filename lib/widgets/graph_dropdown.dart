@@ -37,6 +37,10 @@ class GraphDropdownState extends State<GraphDropdown> {
 
   void init() {
     List<MedEvent> medEvents = widget.events;
+    if (medEvents.isEmpty) {
+      return;
+    }
+
     // medEvents are sorted by date in getMedEvents()
     DateTime firstDate = medEvents[0].datetime;
     int lastYear = medEvents[medEvents.length - 1].datetime.year;
@@ -87,31 +91,33 @@ class GraphDropdownState extends State<GraphDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text("${"year".tr()}:"),
-            const SizedBox(width: 20),
-            DropdownButton(
-              items: yearItems,
-              value: selectedYear,
-              onChanged: changeYear,
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text("${"month".tr()}:"),
-            const SizedBox(width: 20),
-            DropdownButton(
-              items: monthItems,
-              value: selectedMonth,
-              onChanged: changeMonth,
-            ),
-          ],
-        ),
-      ],
-    );
+    return widget.events.isEmpty
+        ? const SizedBox()
+        : Column(
+            children: [
+              Row(
+                children: [
+                  Text("${"year".tr()}:"),
+                  const SizedBox(width: 20),
+                  DropdownButton(
+                    items: yearItems,
+                    value: selectedYear,
+                    onChanged: changeYear,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text("${"month".tr()}:"),
+                  const SizedBox(width: 20),
+                  DropdownButton(
+                    items: monthItems,
+                    value: selectedMonth,
+                    onChanged: changeMonth,
+                  ),
+                ],
+              ),
+            ],
+          );
   }
 }

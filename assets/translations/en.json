@@ -102,5 +102,6 @@
   "october":"october",
   "november":"november",
   "december":"december",
-  "year": "Year"
+  "year": "Year",
+  "data_for": "Data for {}"
 }
