@@ -47,18 +47,15 @@ class _ClockButtonState extends State<ClockButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * .8,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          textStyle: TextStyle(
-            fontSize: MediaQuery.of(context).size.width / 6,
-          ),
-          minimumSize: const Size(100, 60),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        textStyle: TextStyle(
+          fontSize: MediaQuery.of(context).size.width / 6,
         ),
-        onPressed: takeMed,
-        child: Text(DateFormat.Hms().format(_now)),
+        minimumSize: const Size(100, 60),
       ),
+      onPressed: takeMed,
+      child: Text(DateFormat.Hms().format(_now)),
     );
   }
 }
