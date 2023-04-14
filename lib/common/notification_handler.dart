@@ -28,6 +28,10 @@ class NotificationHandler {
 
   NotificationHandler();
 
+  static cancelAllNotifications() async {
+    await flnp.cancelAll();
+  }
+
   static isNotificationScheduled(Notification notification) async {
     int i = scheduledNotifications.indexWhere((element) {
       if (element.time == notification.time &&

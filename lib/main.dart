@@ -41,7 +41,10 @@ Future<void> main() async {
   );
   await EasyLocalization.ensureInitialized();
   tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation('Europe/Brussels'));
+  
+  //String  timezoneId = 'Europe/Brussels';
+  String  timezoneId = DateTime.now().timeZoneName;
+  tz.setLocalLocation(tz.getLocation(timezoneId));
 
   runApp(
     EasyLocalization(
