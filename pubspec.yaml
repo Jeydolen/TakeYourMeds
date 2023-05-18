@@ -35,6 +35,8 @@ dependencies:
   cross_file: ^0.3.3+2
   flutter_colorpicker: ^1.0.3
   fl_chart : ^0.61.0
+  sqflite: ^2.2.6
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

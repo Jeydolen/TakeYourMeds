@@ -30,7 +30,7 @@ class MedEvent implements Event {
   ) {
     Medication med = Medication(
       json["name"],
-      json["dose"],
+      json["dose"] is String ? int.parse(json["dose"]) : json["dose"],
       json["unit"],
       json["notes"] ?? "/",
       json["uid"],
@@ -71,5 +71,14 @@ class MedEvent implements Event {
     csv += "\n";
 
     return csv;
+  }
+
+  Map<String, dynamic> toDBMap() {
+    return {
+      "date": _time.toIso8601String(),
+      "quantity": quantity,
+      "reason": reason,
+      "med_uid": uid,
+    };
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/widgets/meds_list.dart';
 
 class TookMedPage extends StatefulWidget {
@@ -11,31 +11,27 @@ class TookMedPage extends StatefulWidget {
 }
 
 class TookMedPageState extends State<TookMedPage> {
-  late Future<List<dynamic>> futureMeds;
+  List<dynamic>? meds;
 
   @override
   void initState() {
     super.initState();
-    futureMeds = Utils.fetchMeds();
+    getMeds();
+  }
+
+  void getMeds() async {
+    List meds = await DatabaseHandler().selectAll("meds");
+    setState(() {
+      this.meds = meds;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Get json saved data for meds and create list
-    // Make it reorganizable
-    // On click new page with med presentation, current date and quantity
-    return FutureBuilder<List<dynamic>>(
-      future: futureMeds,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return MedsList(json: snapshot.data ?? []);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
+    if (meds == null) {
+      return const CircularProgressIndicator();
+    }
 
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator();
-      },
-    );
+    return MedsList(json: meds ?? []);
   }
 }

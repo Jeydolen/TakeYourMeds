@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +6,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/enums/unit.dart';
 import 'package:take_your_meds/common/medication.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 
 class AddMedPage extends StatefulWidget {
   const AddMedPage({Key? key}) : super(key: key);
@@ -40,14 +38,17 @@ class AddMedPageState extends State<AddMedPage> {
     Map<String, dynamic> medJson = med.toJson();
     if (mounted && color != null && color != Theme.of(context).canvasColor) {
       medJson["color"] = color!.value;
+    } else {
+      medJson["color"] = -1;
     }
+
     currMeds.add(medJson);
+
+    DatabaseHandler().insert("meds", medJson);
 
     if (mounted) {
       Navigator.pop(context, currMeds);
     }
-
-    FileHandler.writeContent("meds", jsonEncode(currMeds));
   }
 
   void changeColor() {
@@ -100,6 +101,10 @@ class AddMedPageState extends State<AddMedPage> {
                 ]
               : null,
           onSaved: (String? value) {
+            if (f.inputType == TextInputType.number) {
+              formData[field] = int.tryParse(value!);
+              return;
+            }
             formData[field] = value;
           },
         );

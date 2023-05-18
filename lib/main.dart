@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:take_your_meds/pages/alarm.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -11,6 +11,7 @@ import 'package:take_your_meds/app.dart';
 import 'package:take_your_meds/common/theme/theme.dart';
 import 'package:take_your_meds/common/theme/dark_theme.dart';
 
+import 'package:take_your_meds/pages/alarm.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
 import 'package:take_your_meds/pages/add_reminder.dart';
@@ -33,6 +34,10 @@ Future onSelectNotification(String? payload) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize database
+  DatabaseHandler();
+
   await flnp.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (details) {

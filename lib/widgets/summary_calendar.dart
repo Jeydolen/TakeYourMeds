@@ -78,7 +78,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       _selectedEvents.value = _getEventsForDay(_selectedDay!);
 
       // Saving new list
-      widget.removeEvent(result);
+      widget.removeEvent(result, value);
     }
 
     return result;
@@ -89,7 +89,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       title: const Text("del_event_title").tr(),
       content: const Text("del_event").tr(args: [
         event.quantity.toString(),
-        event.medication.dose,
+        event.medication.dose.toString(),
         event.medication.name,
         DateFormat.yMMMEd().add_Hm().format(event.datetime)
       ]),
@@ -117,7 +117,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       _selectedEvents.value = _getEventsForDay(_selectedDay!);
 
       // Saving new list
-      widget.removeEvent(event);
+      widget.removeEvent(event, null);
     }
 
     return doRemove;

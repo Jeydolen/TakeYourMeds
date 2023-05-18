@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/enums/day.dart';
 import 'package:take_your_meds/common/enums/mood.dart';
-import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/mediastore.dart';
-
 import 'package:take_your_meds/common/file_handler.dart';
+
 import 'package:take_your_meds/widgets/cancel_button.dart';
 import 'package:take_your_meds/pages/misc.dart';
 
@@ -36,12 +36,20 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
   }
 
   void export() async {
+    /*
     List<dynamic> meds = await Utils.fetchMeds();
     List<dynamic> moods = await Utils.fetchMoods();
     List<dynamic> reminders = await Utils.fetchReminders();
+    */
+
+    List<dynamic> meds = await DatabaseHandler().selectAll("meds");
+    List<dynamic> events = await DatabaseHandler().selectAll("events");
+    List<dynamic> moods = await DatabaseHandler().selectAll("moods");
+    List<dynamic> reminders = await DatabaseHandler().selectAll("reminders");
 
     Map<String, dynamic> allData = {
       "meds": meds,
+      "events": events,
       "moods": moods,
       "reminders": reminders,
     };
@@ -67,12 +75,14 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
       return;
     }
 
+    var db = DatabaseHandler();
+
     if (json["meds"] != null) {
       // Meds data validation
       List<Map<String, dynamic>>? validMeds = validateMeds(json["meds"]);
       if (validMeds != null) {
         // Write to "meds" file
-        FileHandler.writeContent("meds", jsonEncode(validMeds));
+        await FileHandler.writeContent("moods", jsonEncode(validMeds));
       }
     }
 
@@ -82,7 +92,7 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
 
       if (validMoods != null) {
         // Write to "meds" file
-        FileHandler.writeContent("moods", jsonEncode(validMoods));
+        await FileHandler.writeContent("moods", jsonEncode(validMoods));
       }
     }
 
@@ -93,12 +103,14 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
 
       if (validReminders != null) {
         // Write to "meds" file
-        FileHandler.writeContent("reminders", jsonEncode(validReminders));
+        await FileHandler.writeContent("reminders", jsonEncode(validReminders));
       }
     }
 
-    showSnackBar(const Text("import_success").tr());
+    db.importDataFromFiles();
+
     if (mounted) {
+      showSnackBar(const Text("import_success").tr());
       MiscPage.reloadPage(context);
     }
   }

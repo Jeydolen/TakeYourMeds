@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 
 class Alarm extends StatefulWidget {
   const Alarm({super.key, this.payload});
@@ -44,17 +42,14 @@ class AlarmState extends State<Alarm> {
       return;
     }
 
-    // Add to med data
-    List<dynamic> dates = med!["dates"] ?? [];
-
-    dates.add({
+    Map<String, dynamic> event = {
       "date": DateTime.now().toIso8601String(),
-      "quantity": quantityField.text,
+      "quantity": int.parse(quantityField.text),
       "reason": reasonField.text
-    });
+    };
 
-    med!["dates"] = dates;
-    await FileHandler.writeContent("meds", jsonEncode(meds));
+    event["med_uid"] = med!["uid"];
+    DatabaseHandler().insert("events", event);
 
     await setLastMedTaken(med!, quantity: quantityField.text);
 
@@ -66,7 +61,9 @@ class AlarmState extends State<Alarm> {
   }
 
   void getMedFromUid(String uid) async {
-    meds = await Utils.fetchMeds();
+    // After full import replace by this:
+    meds = await DatabaseHandler().selectAll("meds");
+
     med = meds!.firstWhere(
       (element) => element["uid"] == uid,
       orElse: () => null,

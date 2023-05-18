@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:take_your_meds/common/database.dart';
 
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/cancel_button.dart';
@@ -23,37 +24,41 @@ class MedsListState extends State<MedsList> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              child: const Text("no_meds").tr(),
-            ),
+            Flexible(child: const Text("no_meds").tr()),
             ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
           ],
         ),
       );
 
   void reorderList(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      final dynamic item = json.removeAt(oldIndex);
-      json.insert(newIndex, item);
-    });
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    final dynamic item = json.removeAt(oldIndex);
+    json.insert(newIndex, item);
+    setState(() {});
     FileHandler.writeContent("meds", jsonEncode(json));
   }
 
-  void removeMed(element) {
-    setState(() {
-      json.remove(element);
-      if (json.isEmpty) {
-        edit = false;
-      }
-    });
-    FileHandler.writeContent("meds", jsonEncode(json));
+  void removeMed(element) async {
+    await DatabaseHandler().delete("meds", "uid = ?", [element["uid"]]);
+
+    if (mounted) {
+      setState(() {
+        json.remove(element);
+        if (json.isEmpty) {
+          edit = false;
+        }
+      });
+    }
   }
 
   void showMed(Map<String, dynamic> json) {
-    Navigator.pushNamed(context, "/med_presentation", arguments: json);
+    Navigator.pushNamed(
+      context,
+      "/med_presentation",
+      arguments: json,
+    );
   }
 
   void addMed() async {
@@ -61,6 +66,7 @@ class MedsListState extends State<MedsList> {
     if (result == null) {
       return;
     }
+
     setState(() {
       json = result;
     });
@@ -70,6 +76,7 @@ class MedsListState extends State<MedsList> {
     if (json.isEmpty) {
       return;
     }
+
     setState(() {
       edit = !edit;
     });
@@ -93,19 +100,27 @@ class MedsListState extends State<MedsList> {
   }
 
   void updateFavorite(Map<String, dynamic> element) async {
-    element["favorite"] =
-        element["favorite"] is! bool ? true : !element["favorite"];
+    Map<String, dynamic> updatedEl = Map.from(element);
 
-    setState(() {
-      json[json.indexOf(element)] = element;
-    });
+    updatedEl["favorite"] = element["favorite"] == 0 ? 1 : 0;
 
-    FileHandler.writeContent("meds", jsonEncode(json));
+    DatabaseHandler().update(
+      "meds",
+      updatedEl,
+      where: "uid = ?",
+      whereArgs: [element["uid"]],
+    );
+
+    if (mounted) {
+      setState(() {
+        json[json.indexOf(element)] = updatedEl;
+      });
+    }
   }
 
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
     return json.map((element) {
-      Color backgroundColor = element["color"] is int
+      Color backgroundColor = element["color"] is int && element["color"] != -1
           ? Color(element["color"])
           : Theme.of(context).canvasColor;
 
@@ -126,12 +141,12 @@ class MedsListState extends State<MedsList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(element["name"]),
-              Text(element["dose"]),
+              Text(element["dose"].toString()),
               Text(element["unit"]).tr(),
               TextButton(
                 style: btnStyle,
                 onPressed: () => updateFavorite(element),
-                child: element["favorite"] == true
+                child: element["favorite"] == 1
                     ? const Icon(Icons.star)
                     : const Icon(Icons.star_outline),
               )
@@ -153,7 +168,8 @@ class MedsListState extends State<MedsList> {
   @override
   void initState() {
     super.initState();
-    json = widget.json;
+
+    json = List.from(widget.json);
   }
 
   @override

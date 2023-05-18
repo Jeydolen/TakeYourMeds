@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/enums/day.dart';
 import 'package:take_your_meds/common/medication.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/time_button.dart';
 
 class AddReminderPage extends StatefulWidget {
@@ -65,7 +65,14 @@ class AddReminderPageState extends State<AddReminderPage> {
       await fetchReminders();
     }
     reminders!.add(obj);
-    await FileHandler.writeContent("reminders", jsonEncode(reminders));
+
+    // SQLite does not support hash so converting to String
+    obj["days"] = jsonEncode(obj["days"]);
+
+    // SQLite does not support BOOLEAN so casting to Int
+    obj["enabled"] = obj["enabled"] ? 1 : 0;
+    obj["recurrent"] = obj["recurrent"] ? 1 : 0;
+    DatabaseHandler().insert("reminders", obj);
 
     if (mounted) {
       Navigator.pop(context, obj);

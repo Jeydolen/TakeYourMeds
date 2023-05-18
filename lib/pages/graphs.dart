@@ -41,6 +41,8 @@ class GraphsPageState extends State<GraphsPage> {
 
   Future<void> getMeds() async {
     List medsJson = await Utils.fetchMeds();
+    //List medsJson = await DatabaseHandler().selectAll("meds");
+
     setState(() {
       meds = medsJson
           .map((e) => Medication(
@@ -56,6 +58,7 @@ class GraphsPageState extends State<GraphsPage> {
 
   Future<void> getMedEvents() async {
     List<dynamic> jsonMeds = await Utils.fetchMeds();
+    //List jsonMeds = await DatabaseHandler().selectAll("events");
 
     setState(() {
       medEvents = Utils.createEvents(jsonMeds);

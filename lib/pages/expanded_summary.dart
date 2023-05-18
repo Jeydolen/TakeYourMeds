@@ -64,6 +64,8 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
 
   Future<void> getMoods() async {
     var res = await Utils.fetchMoods();
+    // var res = await DatabaseHandler().selectAll("moods");
+
     setState(() {
       moods = res;
     });
@@ -86,7 +88,7 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
             "uid": event.uid,
             "name": "${eventMed.name} ${eventMed.dose} ${eventMed.unit}",
             "unit": eventMed.unit,
-            "dose": int.parse(eventMed.dose),
+            "dose": eventMed.dose,
             "quantity": event.quantity,
           };
 

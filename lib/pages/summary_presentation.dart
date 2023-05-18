@@ -27,7 +27,9 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
       .map(
         (element) => Medication(
           element["name"],
-          element["dose"],
+          element["dose"] is String
+              ? int.parse(element["dose"])
+              : element["dose"],
           element["unit"],
           element["notes"],
           element["uid"],
@@ -102,7 +104,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
               const SizedBox(height: 20),
               const Text("med_dosage_unit").tr(args: [
                 event.quantity.toString(),
-                eventMed.dose,
+                eventMed.dose.toString(),
                 eventMed.unit,
               ]),
               const SizedBox(height: 20),

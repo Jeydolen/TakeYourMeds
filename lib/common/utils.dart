@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+
 import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/medication.dart';
@@ -91,5 +92,17 @@ class Utils {
       }
     }
     return events;
+  }
+
+  static List<MedEvent> createEvents_(List<Map<String, dynamic>> events) {
+    List<MedEvent> medEvents = [];
+    for (var event in events) {
+      DateTime date = DateTime.parse(event["date"]);
+      int quantity = event["quantity"];
+      String reason = event["reason"];
+      medEvents.add(MedEvent.fromJson(event, quantity, date, reason));
+    }
+
+    return medEvents;
   }
 }
