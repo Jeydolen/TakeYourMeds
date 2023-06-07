@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:take_your_meds/pages/alarm.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -41,9 +42,9 @@ Future<void> main() async {
   );
   await EasyLocalization.ensureInitialized();
   tz.initializeTimeZones();
-  
+
   //String  timezoneId = 'Europe/Brussels';
-  String  timezoneId = DateTime.now().timeZoneName;
+  final String timezoneId = await FlutterNativeTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timezoneId));
 
   runApp(

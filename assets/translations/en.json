@@ -3,7 +3,7 @@
   "submit": "Submit",
   "none": "None",
   "add_reminder": "Add reminder",
-  "recurrent": "Recurrent",
+  "recurrent": "Recurrent (experimental)",
   "one_med_length": "Can't make it editable because no other meds detected",
   "file_saved": "File saved at: {}",
   "export_summary": "Export summary",
@@ -103,5 +103,7 @@
   "november":"november",
   "december":"december",
   "year": "Year",
-  "data_for": "Data for {}"
+  "data_for": "Data for {}",
+  "del_favorite_title": "Delete favorite ?",
+  "del_favorite": "Do you really want to delete this favorite ?\nMedication: {}"
 }

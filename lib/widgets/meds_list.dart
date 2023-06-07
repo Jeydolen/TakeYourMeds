@@ -92,15 +92,38 @@ class MedsListState extends State<MedsList> {
     }
   }
 
+  Future<bool?> addFavoriteDialog(dynamic element) async {
+    AlertDialog dialog = AlertDialog(
+      title: const Text("del_favorite_title").tr(),
+      content: const Text("del_favorite").tr(args: [element["name"]]),
+      actions: const <Widget>[CancelButton(), DeleteButton()],
+    );
+
+    bool? doAdd = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => dialog,
+    );
+
+    return doAdd;
+  }
+
   void updateFavorite(Map<String, dynamic> element) async {
-    element["favorite"] =
-        element["favorite"] is! bool ? true : !element["favorite"];
+    bool? doUpdate = true;
+    if (element["favorite"] == true) {
+      // Show confirmation
+      doUpdate = await addFavoriteDialog(element);
+    }
 
-    setState(() {
-      json[json.indexOf(element)] = element;
-    });
+    if (doUpdate == true) {
+      element["favorite"] =
+          element["favorite"] is! bool ? true : !element["favorite"];
 
-    FileHandler.writeContent("meds", jsonEncode(json));
+      setState(() {
+        json[json.indexOf(element)] = element;
+      });
+
+      FileHandler.writeContent("meds", jsonEncode(json));
+    }
   }
 
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
@@ -126,7 +149,7 @@ class MedsListState extends State<MedsList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(element["name"]),
-              Text(element["dose"]),
+              Text(element["dose"].toString()),
               Text(element["unit"]).tr(),
               TextButton(
                 style: btnStyle,

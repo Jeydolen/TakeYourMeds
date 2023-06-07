@@ -3,7 +3,7 @@
   "submit": "Envoyer",
   "none": "Aucun",
   "add_reminder": "Ajouter un rappel",
-  "recurrent": "Récurrent",
+  "recurrent": "Récurrent (expérimental)",
   "one_med_length": "Ne peut pas être édité car aucun autre médicament n'est détecté",
   "file_saved": "Fichier sauvegardé à: {}",
   "export_summary": "Exporter le résumé",
@@ -103,5 +103,7 @@
   "november":"novembre",
   "december":"decembre",
   "year": "Année",
-  "data_for": "Données pour le {}"
+  "data_for": "Données pour le {}",
+  "del_favorite_title": "Supprimer le favori ?",
+  "del_favorite": "Voulez-vous vraiment supprimer le favori ?\nMédicament : {}"
 }
