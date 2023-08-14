@@ -4,7 +4,7 @@
   "none": "None",
   "add_reminder": "Add reminder",
   "recurrent": "Recurrent",
-  "one_med_length": "Can't make it editable because no other meds detected",
+  "one_med_length": "Can't make it editable because no other meds are detected",
   "file_saved": "File saved at: {}",
   "export_summary": "Export summary",
   "share": "share",

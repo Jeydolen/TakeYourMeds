@@ -33,7 +33,6 @@ class MedsListState extends State<MedsList> {
       newIndex -= 1;
     }
 
-    // TODO: Find how to reorder
     final dynamic item = json.removeAt(oldIndex);
     json.insert(newIndex, item);
     setState(() {});
@@ -46,7 +45,12 @@ class MedsListState extends State<MedsList> {
   }
 
   void removeMed(element) async {
-    await DatabaseHandler().delete("meds", "uid = ?", [element["uid"]]);
+    await DatabaseHandler().update(
+      "meds",
+      {"active": 0},
+      where: "uid = ?",
+      whereArgs: [element["uid"]],
+    );
 
     if (mounted) {
       setState(() {

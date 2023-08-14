@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/database.dart';
-import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/widgets/time_button.dart';
 
 class TookMedPresentationPage extends StatefulWidget {

@@ -64,7 +64,6 @@ class SummaryCalendarState extends State<SummaryCalendar> {
       context,
       MaterialPageRoute(
         builder: (_) => SummaryPresentationPage(
-          json: widget.json,
           event: value,
         ),
       ),
