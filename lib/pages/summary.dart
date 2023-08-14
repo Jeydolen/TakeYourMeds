@@ -176,8 +176,9 @@ class SummaryPageState extends State<SummaryPage> {
     }
   }
 
-  Future<List<MedEvent>> createEvents(Future<List<dynamic>> data) async {
-    List json = await data;
+  Future<List<MedEvent>> createEvents() async {
+    var json = await DatabaseHandler().rawQuery(
+        "SELECT * FROM events e INNER JOIN meds m on m.uid = e.med_uid");
     setState(() {
       this.json = json;
     });
@@ -189,7 +190,7 @@ class SummaryPageState extends State<SummaryPage> {
   void initState() {
     super.initState();
 
-    summary = createEvents(DatabaseHandler().selectAll("events"));
+    summary = createEvents();
   }
 
   @override
@@ -202,7 +203,6 @@ class SummaryPageState extends State<SummaryPage> {
           widget = SummaryCalendar(
             medEvents: snapshot.data ?? [],
             json: json,
-            //removeEvent: removeEvent,
             removeEvent: removeEvent,
           );
         } else if (snapshot.hasError) {

@@ -188,7 +188,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                 shape: BoxShape.circle,
               ),
               markerDecoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).colorScheme.onBackground,
                 shape: BoxShape.circle,
               ),
               todayTextStyle: const TextStyle(),

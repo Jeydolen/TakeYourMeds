@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:take_your_meds/common/database.dart';
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/widgets/meds_list.dart';
 
 class TookMedPage extends StatefulWidget {
@@ -20,7 +20,8 @@ class TookMedPageState extends State<TookMedPage> {
   }
 
   void getMeds() async {
-    List meds = await DatabaseHandler().selectAll("meds");
+    List meds = await Utils.fetchMeds();
+
     setState(() {
       this.meds = meds;
     });

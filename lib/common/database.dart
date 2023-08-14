@@ -24,12 +24,14 @@ class DatabaseHandler {
     _database = await openDatabase(
       join(await getDatabasesPath(), 'take_your_meds.db'),
       version: version,
+      //onCreate: _onCreate
+
       onConfigure: (db) async {
-        //await _dropAllTables(db);
+        // await _dropAllTables(db);
 
         if (await needImport(db)) {
           await _onCreate(db, version);
-          await importDataFromFiles(db: db);
+          //await importDataFromFiles(db: db);
         }
       },
     );
@@ -57,34 +59,44 @@ class DatabaseHandler {
   Future<void> _onCreate(Database db, version) async {
     String medTableQuery = '''
         CREATE TABLE IF NOT EXISTS meds(
-          int INTEGER PRIMARY KEY AUTOINCREMENT, 
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
           uid TEXT, 
           name TEXT, 
           dose INTEGER, 
           unit TEXT, 
           notes TEXT, 
           color INTEGER,
-          favorite INTEGER DEFAULT 0 NOT NULL CHECK (favorite IN (0, 1))
+          favorite INTEGER DEFAULT 0 NOT NULL CHECK (favorite IN (0, 1)),
+          /* When deleting med, only disable it to keep it in history */
+          active INTEGER DEFAULT 1 NOT NULL CHECK (active IN (0, 1)),
+          /* Order of med in med list (don't forget to insert ROWID by default) */
+          order_int INTEGER NOT NULL DEFERRABLE INITIALLY DEFERRED
         );
       ''';
 
     String eventTableQuery = '''
         CREATE TABLE IF NOT EXISTS events(
-          int INTEGER PRIMARY KEY AUTOINCREMENT, 
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
           date TEXT, 
           quantity INTEGER, 
           reason TEXT, 
-          med_uid TEXT, 
+          med_uid TEXT,
           FOREIGN KEY (med_uid) REFERENCES meds(uid)
         );
       ''';
 
-    String moodTableQuery =
-        "CREATE TABLE IF NOT EXISTS moods(int INTEGER PRIMARY KEY AUTOINCREMENT, mood_integer INTEGER, time TEXT);";
+    String moodTableQuery = '''
+        CREATE TABLE IF NOT EXISTS moods(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          mood_int INTEGER,
+          mood TEXT,
+          date TEXT
+        );
+      ''';
 
     String reminderTable = '''
         CREATE TABLE IF NOT EXISTS reminders(
-          int INTEGER PRIMARY KEY AUTOINCREMENT,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
           enabled INTEGER DEFAULT 0 NOT NULL CHECK (enabled IN (0, 1)), 
           recurrent INTEGER DEFAULT 0 NOT NULL CHECK (enabled IN (0, 1)), 
           time TEXT,
@@ -117,8 +129,19 @@ class DatabaseHandler {
     return _database.delete(table, where: where, whereArgs: whereArgs);
   }
 
-  Future<List<Map<String, Object?>>> selectAll(String table) {
-    return _database.query(table);
+  Future<List<Map<String, Object?>>> selectAll(String table,
+      {String? orderBy, String? where, List<Object?>? whereArgs}) {
+    return _database.query(table,
+        orderBy: orderBy, where: where, whereArgs: whereArgs);
+  }
+
+  Future<List<Map<String, Object?>>> rawQuery(String sql,
+      [List<Object?>? arguments]) {
+    return _database.rawQuery(sql, arguments);
+  }
+
+  Batch batch() {
+    return _database.batch();
   }
 
   void importData(List data, String table, {Database? db}) {

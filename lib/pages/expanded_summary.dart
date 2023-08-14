@@ -64,7 +64,6 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
 
   Future<void> getMoods() async {
     var res = await Utils.fetchMoods();
-    // var res = await DatabaseHandler().selectAll("moods");
 
     setState(() {
       moods = res;
@@ -78,7 +77,7 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
 
     Widget body = Center(child: const Text("nothing_show").tr());
 
-    if (medEvents.isNotEmpty && mounted) {
+    if (mounted) {
       List<Map<String, dynamic>> total = [];
       for (MedEvent event in medEvents) {
         int index = total.indexWhere((element) => element["uid"] == event.uid);
@@ -128,12 +127,13 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
 
       List<Widget> moodWidgets = [];
       for (Map<String, dynamic> el in moods!) {
-        Duration timeDiff = DateTime.parse(el["iso8601_date"]).difference(day);
+        DateTime moodDate = DateTime.parse(el["date"]);
+        Duration timeDiff = moodDate.difference(day);
         // Getting only moods for current day
         if (timeDiff.isNegative || timeDiff > const Duration(days: 1)) {
           continue;
         }
-        Mood mood = Mood.fromValue(el["mood"]);
+        Mood mood = Mood.fromValue(el["mood_int"]);
         var widget = Container(
           margin: const EdgeInsets.symmetric(
             vertical: 4,
@@ -148,7 +148,7 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr(mood.string)),
-                Text(el["time"]),
+                Text(DateFormat.Hm().format(moodDate)),
               ],
             ),
           ),
@@ -182,9 +182,7 @@ class ExpandedSummaryPageState extends State<ExpandedSummaryPage> {
           ),
         ],
       );
-    }
 
-    if (mounted) {
       setState(() {
         view = body;
       });

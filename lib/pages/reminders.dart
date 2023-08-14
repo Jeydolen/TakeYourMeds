@@ -27,7 +27,7 @@ class RemindersPageState extends State<RemindersPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Alarms + mood tracker
+    // Alarms
     return Scaffold(
       key: key,
       appBar: AppBar(

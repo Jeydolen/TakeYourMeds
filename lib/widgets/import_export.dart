@@ -59,6 +59,8 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
   }
 
   void import() async {
+    /** TODO: Implements */
+    return;
     dynamic json = await MediaStore.importItem();
     if (json == null || (json is! Map)) {
       if (mounted) {
@@ -269,7 +271,7 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TextButton(onPressed: import, child: const Text("import").tr()),
+        //TextButton(onPressed: import, child: const Text("import").tr()),
         TextButton(onPressed: export, child: const Text("export_data").tr()),
       ],
     );

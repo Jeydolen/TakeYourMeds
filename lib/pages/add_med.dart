@@ -24,8 +24,6 @@ class AddMedPageState extends State<AddMedPage> {
   Color? color;
 
   void saveData() async {
-    List<dynamic> currMeds = await Utils.fetchMeds();
-
     formData["unit"] = dropdownValue;
     Medication med = Medication(
       formData["name"],
@@ -42,12 +40,19 @@ class AddMedPageState extends State<AddMedPage> {
       medJson["color"] = -1;
     }
 
-    currMeds.add(medJson);
+    List<Map<String, Object?>> lastId = await DatabaseHandler()
+        .rawQuery("SELECT last_insert_rowid() as last_id FROM meds");
 
+    int? orderInt = 0;
+    if (lastId.isNotEmpty) {
+      orderInt = lastId[0]["last_id"] as int?;
+    }
+
+    medJson["order_int"] = orderInt;
     DatabaseHandler().insert("meds", medJson);
 
     if (mounted) {
-      Navigator.pop(context, currMeds);
+      Navigator.pop(context, medJson);
     }
   }
 

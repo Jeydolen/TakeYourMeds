@@ -51,8 +51,6 @@ class AlarmState extends State<Alarm> {
     event["med_uid"] = med!["uid"];
     DatabaseHandler().insert("events", event);
 
-    await setLastMedTaken(med!, quantity: quantityField.text);
-
     if (mounted) {
       // Known bug: When Navigator.pop() is called main page is not updated
       // TODO: Fix

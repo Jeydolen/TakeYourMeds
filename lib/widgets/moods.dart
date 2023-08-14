@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/enums/mood.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 
 class MoodsWidget extends StatefulWidget {
   const MoodsWidget({super.key});
@@ -17,19 +14,15 @@ class MoodsWidget extends StatefulWidget {
 
 class MoodsWidgetState extends State<MoodsWidget> {
   void saveMood(Mood mood) async {
-    List<dynamic> currMoods = await Utils.fetchMoods();
-
     DateTime now = DateTime.now();
+
     dynamic obj = {
-      "date": DateFormat.yMd().format(now),
-      "time": DateFormat.Hm().format(now),
-      "iso8601_date": now.toIso8601String(),
-      "mood": mood.value,
-      "mood_string": mood.string
+      "date": now.toIso8601String(),
+      "mood_int": mood.value,
+      "mood": mood.string
     };
 
-    currMoods.add(obj);
-    await FileHandler.writeContent("moods", jsonEncode(currMoods));
+    await DatabaseHandler().insert("moods", obj);
   }
 
   Widget moodButton(Mood mood) {

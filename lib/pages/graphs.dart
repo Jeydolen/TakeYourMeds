@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/medication.dart';
 import 'package:take_your_meds/common/enums/month.dart';
 
@@ -41,7 +42,6 @@ class GraphsPageState extends State<GraphsPage> {
 
   Future<void> getMeds() async {
     List medsJson = await Utils.fetchMeds();
-    //List medsJson = await DatabaseHandler().selectAll("meds");
 
     setState(() {
       meds = medsJson
@@ -57,8 +57,17 @@ class GraphsPageState extends State<GraphsPage> {
   }
 
   Future<void> getMedEvents() async {
-    List<dynamic> jsonMeds = await Utils.fetchMeds();
-    //List jsonMeds = await DatabaseHandler().selectAll("events");
+    DateTime monthStart = DateTime(selectedYear, selectedMonth.integer);
+    DateTime monthEnd = DateTime(selectedYear, selectedMonth.integer + 1);
+    List jsonMeds = await DatabaseHandler().rawQuery('''
+      SELECT *
+      FROM events e
+      INNER JOIN meds m on m.uid = e.med_uid
+      WHERE e.date BETWEEN ? AND ?
+      ''', [
+      monthStart.toIso8601String(),
+      monthEnd.toIso8601String(),
+    ]);
 
     setState(() {
       medEvents = Utils.createEvents(jsonMeds);
@@ -122,21 +131,10 @@ class GraphsPageState extends State<GraphsPage> {
     filterEvents(med: med);
   }
 
-  void filterEvents({int? year, Month? month, Medication? med}) {
-    if (medEvents == null) {
-      return;
-    }
+  void filterEvents({int? year, Month? month, Medication? med}) async {
+    await getMedEvents();
 
-    int filterYear = year ??= selectedYear;
-    Month filterMonth = month ??= selectedMonth;
-    DateTime filteredTime = DateTime(filterYear, filterMonth.integer);
-
-    List<MedEvent> currentMonthEvents = medEvents!
-        .where((el) => isSameMonth(el.datetime, filteredTime))
-        .toList();
-
-    List<List<MedEvent>> mergedEvents = mergeEvents(currentMonthEvents);
-
+    List<List<MedEvent>> mergedEvents = mergeEvents(medEvents ?? []);
     if (med != null) {
       int index = filteredMeds.indexWhere((el) => el.uid == med.uid);
 
@@ -144,7 +142,7 @@ class GraphsPageState extends State<GraphsPage> {
       if (index == -1) {
         filteredMeds.add(med);
       } else {
-        filteredMeds.remove(med);
+        filteredMeds.removeAt(index);
       }
 
       for (List<MedEvent> eventsInDay in mergedEvents) {

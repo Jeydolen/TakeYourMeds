@@ -19,7 +19,8 @@ class _AppState extends State<App> {
   static final List<Widget> _pages = [
     const HomePage(),
     const SummaryPage(),
-    const RemindersPage(),
+    // TODO: Fix this shit
+    //const RemindersPage(),
     const MiscPage(),
   ];
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/file_handler.dart';
 
 class LastMedTaken extends StatefulWidget {
@@ -23,34 +24,41 @@ class LastMedTakenState extends State<LastMedTaken> {
   }
 
   void initValues() async {
-    Widget lastTakenWidget =
-        await getLastTaken("last_taken") ?? const SizedBox();
+    Widget lastTakenWidget = await getLastTaken() ?? const SizedBox();
     Widget lastFavoriteWidget =
-        await getLastTaken("last_favorite_taken") ?? const SizedBox();
+        await getLastTaken(isFavorite: true) ?? const SizedBox();
     setState(() {
       lastTaken = lastTakenWidget;
       lastFavoriteTaken = lastFavoriteWidget;
     });
   }
 
-  Future<Widget?> getLastTaken(String filename) async {
-    String? lastMedTaken = await FileHandler.readContent(filename);
-    if (lastMedTaken == null) {
+  Future<Widget?> getLastTaken({bool isFavorite = false}) async {
+    if (!DatabaseHandler.isDBAvailable) {
       return null;
     }
 
-    dynamic jsonTaken = jsonDecode(lastMedTaken);
-    if (jsonTaken is Map<String, dynamic> && mounted) {
-      String quantity = jsonTaken["quantity"] ?? "";
+    String query = "SELECT * FROM events INNER JOIN meds on uid = med_uid ";
+    if (isFavorite) {
+      query += "WHERE favorite = 1 ";
+    }
+    query += "ORDER BY date desc LIMIT 1";
+
+    List result = await DatabaseHandler().rawQuery(query);
+
+    if (mounted && result.isNotEmpty) {
+      Map<String, dynamic> jsonTaken = result[0];
+      String type = isFavorite ? "last_favorite_taken" : "last_taken";
+      String quantity = jsonTaken["quantity"].toString();
       DateTime date = DateTime.parse(jsonTaken["date"]);
 
       return SizedBox(
         width: MediaQuery.of(context).size.width * .8,
         child: Text(
-          filename,
+          type,
           style: const TextStyle(fontSize: 18),
         ).tr(args: [
-          "$quantity x ${jsonTaken["name"]} ${tr(jsonTaken["unit"])}",
+          "$quantity x ${tr(jsonTaken["unit"])} ${jsonTaken["name"]}",
           DateFormat.Hm().add_EEEE().format(date)
         ]),
       );

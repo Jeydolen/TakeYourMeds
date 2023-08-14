@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:take_your_meds/common/database.dart';
 
-import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/cancel_button.dart';
 import 'package:take_your_meds/widgets/delete_button.dart';
 
@@ -34,10 +32,17 @@ class MedsListState extends State<MedsList> {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
+
+    // TODO: Find how to reorder
     final dynamic item = json.removeAt(oldIndex);
     json.insert(newIndex, item);
     setState(() {});
-    FileHandler.writeContent("meds", jsonEncode(json));
+    Batch batch = DatabaseHandler().batch();
+    for (int i = 0; i < json.length; i++) {
+      batch.update("meds", {"order_int": i},
+          where: "uid = ?", whereArgs: [json[i]["uid"]]);
+    }
+    batch.commit();
   }
 
   void removeMed(element) async {
@@ -68,7 +73,7 @@ class MedsListState extends State<MedsList> {
     }
 
     setState(() {
-      json = result;
+      json.add(result);
     });
   }
 
