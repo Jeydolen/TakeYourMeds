@@ -17,8 +17,8 @@ class MoodEvent extends Event {
   MoodEvent(this.mood, this._time);
 
   factory MoodEvent.fromJson(Map<String, dynamic> json) {
-    Mood mood = Mood.values[json["mood"]];
-    DateTime time = DateTime.parse(json["iso8601_date"]);
+    Mood mood = Mood.values.firstWhere((el) => el.value == json["mood_int"]);
+    DateTime time = DateTime.parse(json["date"]);
     return MoodEvent(mood, time);
   }
 

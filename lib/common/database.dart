@@ -24,8 +24,7 @@ class DatabaseHandler {
     _database = await openDatabase(
       join(await getDatabasesPath(), 'take_your_meds.db'),
       version: version,
-      //onCreate: _onCreate
-
+      onCreate: _onCreate,
       onConfigure: (db) async {
         // await _dropAllTables(db);
 

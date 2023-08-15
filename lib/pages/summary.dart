@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cross_file/cross_file.dart';
@@ -67,26 +68,29 @@ class SummaryPageState extends State<SummaryPage> {
   String buildCSV(List<MedEvent> eventList, List<dynamic> moodsList) {
     // Exports medication data
     String data = "";
-    for (var e in MedEvent.header) {
-      data += "$e,";
+    for (String header in MedEvent.header) {
+      data += "${toBeginningOfSentenceCase(header)},";
     }
     data += "\n";
 
-    for (var e in eventList) {
-      data += e.toCSV();
+    for (MedEvent event in eventList) {
+      data += event.toCSV();
     }
     // ----------------------------
 
     data += "\n\n";
     // Exports mood data
-    for (var e in MoodEvent.headers) {
-      data += "$e,";
+    for (String header in MoodEvent.headers) {
+      data += "${toBeginningOfSentenceCase(header)},";
     }
     data += "\n";
 
     List<String> moodCsv =
         moodsList.map((e) => MoodEvent.fromJson(e).toCSV()).toList();
-    for (var e in moodCsv) {
+    print(moodCsv);
+    return "";
+    for (String e in moodCsv) {
+      print(e);
       data += e;
     }
     // ----------------------------

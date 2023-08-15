@@ -1,15 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import 'package:easy_localization/easy_localization.dart';
+
+import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/medication.dart';
-import 'package:take_your_meds/common/utils.dart';
 
 class SummaryPresentationPage extends StatefulWidget {
-  const SummaryPresentationPage({
-    Key? key,
-    required this.event,
-  }) : super(key: key);
+  const SummaryPresentationPage({Key? key, required this.event})
+      : super(key: key);
   final MedEvent event;
 
   @override
@@ -107,15 +107,16 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
                   ? dropDown
                   : const Text("med_name").tr(args: [eventMed.name]),
               const SizedBox(height: 20),
-              const Text("med_dosage_unit").tr(args: [
-                event.quantity.toString(),
-                eventMed.dose.toString(),
-                eventMed.unit,
-              ]),
+              const Text("med_dosage_unit").tr(
+                args: [
+                  event.quantity.toString(),
+                  eventMed.dose.toString(),
+                  eventMed.unit,
+                ],
+              ),
               const SizedBox(height: 20),
-              const Text("med_notes").tr(args: [
-                (eventMed.notes.isEmpty) ? "/" : eventMed.notes,
-              ]),
+              const Text("med_notes")
+                  .tr(args: [(eventMed.notes.isEmpty) ? "/" : eventMed.notes]),
               const SizedBox(height: 20),
               const Text("time").tr(args: [event.time]),
               const SizedBox(height: 20),

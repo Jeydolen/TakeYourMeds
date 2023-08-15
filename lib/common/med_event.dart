@@ -63,7 +63,12 @@ class MedEvent implements Event {
     medToJson.remove("uid");
     for (int i = 0; i < medToJson.length; i++) {
       if (medToJson[header[i]] != null) {
-        csv += medToJson[header[i]] + ",";
+        var value = medToJson[header[i]];
+        if (value is int) {
+          value = value.toString();
+        }
+
+        csv += value + ",";
       } else {
         csv += ",";
       }
