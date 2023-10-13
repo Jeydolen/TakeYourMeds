@@ -18,9 +18,8 @@ abstract class Event {
       } else {
         csv += ",";
       }
-
-      csv += "\n";
     }
+    csv += "\n";
 
     return csv;
   }

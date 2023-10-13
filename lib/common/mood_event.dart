@@ -33,4 +33,22 @@ class MoodEvent extends Event {
     };
     return obj;
   }
+
+  @override
+  String toCSV() {
+    String csv = "";
+
+    Map json = toJson();
+    print(json);
+    for (String header in headers) {
+      if (json[header] != null) {
+        csv += "${json[header]},";
+      } else {
+        csv += ",";
+      }
+    }
+    csv += "\n";
+
+    return csv;
+  }
 }

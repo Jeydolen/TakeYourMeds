@@ -87,13 +87,9 @@ class SummaryPageState extends State<SummaryPage> {
 
     List<String> moodCsv =
         moodsList.map((e) => MoodEvent.fromJson(e).toCSV()).toList();
-    print(moodCsv);
-    return "";
     for (String e in moodCsv) {
-      print(e);
       data += e;
     }
-    // ----------------------------
     return data;
   }
 
