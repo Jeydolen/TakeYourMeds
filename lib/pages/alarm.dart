@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/database.dart';
 
 class Alarm extends StatefulWidget {

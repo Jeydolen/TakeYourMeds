@@ -133,21 +133,22 @@ class MedsListState extends State<MedsList> {
     if (doUpdate == true) {
       element["favorite"] =
           element["favorite"] is! bool ? true : !element["favorite"];
-    Map<String, dynamic> updatedEl = Map.from(element);
+      Map<String, dynamic> updatedEl = Map.from(element);
 
-    updatedEl["favorite"] = element["favorite"] == 0 ? 1 : 0;
+      updatedEl["favorite"] = element["favorite"] == 0 ? 1 : 0;
 
-    DatabaseHandler().update(
-      "meds",
-      updatedEl,
-      where: "uid = ?",
-      whereArgs: [element["uid"]],
-    );
+      DatabaseHandler().update(
+        "meds",
+        updatedEl,
+        where: "uid = ?",
+        whereArgs: [element["uid"]],
+      );
 
-    if (mounted) {
-      setState(() {
-        json[json.indexOf(element)] = updatedEl;
-      });
+      if (mounted) {
+        setState(() {
+          json[json.indexOf(element)] = updatedEl;
+        });
+      }
     }
   }
 

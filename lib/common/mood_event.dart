@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:take_your_meds/common/event.dart';
 import 'package:take_your_meds/common/enums/mood.dart';
@@ -39,7 +40,8 @@ class MoodEvent extends Event {
     String csv = "";
 
     Map json = toJson();
-    print(json);
+
+    debugPrint(json as String?);
     for (String header in headers) {
       if (json[header] != null) {
         csv += "${json[header]},";
