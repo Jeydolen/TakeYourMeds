@@ -53,7 +53,7 @@ class AddReminderPageState extends State<AddReminderPage> {
       obj["days"] = days;
     }
 
-    if (days.values.every((_) => _ == true)) {
+    if (days.values.every((t) => t == true)) {
       obj["all_days"] = true;
     }
 
@@ -135,10 +135,9 @@ class AddReminderPageState extends State<AddReminderPage> {
     List<DropdownMenuItem> dropDownMeds = generateDropdownItems(medications);
 
     // Adding default value
-    dropDownMeds.add(DropdownMenuItem<String>(
-      value: 'none',
-      child: const Text("none").tr(),
-    ));
+    dropDownMeds.add(
+      DropdownMenuItem<String>(value: 'none', child: const Text("none").tr()),
+    );
 
     setState(() {
       dropdown = DropdownButtonFormField<dynamic>(
@@ -184,15 +183,12 @@ class AddReminderPageState extends State<AddReminderPage> {
           ),
           recurrent
               ? Wrap(
-                  alignment: WrapAlignment.center,
-                  children: Day.values.map((e) => dayBtn(e)).toList(),
-                )
+                alignment: WrapAlignment.center,
+                children: Day.values.map((e) => dayBtn(e)).toList(),
+              )
               : const SizedBox(),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: saveData,
-            child: const Text("submit").tr(),
-          ),
+          ElevatedButton(onPressed: saveData, child: const Text("submit").tr()),
         ],
       ),
     );

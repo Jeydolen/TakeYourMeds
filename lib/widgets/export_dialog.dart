@@ -22,9 +22,9 @@ class ExportDialog extends StatefulWidget {
 class ExportDialogState extends State<ExportDialog> {
   bool addMoods = true;
 
-  void switchAddMoods(_) {
+  void switchAddMoods(t) {
     setState(() {
-      addMoods = _!;
+      addMoods = t!;
     });
   }
 
@@ -32,18 +32,16 @@ class ExportDialogState extends State<ExportDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text("export_summary").tr(),
-      content: const Text("select_format").tr(
-        args: [
-          widget.doShare ? "share".tr() : "export".tr(),
-        ],
-      ),
+      content: const Text(
+        "select_format",
+      ).tr(args: [widget.doShare ? "share".tr() : "export".tr()]),
       actions: [
         CheckboxListTile(
           title: const Text("summary_contains_mood").tr(),
           value: addMoods,
-          onChanged: (_) {
+          onChanged: (t) {
             widget.changeMoodExport();
-            switchAddMoods(_);
+            switchAddMoods(t);
           },
         ),
         Row(
@@ -51,17 +49,18 @@ class ExportDialogState extends State<ExportDialog> {
           children: [
             const CancelButton(),
             Row(
-              children: SupportedFormats.values
-                  .map(
-                    (e) => ElevatedButton(
-                      child: Text(e.name.toUpperCase()),
-                      onPressed: () => Navigator.of(context).pop(e.index),
-                    ),
-                  )
-                  .toList(),
-            )
+              children:
+                  SupportedFormats.values
+                      .map(
+                        (e) => ElevatedButton(
+                          child: Text(e.name.toUpperCase()),
+                          onPressed: () => Navigator.of(context).pop(e.index),
+                        ),
+                      )
+                      .toList(),
+            ),
           ],
-        )
+        ),
       ],
     );
   }

@@ -10,11 +10,11 @@ version: 2.0.1
 repository: https://github.com/Jeydolen/TakeYourMeds
 
 environment:
+  sdk: "^3.7.0"
   # sdk: ">=2.17.0 <3.3.3"
 
 platforms:
   android:
-  windows:
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -26,19 +26,19 @@ dependencies:
   flutter:
     sdk: flutter
   uuid: ^3.0.6
-  intl: ^0.17.0
+  intl: 0.19.0
   path_provider: ^2.0.10
   table_calendar: ^3.0.7
-  share_plus: ^4.4.0
-  flutter_local_notifications: ^12.0.3+1
-  timezone: ^0.9.0
+  share_plus: ^10.1.4
+  flutter_local_notifications: ^19.0.0
+  timezone: ^0.10.0
   easy_localization: ^3.0.1
   cross_file: ^0.3.3+2
   flutter_colorpicker: ^1.0.3
-  fl_chart : ^0.61.0
+  fl_chart : ^0.70.0
   sqflite: ^2.2.6
   path: ^1.8.2
-  flutter_native_timezone: ^2.0.0
+  flutter_timezone: ^4.1.0
 
 dev_dependencies:
   flutter_test:

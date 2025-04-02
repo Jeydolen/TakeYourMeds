@@ -121,25 +121,24 @@ class SummaryPageState extends State<SummaryPage> {
           doShare ? shareData(data, "csv") : saveData(data, "csv");
           break;
         }
-
-      default:
-        break;
     }
   }
 
   void showExportDialog(bool doShare) async {
     int? doExport = await showDialog<int>(
       context: context,
-      builder: (_) => StatefulBuilder(
-        builder: ((__, ___) => ExportDialog(
-              doShare: doShare,
-              changeMoodExport: () {
-                setState(() {
-                  addMoods = !addMoods;
-                });
-              },
-            )),
-      ),
+      builder:
+          (_) => StatefulBuilder(
+            builder:
+                ((__, ___) => ExportDialog(
+                  doShare: doShare,
+                  changeMoodExport: () {
+                    setState(() {
+                      addMoods = !addMoods;
+                    });
+                  },
+                )),
+          ),
     );
 
     if (doExport == null) {
@@ -158,27 +157,21 @@ class SummaryPageState extends State<SummaryPage> {
         "events",
         diffEvent.toDBMap(),
         where: "date = ? AND med_uid = ?",
-        whereArgs: [
-          diffEvent.datetime.toIso8601String(),
-          diffEvent.uid,
-        ],
+        whereArgs: [diffEvent.datetime.toIso8601String(), diffEvent.uid],
       );
     } else {
       // Pure delete
-      await db.delete(
-        "events",
-        "date = ? AND med_uid = ?",
-        [
-          diffEvent.datetime.toIso8601String(),
-          diffEvent.uid,
-        ],
-      );
+      await db.delete("events", "date = ? AND med_uid = ?", [
+        diffEvent.datetime.toIso8601String(),
+        diffEvent.uid,
+      ]);
     }
   }
 
   Future<List<MedEvent>> createEvents() async {
     var json = await DatabaseHandler().rawQuery(
-        "SELECT * FROM events e INNER JOIN meds m on m.uid = e.med_uid");
+      "SELECT * FROM events e INNER JOIN meds m on m.uid = e.med_uid",
+    );
     setState(() {
       this.json = json;
     });

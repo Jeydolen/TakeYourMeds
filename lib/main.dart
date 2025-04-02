@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+// import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:take_your_meds/common/database.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -23,8 +24,9 @@ FlutterLocalNotificationsPlugin flnp = FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('app_icon');
-const InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
+const InitializationSettings initializationSettings = InitializationSettings(
+  android: initializationSettingsAndroid,
+);
 
 Future onSelectNotification(String? payload) async {
   await Navigator.push(
@@ -49,8 +51,10 @@ Future<void> main() async {
   tz.initializeTimeZones();
 
   //String  timezoneId = 'Europe/Brussels';
-  final String timezoneId = await FlutterNativeTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timezoneId));
+  // final String timezoneId = await FlutterNativeTimezone.getLocalTimezone();
+  final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+
+  tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
   runApp(
     EasyLocalization(
