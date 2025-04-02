@@ -108,7 +108,31 @@ class MedsListState extends State<MedsList> {
     }
   }
 
+  Future<bool?> addFavoriteDialog(dynamic element) async {
+    AlertDialog dialog = AlertDialog(
+      title: const Text("del_favorite_title").tr(),
+      content: const Text("del_favorite").tr(args: [element["name"]]),
+      actions: const <Widget>[CancelButton(), DeleteButton()],
+    );
+
+    bool? doAdd = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => dialog,
+    );
+
+    return doAdd;
+  }
+
   void updateFavorite(Map<String, dynamic> element) async {
+    bool? doUpdate = true;
+    if (element["favorite"] == true) {
+      // Show confirmation
+      doUpdate = await addFavoriteDialog(element);
+    }
+
+    if (doUpdate == true) {
+      element["favorite"] =
+          element["favorite"] is! bool ? true : !element["favorite"];
     Map<String, dynamic> updatedEl = Map.from(element);
 
     updatedEl["favorite"] = element["favorite"] == 0 ? 1 : 0;

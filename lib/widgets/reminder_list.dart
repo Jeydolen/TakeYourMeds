@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart' hide Notification;
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:take_your_meds/app.dart';
 
-import 'package:take_your_meds/common/enums/day.dart';
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/file_handler.dart';
-import 'package:take_your_meds/common/notification.dart';
-import 'package:take_your_meds/common/notification_handler.dart';
 
 import 'package:take_your_meds/widgets/reminder.dart';
 import 'package:take_your_meds/widgets/cancel_button.dart';
@@ -28,7 +26,7 @@ class ReminderListState extends State<ReminderList> {
   void initState() {
     super.initState();
     fetchReminders();
-    getAlarms();
+    //getAlarms();
   }
 
   Future<void> fetchReminders() async {
@@ -39,80 +37,6 @@ class ReminderListState extends State<ReminderList> {
         this.reminders = reminders;
       });
     }
-  }
-
-  Future<void> getAlarms() async {
-    if (reminders == null) {
-      await fetchReminders();
-    }
-
-    for (var reminder in reminders!) {
-      if (reminder["enabled"] == false) {
-        continue;
-      }
-
-      await sheduleReminder(reminder);
-    }
-  }
-
-  Future<bool> sheduleReminder(reminder) async {
-    String? timeString = reminder["time"];
-    DateTime time =
-        timeString != null ? DateTime.parse(timeString) : DateTime.now();
-
-    String? medName;
-    if (reminder["med_uid"] != null) {
-      List<dynamic> medsJson = await Utils.fetchMeds();
-      dynamic med = medsJson.firstWhere(
-        (med) => med["uid"] == reminder["med_uid"],
-        orElse: () => null,
-      );
-
-      if (med != null) {
-        medName = "${med["name"]} ${med["dose"]} x ${med["unit"]}";
-      }
-    }
-
-    String title = "med_reminder".tr();
-    String body = "reminder_take".tr(args: [medName ??= "medication".tr()]);
-
-    if (medName != "medication".tr()) {
-      body += "\n ${"tap_to_add_to_summary".tr()}";
-    }
-
-    // Includes false and null
-    if (reminder["recurrent"] != true) {
-      Notification notification = Notification(
-        title,
-        body,
-        time: time,
-        payload: reminder["med_uid"],
-      );
-      NotificationHandler.showNotification(notification);
-      return false;
-    }
-
-    List<Day> days = [];
-
-    // Construct day array
-    Map<String, dynamic> reminderDays = reminder["days"];
-
-    for (MapEntry entryDay in reminderDays.entries) {
-      if (entryDay.value == true) {
-        days.add(Day.fromString(entryDay.key)!);
-      }
-    }
-
-    Notification notification = Notification(
-      title,
-      body,
-      time: time,
-      days: days,
-      payload: reminder["med_uid"],
-    );
-
-    NotificationHandler.showPeriodicNotification(notification);
-    return true;
   }
 
   void switchSave(newVal, element, {bool? isRecurrent}) {
@@ -143,7 +67,8 @@ class ReminderListState extends State<ReminderList> {
     reminders![i] = newVal;
 
     // Reschedule reminder
-    sheduleReminder(newVal);
+    
+    App.sheduleReminder(newVal);
 
     await FileHandler.writeContent("reminders", jsonEncode(reminders!));
   }

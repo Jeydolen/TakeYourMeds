@@ -37,6 +37,7 @@ dependencies:
   fl_chart : ^0.61.0
   sqflite: ^2.2.6
   path: ^1.8.2
+  flutter_native_timezone: ^2.0.0
 
 dev_dependencies:
   flutter_test:
