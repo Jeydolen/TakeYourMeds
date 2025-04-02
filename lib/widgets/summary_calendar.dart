@@ -62,11 +62,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
   Future<MedEvent?> showEvent(MedEvent value) async {
     MedEvent? result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => SummaryPresentationPage(
-          event: value,
-        ),
-      ),
+      MaterialPageRoute(builder: (_) => SummaryPresentationPage(event: value)),
     );
 
     if (result != null) {
@@ -86,19 +82,21 @@ class SummaryCalendarState extends State<SummaryCalendar> {
   Future<bool?> removeEvent(MedEvent event) async {
     AlertDialog dialog = AlertDialog(
       title: const Text("del_event_title").tr(),
-      content: const Text("del_event").tr(args: [
-        event.quantity.toString(),
-        event.medication.dose.toString(),
-        event.medication.name,
-        DateFormat.yMMMEd().add_Hm().format(event.datetime)
-      ]),
+      content: const Text("del_event").tr(
+        args: [
+          event.quantity.toString(),
+          event.medication.dose.toString(),
+          event.medication.name,
+          DateFormat.yMMMEd().add_Hm().format(event.datetime),
+        ],
+      ),
       actions: [
         const CancelButton(),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: const Text("delete").tr(),
-        )
+        ),
       ],
     );
 
@@ -130,7 +128,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
         "day": _focusedDay,
         "show_event": showEvent,
         "remove_event": removeEvent,
-        "get_events_for_day": _getEventsForDay
+        "get_events_for_day": _getEventsForDay,
       },
     );
   }
@@ -187,7 +185,7 @@ class SummaryCalendarState extends State<SummaryCalendar> {
                 shape: BoxShape.circle,
               ),
               markerDecoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
                 shape: BoxShape.circle,
               ),
               todayTextStyle: const TextStyle(),
@@ -219,35 +217,37 @@ class SummaryCalendarState extends State<SummaryCalendar> {
               List<Widget> events = [];
 
               for (var event in value) {
-                events.add(Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 12,
-                  ),
-                  child: Theme(
-                    data: ThemeData(
-                      highlightColor: const Color(0xFFFF0000).withOpacity(.5),
+                events.add(
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 12,
                     ),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    child: Theme(
+                      data: ThemeData(
+                        highlightColor: const Color(0xFFFF0000).withOpacity(.5),
                       ),
-                      tileColor: Theme.of(context).colorScheme.background,
-                      onTap: () => showEvent(event),
-                      onLongPress: () => removeEvent(event),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(event.medication.name),
-                          Text(
-                            '${event.quantity}x ${event.medication.dose} ${event.medication.unit}',
-                          ),
-                          Text(event.time),
-                        ],
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        tileColor: Theme.of(context).colorScheme.surface,
+                        onTap: () => showEvent(event),
+                        onLongPress: () => removeEvent(event),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(event.medication.name),
+                            Text(
+                              '${event.quantity}x ${event.medication.dose} ${event.medication.unit}',
+                            ),
+                            Text(event.time),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ));
+                );
               }
 
               return ListView(children: events);

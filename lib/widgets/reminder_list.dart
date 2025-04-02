@@ -67,7 +67,7 @@ class ReminderListState extends State<ReminderList> {
     reminders![i] = newVal;
 
     // Reschedule reminder
-    
+
     App.sheduleReminder(newVal);
 
     await FileHandler.writeContent("reminders", jsonEncode(reminders!));
@@ -97,18 +97,19 @@ class ReminderListState extends State<ReminderList> {
   void deleteReminder(dynamic element) async {
     bool? remove = await showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("del_reminder_title").tr(),
-        content: const Text("del_reminder").tr(),
-        actions: [
-          const CancelButton(),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text("delete").tr(),
+      builder:
+          (_) => AlertDialog(
+            title: const Text("del_reminder_title").tr(),
+            content: const Text("del_reminder").tr(),
+            actions: [
+              const CancelButton(),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("delete").tr(),
+              ),
+            ],
           ),
-        ],
-      ),
     );
 
     if (remove == null) {
@@ -153,27 +154,26 @@ class ReminderListState extends State<ReminderList> {
           bool enabled = entry.value;
 
           ButtonStyle style = ButtonStyle(
-            padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-            minimumSize: const MaterialStatePropertyAll(Size.zero),
-            fixedSize: const MaterialStatePropertyAll(Size(20, 20)),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
+            padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+            minimumSize: const WidgetStatePropertyAll(Size.zero),
+            fixedSize: const WidgetStatePropertyAll(Size(20, 20)),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
             ),
           );
 
-          Widget t = enabled
-              ? ElevatedButton(
-                  onPressed: () {},
-                  style: style,
-                  child: Text(day.tr()[0]),
-                )
-              : TextButton(
-                  onPressed: () {},
-                  style: style,
-                  child: Text(day.tr()[0]),
-                );
+          Widget t =
+              enabled
+                  ? ElevatedButton(
+                    onPressed: () {},
+                    style: style,
+                    child: Text(day.tr()[0]),
+                  )
+                  : TextButton(
+                    onPressed: () {},
+                    style: style,
+                    child: Text(day.tr()[0]),
+                  );
           dayBtns.add(t);
         }
       }
@@ -205,7 +205,7 @@ class ReminderListState extends State<ReminderList> {
                 Switch(
                   value: isSwitched,
                   onChanged: (_) => switchSave(_, el, isRecurrent: recurrent),
-                )
+                ),
               ],
             ),
           ),

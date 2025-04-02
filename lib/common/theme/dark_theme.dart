@@ -4,7 +4,7 @@ ColorScheme colorScheme = const ColorScheme.dark(
   primary: Colors.blue,
   secondary: Colors.blue,
   onPrimary: Color.fromARGB(255, 219, 219, 219),
-  background: Colors.grey,
+  surface: Colors.grey,
 );
 
 ThemeData darkTheme = ThemeData(

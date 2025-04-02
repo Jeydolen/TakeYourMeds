@@ -82,7 +82,7 @@ class AddReminderPageState extends State<AddReminderPage> {
   Widget dayBtn(Day day) {
     String key = day.string;
     ButtonStyle style = ButtonStyle(
-      shape: MaterialStateProperty.all(
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
       ),
     );

@@ -94,10 +94,9 @@ class ReminderState extends State<Reminder> {
     List<DropdownMenuItem> dropDownMeds = generateDropdownItems(medications);
 
     // Adding default value
-    dropDownMeds.add(DropdownMenuItem<String>(
-      value: 'none',
-      child: const Text("none").tr(),
-    ));
+    dropDownMeds.add(
+      DropdownMenuItem<String>(value: 'none', child: const Text("none").tr()),
+    );
 
     setState(() {
       dropdown = DropdownButtonFormField<dynamic>(
@@ -119,24 +118,23 @@ class ReminderState extends State<Reminder> {
         bool enabled = entry.value;
 
         ButtonStyle style = ButtonStyle(
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           ),
         );
 
-        Widget t = enabled
-            ? ElevatedButton(
-                onPressed: () => switchDay(day),
-                style: style,
-                child: Text(day.tr()),
-              )
-            : TextButton(
-                onPressed: () => switchDay(day),
-                style: style,
-                child: Text(day.tr()),
-              );
+        Widget t =
+            enabled
+                ? ElevatedButton(
+                  onPressed: () => switchDay(day),
+                  style: style,
+                  child: Text(day.tr()),
+                )
+                : TextButton(
+                  onPressed: () => switchDay(day),
+                  style: style,
+                  child: Text(day.tr()),
+                );
         days.add(t);
       }
     }
@@ -212,10 +210,7 @@ class ReminderState extends State<Reminder> {
               },
             ),
             const SizedBox(height: 10),
-            Wrap(
-              alignment: WrapAlignment.center,
-              children: days,
-            ),
+            Wrap(alignment: WrapAlignment.center, children: days),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -229,7 +224,7 @@ class ReminderState extends State<Reminder> {
                   child: const Text("save").tr(),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -248,9 +243,7 @@ class ReminderState extends State<Reminder> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("reminder_for").tr(args: [medName]),
-      ),
+      appBar: AppBar(title: const Text("reminder_for").tr(args: [medName])),
       body: showReminder(),
     );
   }

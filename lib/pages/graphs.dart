@@ -44,30 +44,33 @@ class GraphsPageState extends State<GraphsPage> {
     List medsJson = await Utils.fetchMeds();
 
     setState(() {
-      meds = medsJson
-          .map((e) => Medication(
-                e["name"],
-                e["dose"],
-                e["unit"],
-                e["notes"],
-                e["uid"],
-              ))
-          .toList();
+      meds =
+          medsJson
+              .map(
+                (e) => Medication(
+                  e["name"],
+                  e["dose"],
+                  e["unit"],
+                  e["notes"],
+                  e["uid"],
+                ),
+              )
+              .toList();
     });
   }
 
   Future<void> getMedEvents() async {
     DateTime monthStart = DateTime(selectedYear, selectedMonth.integer);
     DateTime monthEnd = DateTime(selectedYear, selectedMonth.integer + 1);
-    List jsonMeds = await DatabaseHandler().rawQuery('''
+    List jsonMeds = await DatabaseHandler().rawQuery(
+      '''
       SELECT *
       FROM events e
       INNER JOIN meds m on m.uid = e.med_uid
       WHERE e.date BETWEEN ? AND ?
-      ''', [
-      monthStart.toIso8601String(),
-      monthEnd.toIso8601String(),
-    ]);
+      ''',
+      [monthStart.toIso8601String(), monthEnd.toIso8601String()],
+    );
 
     setState(() {
       medEvents = Utils.createEvents(jsonMeds);
@@ -197,7 +200,7 @@ class GraphsPageState extends State<GraphsPage> {
     Map<String, Color> medsToColor = {};
     Map<String, dynamic> previousDate = {
       "year": selectedYear,
-      "month": selectedMonth
+      "month": selectedMonth,
     };
 
     List<Medication> meds = [];
@@ -276,9 +279,7 @@ class GraphsPageState extends State<GraphsPage> {
     List<List<MedEvent>> events = filteredEvents ??= [];
     if (events.isEmpty) {
       setState(() {
-        this.chart = Center(
-          child: const Text("nothing_show").tr(),
-        );
+        this.chart = Center(child: const Text("nothing_show").tr());
       });
       return;
     }
@@ -312,13 +313,13 @@ class GraphsPageState extends State<GraphsPage> {
     BarChart chart = BarChart(
       BarChartData(
         barGroups: barGroups,
-        gridData: FlGridData(show: false),
+        gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
-          topTitles: AxisTitles(
+          topTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
-          rightTitles: AxisTitles(
+          rightTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
           bottomTitles: AxisTitles(
@@ -334,7 +335,7 @@ class GraphsPageState extends State<GraphsPage> {
           ),
           leftTitles: AxisTitles(
             axisNameWidget: const Text("quantity").tr(),
-            sideTitles: SideTitles(showTitles: true),
+            sideTitles: const SideTitles(showTitles: true),
           ),
         ),
       ),
