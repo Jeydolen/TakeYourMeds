@@ -128,14 +128,24 @@ class DatabaseHandler {
     return _database.delete(table, where: where, whereArgs: whereArgs);
   }
 
-  Future<List<Map<String, Object?>>> selectAll(String table,
-      {String? orderBy, String? where, List<Object?>? whereArgs}) {
-    return _database.query(table,
-        orderBy: orderBy, where: where, whereArgs: whereArgs);
+  Future<List<Map<String, Object?>>> selectAll(
+    String table, {
+    String? orderBy,
+    String? where,
+    List<Object?>? whereArgs,
+  }) {
+    return _database.query(
+      table,
+      orderBy: orderBy,
+      where: where,
+      whereArgs: whereArgs,
+    );
   }
 
-  Future<List<Map<String, Object?>>> rawQuery(String sql,
-      [List<Object?>? arguments]) {
+  Future<List<Map<String, Object?>>> rawQuery(
+    String sql, [
+    List<Object?>? arguments,
+  ]) {
     return _database.rawQuery(sql, arguments);
   }
 

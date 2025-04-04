@@ -44,8 +44,11 @@ class Utils {
     return [];
   }
 
-  static Future<List<dynamic>> fetchMeds() => DatabaseHandler()
-      .selectAll("meds", orderBy: "order_int asc", where: "active = 1");
+  static Future<List<dynamic>> fetchMeds() => DatabaseHandler().selectAll(
+    "meds",
+    orderBy: "order_int asc",
+    where: "active = 1",
+  );
 
   static Future<List<dynamic>> fetchMoods() =>
       DatabaseHandler().selectAll("moods");
@@ -64,12 +67,9 @@ class Utils {
       dynamic qtyJson = element["quantity"];
       int quantity = qtyJson is int ? qtyJson : int.parse(qtyJson);
 
-      events.add(MedEvent.fromJson(
-        element,
-        quantity,
-        date,
-        element["reason"]!,
-      ));
+      events.add(
+        MedEvent.fromJson(element, quantity, date, element["reason"]!),
+      );
     }
     return events;
   }

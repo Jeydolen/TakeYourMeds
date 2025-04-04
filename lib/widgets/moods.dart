@@ -19,17 +19,18 @@ class MoodsWidgetState extends State<MoodsWidget> {
     dynamic obj = {
       "date": now.toIso8601String(),
       "mood_int": mood.value,
-      "mood": mood.string
+      "mood": mood.string,
     };
 
     await DatabaseHandler().insert("moods", obj);
   }
 
-  Widget moodButton(Mood mood) {
+  Widget moodButton(Mood mood, Color foregroundColor) {
     return ElevatedButton(
       onPressed: () => saveMood(mood),
       style: ElevatedButton.styleFrom(
         backgroundColor: mood.moodColor,
+        foregroundColor: foregroundColor,
       ),
       child: Text(mood.string).tr(),
     );
@@ -40,7 +41,12 @@ class MoodsWidgetState extends State<MoodsWidget> {
     List<Mood> moodValues = List.from(Mood.values);
     moodValues.remove(Mood.none);
 
-    List<Widget> moods = moodValues.map((e) => moodButton(e)).toList();
+    var brightness = MediaQuery.of(context).platformBrightness;
+    Color foregroundColor =
+        brightness == Brightness.dark ? Colors.white : Colors.black;
+
+    List<Widget> moods =
+        moodValues.map((e) => moodButton(e, foregroundColor)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +55,7 @@ class MoodsWidgetState extends State<MoodsWidget> {
         Center(
           child: const Text("mood", style: TextStyle(fontSize: 25.0)).tr(),
         ),
-        ...moods
+        ...moods,
       ],
     );
   }
