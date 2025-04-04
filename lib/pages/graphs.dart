@@ -188,7 +188,7 @@ class GraphsPageState extends State<GraphsPage> {
   Color generateColor() {
     Random random = Random();
 
-    return Color((random.nextInt(0xFFFFFF)).toInt()).withOpacity(1.0);
+    return Color((random.nextInt(0xFFFFFF)).toInt()).withValues(alpha: 1.0);
   }
 
   Color generateContrastedColor() {

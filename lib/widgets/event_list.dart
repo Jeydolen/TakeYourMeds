@@ -58,7 +58,7 @@ class EventListState extends State<EventList> {
         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         child: Theme(
           data: ThemeData(
-            highlightColor: const Color(0xFFFF0000).withOpacity(.5),
+            highlightColor: const Color(0xFFFF0000)..withValues(alpha: .5),
           ),
           child: ListTile(
             shape: RoundedRectangleBorder(
