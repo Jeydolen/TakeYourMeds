@@ -39,6 +39,8 @@ dependencies:
   sqflite: ^2.2.6
   path: ^1.8.2
   flutter_timezone: ^4.1.0
+  sqflite_common_ffi: ^2.3.5
+  sqlite3_flutter_libs: ^0.5.32
 
 dev_dependencies:
   flutter_test:

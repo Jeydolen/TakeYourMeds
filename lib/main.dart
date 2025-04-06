@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -24,8 +24,17 @@ FlutterLocalNotificationsPlugin flnp = FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('app_icon');
+
+const WindowsInitializationSettings initializationSettingsWin =
+    WindowsInitializationSettings(
+      appName: "take_your_meds",
+      appUserModelId: "Jeydolen.TakeYourMeds",
+      guid: "9cb68492-c579-4d1c-bad9-18121fb92a67",
+    );
+
 const InitializationSettings initializationSettings = InitializationSettings(
   android: initializationSettingsAndroid,
+  windows: initializationSettingsWin,
 );
 
 Future onSelectNotification(String? payload) async {
@@ -36,6 +45,10 @@ Future onSelectNotification(String? payload) async {
 }
 
 Future<void> main() async {
+  sqfliteFfiInit();
+
+  databaseFactory = databaseFactoryFfi;
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize database

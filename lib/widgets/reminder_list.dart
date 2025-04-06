@@ -204,7 +204,7 @@ class ReminderListState extends State<ReminderList> {
                 row,
                 Switch(
                   value: isSwitched,
-                  onChanged: (_) => switchSave(_, el, isRecurrent: recurrent),
+                  onChanged: (t) => switchSave(t, el, isRecurrent: recurrent),
                 ),
               ],
             ),

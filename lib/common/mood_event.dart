@@ -40,7 +40,7 @@ class MoodEvent extends Event {
 
     Map json = toJson();
 
-    print(json as String?);
+    print(json.toString());
     for (String header in headers) {
       if (json[header] != null) {
         csv += "${json[header]},";

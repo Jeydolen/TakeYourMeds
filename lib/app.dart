@@ -103,7 +103,7 @@ class _AppState extends State<App> {
 
   void checkIfStartedFromNotification() async {
     var details = await flnp.getNotificationAppLaunchDetails();
-    if (details!.didNotificationLaunchApp) {
+    if (details != null && details.didNotificationLaunchApp) {
       onSelectNotification(details.notificationResponse?.payload);
     }
   }

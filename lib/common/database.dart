@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io' show Directory;
 
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart'
+    show getApplicationDocumentsDirectory;
 import 'package:sqflite/sqflite.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/utils.dart';
@@ -21,19 +24,29 @@ class DatabaseHandler {
   }
 
   Future<void> _init() async {
-    _database = await openDatabase(
-      join(await getDatabasesPath(), 'take_your_meds.db'),
-      version: version,
-      onCreate: _onCreate,
-      onConfigure: (db) async {
-        // await _dropAllTables(db);
+    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
 
-        if (await needImport(db)) {
-          await _onCreate(db, version);
-          //await importDataFromFiles(db: db);
-        }
-      },
-    );
+    //Create path for database
+    String dbPath = join(appDocumentsDir.path, "take_your_meds.db");
+    _database = await databaseFactory.openDatabase(dbPath);
+    if (await needImport(_database)) {
+      await _onCreate(_database, version);
+      //await importDataFromFiles(db: db);
+    }
+
+    // _database = await openDatabase(
+    //   join(await getDatabasesPath(), 'take_your_meds.db'),
+    //   version: version,
+    //   onCreate: _onCreate,
+    //   onConfigure: (db) async {
+    //     // await _dropAllTables(db);
+
+    //     if (await needImport(db)) {
+    //       await _onCreate(db, version);
+    //       //await importDataFromFiles(db: db);
+    //     }
+    //   },
+    // );
 
     isDBAvailable = _database.isOpen;
   }
