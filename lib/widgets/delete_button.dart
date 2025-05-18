@@ -8,7 +8,10 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.black,
+      ),
       onPressed: () => Navigator.of(context).pop(true),
       child: const Text("delete").tr(),
     );

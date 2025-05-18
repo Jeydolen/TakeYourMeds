@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:path/path.dart' show join;
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -41,9 +43,9 @@ class SummaryPageState extends State<SummaryPage> {
 
   Future<String> buildPath(String format) async {
     String now = DateTime.now().toString();
-    Directory? pDir = await getTemporaryDirectory();
-    String fullPath = "${pDir.path}/${now}_summary.$format";
+    Directory? pDir = await getApplicationDocumentsDirectory();
 
+    String fullPath = join(pDir.path, "${now}_summary.$format");
     return fullPath;
   }
 
@@ -51,10 +53,12 @@ class SummaryPageState extends State<SummaryPage> {
     String fullPath = await buildPath(format);
     FileHandler.saveToPath(fullPath, data);
 
-    MediaStore.addItem(
-      file: File(fullPath),
-      name: "${DateTime.now().toString()}_summary.$format",
-    );
+    if (Platform.isAndroid) {
+      MediaStore.addItem(
+        file: File(fullPath),
+        name: "${DateTime.now().toString()}_summary.$format",
+      );
+    }
   }
 
   void shareData(String data, String format) async {

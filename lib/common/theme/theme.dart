@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-ColorScheme colorScheme = const ColorScheme.light(
-  // primary: Colors.blue,
-  // secondary: Colors.blue,
+ColorScheme colorScheme = ColorScheme.light(
+  primary: Colors.blue[900]!,
+  secondary: Colors.blue[900]!,
   // onPrimary: Colors.white,
 );
 

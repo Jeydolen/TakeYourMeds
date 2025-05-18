@@ -41,9 +41,12 @@ class MoodsWidgetState extends State<MoodsWidget> {
     List<Mood> moodValues = List.from(Mood.values);
     moodValues.remove(Mood.none);
 
-    var brightness = MediaQuery.of(context).platformBrightness;
-    Color foregroundColor =
-        brightness == Brightness.dark ? Colors.white : Colors.black;
+    // var brightness = MediaQuery.of(context).platformBrightness;
+    // Color foregroundColor =
+    //     brightness == Brightness.dark ? Colors.white : Colors.black;
+
+    // Black color pass contrast test for all colors while white does not
+    Color foregroundColor = Colors.black;
 
     List<Widget> moods =
         moodValues.map((e) => moodButton(e, foregroundColor)).toList();

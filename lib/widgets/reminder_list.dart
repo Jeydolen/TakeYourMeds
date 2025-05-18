@@ -104,7 +104,10 @@ class ReminderListState extends State<ReminderList> {
             actions: [
               const CancelButton(),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.black,
+                ),
                 onPressed: () => Navigator.pop(context, true),
                 child: const Text("delete").tr(),
               ),

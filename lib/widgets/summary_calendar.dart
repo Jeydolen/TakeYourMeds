@@ -94,7 +94,10 @@ class SummaryCalendarState extends State<SummaryCalendar> {
         const CancelButton(),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.black,
+          ),
           child: const Text("delete").tr(),
         ),
       ],

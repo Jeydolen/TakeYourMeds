@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-ColorScheme colorScheme = const ColorScheme.dark(
-  // primary: Colors.blue,
-  // secondary: Colors.blue,
+ColorScheme colorScheme = ColorScheme.dark(
+  primary: Colors.blue[200]!,
+  secondary: Colors.blue[200]!,
   // onPrimary: Color.fromARGB(255, 219, 219, 219),
   // surface: Colors.grey,
 );
