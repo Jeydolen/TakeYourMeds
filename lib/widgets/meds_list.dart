@@ -19,14 +19,14 @@ class MedsListState extends State<MedsList> {
   late List<dynamic> json;
 
   Widget emptyList() => Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(child: const Text("no_meds").tr()),
-            ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
-          ],
-        ),
-      );
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(child: const Text("no_meds").tr()),
+        ElevatedButton(onPressed: addMed, child: const Icon(Icons.add)),
+      ],
+    ),
+  );
 
   void reorderList(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
@@ -38,8 +38,12 @@ class MedsListState extends State<MedsList> {
     setState(() {});
     Batch batch = DatabaseHandler().batch();
     for (int i = 0; i < json.length; i++) {
-      batch.update("meds", {"order_int": i},
-          where: "uid = ?", whereArgs: [json[i]["uid"]]);
+      batch.update(
+        "meds",
+        {"order_int": i},
+        where: "uid = ?",
+        whereArgs: [json[i]["uid"]],
+      );
     }
     batch.commit();
   }
@@ -63,11 +67,7 @@ class MedsListState extends State<MedsList> {
   }
 
   void showMed(Map<String, dynamic> json) {
-    Navigator.pushNamed(
-      context,
-      "/med_presentation",
-      arguments: json,
-    );
+    Navigator.pushNamed(context, "/med_presentation", arguments: json);
   }
 
   void addMed() async {
@@ -125,17 +125,18 @@ class MedsListState extends State<MedsList> {
 
   void updateFavorite(Map<String, dynamic> element) async {
     bool? doUpdate = true;
-    if (element["favorite"] == true) {
+    bool favorite = element["favorite"] == 0 ? false : true;
+
+    if (favorite == true) {
       // Show confirmation
       doUpdate = await addFavoriteDialog(element);
     }
 
     if (doUpdate == true) {
-      element["favorite"] =
-          element["favorite"] is! bool ? true : !element["favorite"];
-      Map<String, dynamic> updatedEl = Map.from(element);
-
-      updatedEl["favorite"] = element["favorite"] == 0 ? 1 : 0;
+      Map<String, dynamic> updatedEl = {
+        ...element,
+        "favorite": !favorite ? 1 : 0,
+      };
 
       DatabaseHandler().update(
         "meds",
@@ -154,15 +155,17 @@ class MedsListState extends State<MedsList> {
 
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
     return json.map((element) {
-      Color backgroundColor = element["color"] is int && element["color"] != -1
-          ? Color(element["color"])
-          : Theme.of(context).canvasColor;
+      Color backgroundColor =
+          element["color"] is int && element["color"] != -1
+              ? Color(element["color"])
+              : Theme.of(context).canvasColor;
 
       Color foregroundColor =
           backgroundColor.computeLuminance() > .5 ? Colors.black : Colors.white;
 
-      ButtonStyle btnStyle =
-          TextButton.styleFrom(foregroundColor: foregroundColor);
+      ButtonStyle btnStyle = TextButton.styleFrom(
+        foregroundColor: foregroundColor,
+      );
 
       return ListTile(
         tileColor: backgroundColor,
@@ -180,10 +183,11 @@ class MedsListState extends State<MedsList> {
               TextButton(
                 style: btnStyle,
                 onPressed: () => updateFavorite(element),
-                child: element["favorite"] == 1
-                    ? const Icon(Icons.star)
-                    : const Icon(Icons.star_outline),
-              )
+                child:
+                    element["favorite"] == 1
+                        ? const Icon(Icons.star)
+                        : const Icon(Icons.star_outline),
+              ),
             ],
           ),
         ),
@@ -215,18 +219,19 @@ class MedsListState extends State<MedsList> {
           ElevatedButton(
             onPressed: editList,
             child: Icon(edit ? Icons.cancel : Icons.edit),
-          )
+          ),
         ],
       ),
-      body: json.isEmpty
-          ? emptyList()
-          : ReorderableListView(
-              onReorder: reorderList,
-              children: generateElements(
-                json,
-                edit ? removeMedDialog : showMed,
+      body:
+          json.isEmpty
+              ? emptyList()
+              : ReorderableListView(
+                onReorder: reorderList,
+                children: generateElements(
+                  json,
+                  edit ? removeMedDialog : showMed,
+                ),
               ),
-            ),
     );
   }
 }
