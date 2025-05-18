@@ -29,16 +29,15 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClockButton(rebuild),
-            LastMedTaken(key: key),
-          ],
+          children: [ClockButton(rebuild), LastMedTaken(key: key)],
         ),
       ),
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          side: const BorderSide(color: Colors.grey, width: 1),
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(15),
+          minimumSize: const Size(100, 60),
         ),
         onPressed: addMed,
         child: const Icon(Icons.add),

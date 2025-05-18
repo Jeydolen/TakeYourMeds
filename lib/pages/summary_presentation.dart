@@ -1,16 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import 'package:easy_localization/easy_localization.dart';
+
+import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/medication.dart';
-import 'package:take_your_meds/common/utils.dart';
 
 class SummaryPresentationPage extends StatefulWidget {
-  const SummaryPresentationPage({
-    Key? key,
-    required this.json,
-    required this.event,
-  }) : super(key: key);
-  final List<dynamic> json;
+  const SummaryPresentationPage({Key? key, required this.event})
+      : super(key: key);
   final MedEvent event;
 
   @override
@@ -20,25 +19,31 @@ class SummaryPresentationPage extends StatefulWidget {
 class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   late MedEvent event;
   bool edit = false;
-  late List<Medication> meds = getAll();
+  List<Medication>? meds;
   Widget dropDown = const CircularProgressIndicator();
 
-  List<Medication> getAll() => widget.json
-      .map(
-        (element) => Medication(
-          element["name"],
-          element["dose"],
-          element["unit"],
-          element["notes"],
-          element["uid"],
-        ),
-      )
-      .toList();
+  Future<List<Medication>> getAll() async {
+    List meds = await DatabaseHandler().selectAll("meds");
+
+    return meds
+        .map(
+          (element) => Medication(
+            element["name"],
+            element["dose"] is String
+                ? int.parse(element["dose"])
+                : element["dose"],
+            element["unit"],
+            element["notes"],
+            element["uid"],
+          ),
+        )
+        .toList();
+  }
 
   void editEvent(String? uid) async {
     if (uid != null && uid != event.uid) {
       setState(() {
-        Medication med = meds.firstWhere((element) => element.uid == uid);
+        Medication med = meds!.firstWhere((element) => element.uid == uid);
         event = MedEvent.fromJson(
           med.toJson(),
           event.quantity,
@@ -49,10 +54,12 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
     }
   }
 
-  void generateDropDown(List<Medication> medications) {
-    List<DropdownMenuItem> a = generateDropdownItems(medications);
+  void generateDropDown() async {
+    meds ??= await getAll();
+
+    List<DropdownMenuItem> a = generateDropdownItems(meds ?? []);
     setState(() {
-      dropDown = a.length == 1
+      dropDown = (a.length == 1)
           ? const Text("one_med_length").tr()
           : DropdownButtonFormField<dynamic>(
               value: event.uid,
@@ -70,7 +77,7 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
   void initState() {
     super.initState();
     event = widget.event;
-    generateDropDown(meds);
+    generateDropDown();
   }
 
   @override
@@ -100,15 +107,16 @@ class SummaryPresentationPageState extends State<SummaryPresentationPage> {
                   ? dropDown
                   : const Text("med_name").tr(args: [eventMed.name]),
               const SizedBox(height: 20),
-              const Text("med_dosage_unit").tr(args: [
-                event.quantity.toString(),
-                eventMed.dose,
-                eventMed.unit,
-              ]),
+              const Text("med_dosage_unit").tr(
+                args: [
+                  event.quantity.toString(),
+                  eventMed.dose.toString(),
+                  eventMed.unit,
+                ],
+              ),
               const SizedBox(height: 20),
-              const Text("med_notes").tr(args: [
-                (eventMed.notes.isEmpty) ? "/" : eventMed.notes,
-              ]),
+              const Text("med_notes")
+                  .tr(args: [(eventMed.notes.isEmpty) ? "/" : eventMed.notes]),
               const SizedBox(height: 20),
               const Text("time").tr(args: [event.time]),
               const SizedBox(height: 20),

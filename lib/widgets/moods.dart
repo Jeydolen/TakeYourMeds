@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/enums/mood.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 
 class MoodsWidget extends StatefulWidget {
   const MoodsWidget({super.key});
@@ -17,26 +14,23 @@ class MoodsWidget extends StatefulWidget {
 
 class MoodsWidgetState extends State<MoodsWidget> {
   void saveMood(Mood mood) async {
-    List<dynamic> currMoods = await Utils.fetchMoods();
-
     DateTime now = DateTime.now();
+
     dynamic obj = {
-      "date": DateFormat.yMd().format(now),
-      "time": DateFormat.Hm().format(now),
-      "iso8601_date": now.toIso8601String(),
-      "mood": mood.value,
-      "mood_string": mood.string
+      "date": now.toIso8601String(),
+      "mood_int": mood.value,
+      "mood": mood.string,
     };
 
-    currMoods.add(obj);
-    await FileHandler.writeContent("moods", jsonEncode(currMoods));
+    await DatabaseHandler().insert("moods", obj);
   }
 
-  Widget moodButton(Mood mood) {
+  Widget moodButton(Mood mood, Color foregroundColor) {
     return ElevatedButton(
       onPressed: () => saveMood(mood),
       style: ElevatedButton.styleFrom(
         backgroundColor: mood.moodColor,
+        foregroundColor: foregroundColor,
       ),
       child: Text(mood.string).tr(),
     );
@@ -47,7 +41,15 @@ class MoodsWidgetState extends State<MoodsWidget> {
     List<Mood> moodValues = List.from(Mood.values);
     moodValues.remove(Mood.none);
 
-    List<Widget> moods = moodValues.map((e) => moodButton(e)).toList();
+    // var brightness = MediaQuery.of(context).platformBrightness;
+    // Color foregroundColor =
+    //     brightness == Brightness.dark ? Colors.white : Colors.black;
+
+    // Black color pass contrast test for all colors while white does not
+    Color foregroundColor = Colors.black;
+
+    List<Widget> moods =
+        moodValues.map((e) => moodButton(e, foregroundColor)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,7 +58,7 @@ class MoodsWidgetState extends State<MoodsWidget> {
         Center(
           child: const Text("mood", style: TextStyle(fontSize: 25.0)).tr(),
         ),
-        ...moods
+        ...moods,
       ],
     );
   }

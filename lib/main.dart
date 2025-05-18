@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:take_your_meds/pages/alarm.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -12,6 +13,7 @@ import 'package:take_your_meds/app.dart';
 import 'package:take_your_meds/common/theme/theme.dart';
 import 'package:take_your_meds/common/theme/dark_theme.dart';
 
+import 'package:take_your_meds/pages/alarm.dart';
 import 'package:take_your_meds/pages/add_med.dart';
 import 'package:take_your_meds/pages/took_med.dart';
 import 'package:take_your_meds/pages/add_reminder.dart';
@@ -22,8 +24,18 @@ FlutterLocalNotificationsPlugin flnp = FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('app_icon');
-const InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
+
+const WindowsInitializationSettings initializationSettingsWin =
+    WindowsInitializationSettings(
+      appName: "take_your_meds",
+      appUserModelId: "Jeydolen.TakeYourMeds",
+      guid: "9cb68492-c579-4d1c-bad9-18121fb92a67",
+    );
+
+const InitializationSettings initializationSettings = InitializationSettings(
+  android: initializationSettingsAndroid,
+  windows: initializationSettingsWin,
+);
 
 Future onSelectNotification(String? payload) async {
   await Navigator.push(
@@ -33,7 +45,15 @@ Future onSelectNotification(String? payload) async {
 }
 
 Future<void> main() async {
+  sqfliteFfiInit();
+
+  databaseFactory = databaseFactoryFfi;
+
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize database
+  DatabaseHandler();
+
   await flnp.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (details) {
@@ -44,8 +64,10 @@ Future<void> main() async {
   tz.initializeTimeZones();
 
   //String  timezoneId = 'Europe/Brussels';
-  final String timezoneId = await FlutterNativeTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timezoneId));
+  // final String timezoneId = await FlutterNativeTimezone.getLocalTimezone();
+  final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+
+  tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
   runApp(
     EasyLocalization(

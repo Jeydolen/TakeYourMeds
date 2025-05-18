@@ -17,8 +17,8 @@ class MoodEvent extends Event {
   MoodEvent(this.mood, this._time);
 
   factory MoodEvent.fromJson(Map<String, dynamic> json) {
-    Mood mood = Mood.values[json["mood"]];
-    DateTime time = DateTime.parse(json["iso8601_date"]);
+    Mood mood = Mood.values.firstWhere((el) => el.value == json["mood_int"]);
+    DateTime time = DateTime.parse(json["date"]);
     return MoodEvent(mood, time);
   }
 
@@ -29,8 +29,27 @@ class MoodEvent extends Event {
       "time": DateFormat.Hm().format(_time),
       "iso8601_date": _time.toIso8601String(),
       "mood": mood.value,
-      "mood_string": mood.string
+      "mood_string": mood.string,
     };
     return obj;
+  }
+
+  @override
+  String toCSV() {
+    String csv = "";
+
+    Map json = toJson();
+
+    print(json.toString());
+    for (String header in headers) {
+      if (json[header] != null) {
+        csv += "${json[header]},";
+      } else {
+        csv += ",";
+      }
+    }
+    csv += "\n";
+
+    return csv;
   }
 }

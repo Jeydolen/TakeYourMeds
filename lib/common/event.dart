@@ -12,9 +12,9 @@ abstract class Event {
     String csv = "";
 
     Map json = toJson();
-    for (int i = 0; i < json.length; i++) {
-      if (json[headers[i]] != null) {
-        csv += "${json[headers[i]]},";
+    for (String header in headers) {
+      if (json[header] != null) {
+        csv += "${json[header]},";
       } else {
         csv += ",";
       }

@@ -12,7 +12,8 @@ import 'package:take_your_meds/common/notification_handler.dart';
 
 import 'package:take_your_meds/pages/home.dart';
 import 'package:take_your_meds/pages/misc.dart';
-import 'package:take_your_meds/pages/reminders.dart';
+//import 'package:take_your_meds/pages/reminders.dart';
+
 import 'package:take_your_meds/pages/summary.dart';
 import 'package:take_your_meds/widgets/navigation_bar.dart';
 
@@ -89,7 +90,8 @@ class _AppState extends State<App> {
   static final List<Widget> _pages = [
     const HomePage(),
     const SummaryPage(),
-    const RemindersPage(),
+    // TODO: Fix this shit
+    //const RemindersPage(),
     const MiscPage(),
   ];
 
@@ -101,12 +103,11 @@ class _AppState extends State<App> {
 
   void checkIfStartedFromNotification() async {
     var details = await flnp.getNotificationAppLaunchDetails();
-    if (details!.didNotificationLaunchApp) {
+    if (details != null && details.didNotificationLaunchApp) {
       onSelectNotification(details.notificationResponse?.payload);
     }
   }
 
-  
   Future<void> getAlarms() async {
     log("getting alarms");
     List reminders = await Utils.fetchReminders();
@@ -125,7 +126,6 @@ class _AppState extends State<App> {
     }
   }
 
- 
   @override
   void initState() {
     super.initState();

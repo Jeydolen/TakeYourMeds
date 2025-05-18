@@ -20,7 +20,7 @@ class Medication {
   static final List<String> keys = Field.values.map((e) => e.string).toList();
 
   final String name;
-  final String dose;
+  final int dose;
   final String unit;
   final String notes;
   final String uid;

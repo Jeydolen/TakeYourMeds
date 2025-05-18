@@ -1,20 +1,25 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:path/path.dart' show join;
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cross_file/cross_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:take_your_meds/common/database.dart';
 
 import 'package:take_your_meds/common/utils.dart';
 import 'package:take_your_meds/common/med_event.dart';
 import 'package:take_your_meds/common/mediastore.dart';
 import 'package:take_your_meds/common/mood_event.dart';
 import 'package:take_your_meds/common/file_handler.dart';
-import 'package:take_your_meds/pages/graphs.dart';
-import 'package:take_your_meds/widgets/export_dialog.dart';
 import 'package:take_your_meds/common/enums/supported_formats.dart';
+
+import 'package:take_your_meds/pages/graphs.dart';
+
+import 'package:take_your_meds/widgets/export_dialog.dart';
 import 'package:take_your_meds/widgets/summary_calendar.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -36,40 +41,78 @@ class SummaryPageState extends State<SummaryPage> {
     );
   }
 
-  void saveData(String data, String format) async {
-    String now = DateTime.now().toString();
-    Directory? pDir = await getTemporaryDirectory();
-    String fullPath = "${pDir.path}/${now}_summary.$format";
+  Future<String> buildPath(String format) async {
+    // Replace spaces and ":" because Windows is shit
+    String now = DateTime.now()
+        .toString()
+        .replaceAll(" ", "_")
+        .replaceAll(":", "-");
+    Directory? pDir = await getApplicationDocumentsDirectory();
 
+    if (!await pDir.exists()) {
+      await pDir.create(recursive: true);
+    }
+
+    String fullPath = join(pDir.path, "${now}_summary.$format");
+    return fullPath;
+  }
+
+  void saveData(String data, String format) async {
+    String fullPath = await buildPath(format);
     FileHandler.saveToPath(fullPath, data);
-    MediaStore.addItem(file: File(fullPath), name: "${now}_summary.$format");
+
+    if (Platform.isAndroid) {
+      MediaStore.addItem(
+        file: File(fullPath),
+        name: "${DateTime.now().toString()}_summary.$format",
+      );
+    }
   }
 
   void shareData(String data, String format) async {
-    String now = DateTime.now().toString();
-    Directory? pDir = await getExternalStorageDirectory();
-    if (pDir == null) {
-      return;
-    }
+    String fullPath = await buildPath(format);
 
-    String fullPath = "${pDir.path}/${now}_summary.$format";
-    File file = File(fullPath);
-    file.writeAsString(data);
-    Share.shareXFiles(
-      [XFile(fullPath)],
-      subject: "My summary export",
-      text: "This is the text for summary export",
-    );
+    File(fullPath).writeAsString(data);
+    Share.shareXFiles([XFile(fullPath)], subject: "My summary export");
   }
 
-  void convertTo(SupportedFormats formats, bool doShare) async {
+  String buildCSV(List<MedEvent> eventList, List<dynamic> moodsList) {
+    // Exports medication data
+    String data = "";
+    for (String header in MedEvent.header) {
+      data += "${toBeginningOfSentenceCase(header)},";
+    }
+    data += "\n";
+
+    for (MedEvent event in eventList) {
+      data += event.toCSV();
+    }
+    // ----------------------------
+
+    data += "\n\n";
+    // Exports mood data
+    for (String header in MoodEvent.headers) {
+      data += "${toBeginningOfSentenceCase(header)},";
+    }
+    data += "\n";
+
+    List<String> moodCsv =
+        moodsList.map((e) => MoodEvent.fromJson(e).toCSV()).toList();
+    for (String e in moodCsv) {
+      data += e;
+    }
+    return data;
+  }
+
+  void convertTo(SupportedFormats format, bool doShare) async {
     List<MedEvent> eventList = await summary;
     List<dynamic> moodsList = [];
     if (addMoods) {
-      moodsList = await Utils.fetchMoods();
+      //moodsList = await Utils.fetchMoods();
+      moodsList = await DatabaseHandler().selectAll("moods");
     }
 
-    switch (formats) {
+    switch (format) {
       case SupportedFormats.json:
         {
           // Mood data
@@ -79,70 +122,34 @@ class SummaryPageState extends State<SummaryPage> {
           json["meds"] = (eventList.map((e) => e.toJson()).toList());
 
           String data = jsonEncode(json);
-          if (!doShare) {
-            saveData(data, "json");
-          } else {
-            shareData(data, "json");
-          }
-          return;
+          doShare ? shareData(data, "json") : saveData(data, "json");
+          break;
         }
 
       case SupportedFormats.csv:
         {
-          // Exports medication data
-          String data = "";
-          for (var e in MedEvent.header) {
-            data += "$e,";
-          }
-          data += "\n";
-
-          for (var e in eventList) {
-            data += e.toCSV();
-          }
-          // ----------------------------
-
-          data += "\n\n";
-          // Exports mood data
-          for (var e in MoodEvent.headers) {
-            data += "$e,";
-          }
-          data += "\n";
-
-          List<String> moodCsv =
-              moodsList.map((e) => MoodEvent.fromJson(e).toCSV()).toList();
-          for (var e in moodCsv) {
-            data += e;
-          }
-          // ----------------------------
-
-          if (!doShare) {
-            saveData(data, "csv");
-          } else {
-            shareData(data, "csv");
-          }
-          return;
+          String data = buildCSV(eventList, moodsList);
+          doShare ? shareData(data, "csv") : saveData(data, "csv");
+          break;
         }
-
-      default:
-        break;
     }
-  }
-
-  void changeMoodExport() {
-    setState(() {
-      addMoods = !addMoods;
-    });
   }
 
   void showExportDialog(bool doShare) async {
     int? doExport = await showDialog<int>(
       context: context,
-      builder: (_) => StatefulBuilder(
-        builder: ((__, ___) => ExportDialog(
-              doShare: doShare,
-              changeMoodExport: changeMoodExport,
-            )),
-      ),
+      builder:
+          (_) => StatefulBuilder(
+            builder:
+                ((__, ___) => ExportDialog(
+                  doShare: doShare,
+                  changeMoodExport: () {
+                    setState(() {
+                      addMoods = !addMoods;
+                    });
+                  },
+                )),
+          ),
     );
 
     if (doExport == null) {
@@ -152,60 +159,42 @@ class SummaryPageState extends State<SummaryPage> {
     convertTo(SupportedFormats.values[doExport], doShare);
   }
 
-  void removeEvent(MedEvent? diffEvent) async {
-    // Construct json from events
-    // In summary_calendar when medEvents gets modified it gets repercuted here
-    List<Map> eventsToJson = [];
-    for (MedEvent event in await summary) {
-      bool found = eventsToJson.any((obj) => obj["uid"] == event.uid);
+  void removeEvent(MedEvent diffEvent, MedEvent? previousEvent) async {
+    var db = DatabaseHandler();
 
-      if (!found) {
-        Map obj = event.toJson();
-        obj.remove("time");
-        obj.remove("date");
-        obj.remove("iso8601_date");
-        obj.remove("quantity");
-        obj.remove("reason");
-        obj["dates"] = [];
-        obj["dates"].add({
-          "date": event.datetime.toIso8601String(),
-          "quantity": event.quantity,
-          "reason": event.reason,
-        });
-        eventsToJson.add(obj);
-      } else {
-        Map obj = eventsToJson.firstWhere((obj) => obj["uid"] == event.uid);
-        obj["dates"].add({
-          "date": event.datetime.toIso8601String(),
-          "quantity": event.quantity,
-          "reason": event.reason,
-        });
-      }
+    // Update current event
+    if (previousEvent != null) {
+      await db.update(
+        "events",
+        diffEvent.toDBMap(),
+        where: "date = ? AND med_uid = ?",
+        whereArgs: [diffEvent.datetime.toIso8601String(), diffEvent.uid],
+      );
+    } else {
+      // Pure delete
+      await db.delete("events", "date = ? AND med_uid = ?", [
+        diffEvent.datetime.toIso8601String(),
+        diffEvent.uid,
+      ]);
     }
-
-    for (Map obj in json) {
-      if (!eventsToJson.any((element) => element["uid"] == obj["uid"])) {
-        if (diffEvent != null) {
-          List<dynamic> dates = obj["dates"];
-          String diffTime = diffEvent.datetime.toIso8601String();
-          dates.removeWhere((e) => e["date"] == diffTime);
-        }
-        eventsToJson.add(obj);
-      }
-    }
-
-    FileHandler.writeContent("meds", jsonEncode(eventsToJson));
   }
 
-  Future<List<MedEvent>> createEvents(Future<List<dynamic>> data) async {
-    json = await data;
+  Future<List<MedEvent>> createEvents() async {
+    var json = await DatabaseHandler().rawQuery(
+      "SELECT * FROM events e INNER JOIN meds m on m.uid = e.med_uid",
+    );
+    setState(() {
+      this.json = json;
+    });
+
     return Utils.createEvents(json);
   }
 
   @override
   void initState() {
     super.initState();
-    summary = createEvents(Utils.fetchMeds());
+
+    summary = createEvents();
   }
 
   @override

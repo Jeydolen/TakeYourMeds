@@ -37,10 +37,12 @@ class NavigationBarState extends State<NavigationBar> {
           icon: const Icon(Icons.preview),
           label: "summary".tr(),
         ),
+        /*
         BottomNavigationBarItem(
           icon: const Icon(Icons.alarm),
           label: "reminders".tr(),
         ),
+        */
         BottomNavigationBarItem(
           icon: const Icon(Icons.miscellaneous_services),
           label: "other".tr(),

@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:take_your_meds/common/database.dart';
 
-import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/cancel_button.dart';
 import 'package:take_your_meds/widgets/delete_button.dart';
 
@@ -20,36 +19,51 @@ class MedsListState extends State<MedsList> {
   late List<dynamic> json;
 
   Widget emptyList() => Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: const Text("no_meds").tr(),
-            ),
-            ElevatedButton(onPressed: addMed, child: const Icon(Icons.add))
-          ],
-        ),
-      );
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(child: const Text("no_meds").tr()),
+        ElevatedButton(onPressed: addMed, child: const Icon(Icons.add)),
+      ],
+    ),
+  );
 
   void reorderList(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      final dynamic item = json.removeAt(oldIndex);
-      json.insert(newIndex, item);
-    });
-    FileHandler.writeContent("meds", jsonEncode(json));
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
+    final dynamic item = json.removeAt(oldIndex);
+    json.insert(newIndex, item);
+    setState(() {});
+    Batch batch = DatabaseHandler().batch();
+    for (int i = 0; i < json.length; i++) {
+      batch.update(
+        "meds",
+        {"order_int": i},
+        where: "uid = ?",
+        whereArgs: [json[i]["uid"]],
+      );
+    }
+    batch.commit();
   }
 
-  void removeMed(element) {
-    setState(() {
-      json.remove(element);
-      if (json.isEmpty) {
-        edit = false;
-      }
-    });
-    FileHandler.writeContent("meds", jsonEncode(json));
+  void removeMed(element) async {
+    await DatabaseHandler().update(
+      "meds",
+      {"active": 0},
+      where: "uid = ?",
+      whereArgs: [element["uid"]],
+    );
+
+    if (mounted) {
+      setState(() {
+        json.remove(element);
+        if (json.isEmpty) {
+          edit = false;
+        }
+      });
+    }
   }
 
   void showMed(Map<String, dynamic> json) {
@@ -61,8 +75,9 @@ class MedsListState extends State<MedsList> {
     if (result == null) {
       return;
     }
+
     setState(() {
-      json = result;
+      json.add(result);
     });
   }
 
@@ -70,6 +85,7 @@ class MedsListState extends State<MedsList> {
     if (json.isEmpty) {
       return;
     }
+
     setState(() {
       edit = !edit;
     });
@@ -109,34 +125,47 @@ class MedsListState extends State<MedsList> {
 
   void updateFavorite(Map<String, dynamic> element) async {
     bool? doUpdate = true;
-    if (element["favorite"] == true) {
+    bool favorite = element["favorite"] == 0 ? false : true;
+
+    if (favorite == true) {
       // Show confirmation
       doUpdate = await addFavoriteDialog(element);
     }
 
     if (doUpdate == true) {
-      element["favorite"] =
-          element["favorite"] is! bool ? true : !element["favorite"];
+      Map<String, dynamic> updatedEl = {
+        ...element,
+        "favorite": !favorite ? 1 : 0,
+      };
 
-      setState(() {
-        json[json.indexOf(element)] = element;
-      });
+      DatabaseHandler().update(
+        "meds",
+        updatedEl,
+        where: "uid = ?",
+        whereArgs: [element["uid"]],
+      );
 
-      FileHandler.writeContent("meds", jsonEncode(json));
+      if (mounted) {
+        setState(() {
+          json[json.indexOf(element)] = updatedEl;
+        });
+      }
     }
   }
 
   List<Widget> generateElements(List<dynamic> json, Function onClick) {
     return json.map((element) {
-      Color backgroundColor = element["color"] is int
-          ? Color(element["color"])
-          : Theme.of(context).canvasColor;
+      Color backgroundColor =
+          element["color"] is int && element["color"] != -1
+              ? Color(element["color"])
+              : Theme.of(context).canvasColor;
 
       Color foregroundColor =
           backgroundColor.computeLuminance() > .5 ? Colors.black : Colors.white;
 
-      ButtonStyle btnStyle =
-          TextButton.styleFrom(foregroundColor: foregroundColor);
+      ButtonStyle btnStyle = TextButton.styleFrom(
+        foregroundColor: foregroundColor,
+      );
 
       return ListTile(
         tileColor: backgroundColor,
@@ -154,10 +183,11 @@ class MedsListState extends State<MedsList> {
               TextButton(
                 style: btnStyle,
                 onPressed: () => updateFavorite(element),
-                child: element["favorite"] == true
-                    ? const Icon(Icons.star)
-                    : const Icon(Icons.star_outline),
-              )
+                child:
+                    element["favorite"] == 1
+                        ? const Icon(Icons.star)
+                        : const Icon(Icons.star_outline),
+              ),
             ],
           ),
         ),
@@ -176,7 +206,8 @@ class MedsListState extends State<MedsList> {
   @override
   void initState() {
     super.initState();
-    json = widget.json;
+
+    json = List.from(widget.json);
   }
 
   @override
@@ -188,18 +219,19 @@ class MedsListState extends State<MedsList> {
           ElevatedButton(
             onPressed: editList,
             child: Icon(edit ? Icons.cancel : Icons.edit),
-          )
+          ),
         ],
       ),
-      body: json.isEmpty
-          ? emptyList()
-          : ReorderableListView(
-              onReorder: reorderList,
-              children: generateElements(
-                json,
-                edit ? removeMedDialog : showMed,
+      body:
+          json.isEmpty
+              ? emptyList()
+              : ReorderableListView(
+                onReorder: reorderList,
+                children: generateElements(
+                  json,
+                  edit ? removeMedDialog : showMed,
+                ),
               ),
-            ),
     );
   }
 }

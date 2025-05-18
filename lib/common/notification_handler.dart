@@ -79,10 +79,8 @@ class NotificationHandler {
       scheduledDate,
       notificationDetails,
       payload: notification.payload,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
       matchDateTimeComponents: matchDateTimeComponents,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     );
 
     scheduledNotifications.add(notification);

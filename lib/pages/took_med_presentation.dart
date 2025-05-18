@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:take_your_meds/common/utils.dart';
-import 'package:take_your_meds/common/file_handler.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/widgets/time_button.dart';
 
 class TookMedPresentationPage extends StatefulWidget {
@@ -32,23 +29,18 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
       return;
     }
 
-    Navigator.pop(context);
-
-    List<dynamic> meds = await Utils.fetchMeds();
-
-    Map<String, dynamic> cMed = meds.firstWhere((e) => e["uid"] == json["uid"]);
-    List<dynamic> dates = cMed["dates"] ?? [];
-
-    dates.add({
+    Map<String, dynamic> event = {
       "date": now.toIso8601String(),
       "quantity": quantityField.text,
       "reason": reasonField.text
-    });
+    };
 
-    cMed["dates"] = dates;
-    FileHandler.writeContent("meds", jsonEncode(meds));
+    event["med_uid"] = json["uid"];
+    DatabaseHandler().insert("events", event);
 
-    setLastMedTaken(cMed, time: now, quantity: quantityField.text);
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -64,7 +56,7 @@ class TookMedPresentationPageState extends State<TookMedPresentationPage> {
               const Text("med_name").tr(args: [json["name"]]),
               const SizedBox(height: 20),
               const Text("med_dosage").tr(args: [
-                json["dose"],
+                json["dose"].toString(),
                 tr(json["unit"]),
               ]),
               const SizedBox(height: 20),

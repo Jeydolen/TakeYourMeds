@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:take_your_meds/common/utils.dart';
+import 'package:take_your_meds/common/database.dart';
 import 'package:take_your_meds/common/enums/day.dart';
 import 'package:take_your_meds/common/medication.dart';
-import 'package:take_your_meds/common/file_handler.dart';
 import 'package:take_your_meds/widgets/time_button.dart';
 
 class AddReminderPage extends StatefulWidget {
@@ -53,7 +53,7 @@ class AddReminderPageState extends State<AddReminderPage> {
       obj["days"] = days;
     }
 
-    if (days.values.every((_) => _ == true)) {
+    if (days.values.every((t) => t == true)) {
       obj["all_days"] = true;
     }
 
@@ -65,7 +65,14 @@ class AddReminderPageState extends State<AddReminderPage> {
       await fetchReminders();
     }
     reminders!.add(obj);
-    await FileHandler.writeContent("reminders", jsonEncode(reminders));
+
+    // SQLite does not support hash so converting to String
+    obj["days"] = jsonEncode(obj["days"]);
+
+    // SQLite does not support BOOLEAN so casting to Int
+    obj["enabled"] = obj["enabled"] ? 1 : 0;
+    obj["recurrent"] = obj["recurrent"] ? 1 : 0;
+    DatabaseHandler().insert("reminders", obj);
 
     if (mounted) {
       Navigator.pop(context, obj);
@@ -75,7 +82,7 @@ class AddReminderPageState extends State<AddReminderPage> {
   Widget dayBtn(Day day) {
     String key = day.string;
     ButtonStyle style = ButtonStyle(
-      shape: MaterialStateProperty.all(
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
       ),
     );
@@ -128,10 +135,9 @@ class AddReminderPageState extends State<AddReminderPage> {
     List<DropdownMenuItem> dropDownMeds = generateDropdownItems(medications);
 
     // Adding default value
-    dropDownMeds.add(DropdownMenuItem<String>(
-      value: 'none',
-      child: const Text("none").tr(),
-    ));
+    dropDownMeds.add(
+      DropdownMenuItem<String>(value: 'none', child: const Text("none").tr()),
+    );
 
     setState(() {
       dropdown = DropdownButtonFormField<dynamic>(
@@ -177,15 +183,12 @@ class AddReminderPageState extends State<AddReminderPage> {
           ),
           recurrent
               ? Wrap(
-                  alignment: WrapAlignment.center,
-                  children: Day.values.map((e) => dayBtn(e)).toList(),
-                )
+                alignment: WrapAlignment.center,
+                children: Day.values.map((e) => dayBtn(e)).toList(),
+              )
               : const SizedBox(),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: saveData,
-            child: const Text("submit").tr(),
-          ),
+          ElevatedButton(onPressed: saveData, child: const Text("submit").tr()),
         ],
       ),
     );

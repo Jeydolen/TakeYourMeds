@@ -55,32 +55,27 @@ class EventListState extends State<EventList> {
     for (MedEvent event in medEvents) {
       Medication eventMed = event.medication;
       var widget = Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 4,
-          horizontal: 12,
-        ),
-        child: Theme(
-          data: ThemeData(
-            highlightColor: const Color(0xFFFF0000).withOpacity(.5),
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+        // child: Theme(
+        //   data: ThemeData(
+        //     highlightColor: const Color(0xFFFF0000)..withValues(alpha: .5),
+        //   ),
+        child: ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: ListTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            tileColor: Theme.of(context).colorScheme.background,
-            onTap: () => showEvent(event),
-            onLongPress: () => deleteEvent(event),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(eventMed.name),
-                Text(
-                  '${event.quantity}x ${eventMed.dose} ${eventMed.unit}',
-                ),
-                Text(event.time),
-              ],
-            ),
+          tileColor: Theme.of(context).colorScheme.surface,
+          onTap: () => showEvent(event),
+          onLongPress: () => deleteEvent(event),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(eventMed.name),
+              Text('${event.quantity}x ${eventMed.dose} ${eventMed.unit}'),
+              Text(event.time),
+            ],
           ),
+          // ),
         ),
       );
       evts.add(widget);
