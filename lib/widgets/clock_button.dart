@@ -49,9 +49,8 @@ class _ClockButtonState extends State<ClockButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        textStyle: TextStyle(
-          fontSize: MediaQuery.of(context).size.width / 6,
-        ),
+        shadowColor: Colors.grey,
+        textStyle: TextStyle(fontSize: MediaQuery.of(context).size.width / 6),
         minimumSize: const Size(100, 60),
       ),
       onPressed: takeMed,
