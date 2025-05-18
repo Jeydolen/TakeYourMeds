@@ -41,6 +41,7 @@ dependencies:
   flutter_timezone: ^4.1.0
   sqflite_common_ffi: ^2.3.5
   sqlite3_flutter_libs: ^0.5.32
+  file_picker: ^10.1.9
 
 dev_dependencies:
   flutter_test:

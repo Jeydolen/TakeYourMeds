@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,7 +33,25 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
     Directory pDir = await getTemporaryDirectory();
     String fullPath = "${pDir.path}/data.json";
     FileHandler.saveToPath(fullPath, data);
-    MediaStore.addItem(file: File(fullPath), name: "data.json");
+
+    if (Platform.isAndroid) {
+      MediaStore.addItem(file: File(fullPath), name: "data.json");
+      return;
+    }
+
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: "select_path".tr(),
+      fileName: "take_your_meds_data.json",
+      initialDirectory: (await getDownloadsDirectory())?.path,
+    );
+
+    if (outputFile == null) {
+      // User canceled the picker
+      showSnackBar(Text("aborted".tr()));
+      return;
+    }
+
+    FileHandler.saveToPath(outputFile, data);
   }
 
   void export() async {
@@ -100,8 +119,9 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
 
     if (json["reminders"] != null) {
       // Reminders data validation
-      List<Map<String, dynamic>>? validReminders =
-          validateReminders(json["reminders"]);
+      List<Map<String, dynamic>>? validReminders = validateReminders(
+        json["reminders"],
+      );
 
       if (validReminders != null) {
         // Write to "meds" file
@@ -120,24 +140,26 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
   Future<bool> showWarningDialog() async {
     bool? doExport = await showDialog<bool>(
       context: context,
-      builder: (BuildContext _) => StatefulBuilder(
-        builder: ((context, setState) => AlertDialog(
-              title: const Text("import_confirmation").tr(),
-              content: const Text("import_text").tr(),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const CancelButton(),
-                    ElevatedButton(
-                      child: const Text("import").tr(),
-                      onPressed: () => Navigator.of(context).pop(true),
+      builder:
+          (BuildContext _) => StatefulBuilder(
+            builder:
+                ((context, setState) => AlertDialog(
+                  title: const Text("import_confirmation").tr(),
+                  content: const Text("import_text").tr(),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CancelButton(),
+                        ElevatedButton(
+                          child: const Text("import").tr(),
+                          onPressed: () => Navigator.of(context).pop(true),
+                        ),
+                      ],
                     ),
                   ],
-                )
-              ],
-            )),
-      ),
+                )),
+          ),
     );
 
     if (doExport == null) {
@@ -166,7 +188,7 @@ class ImportExportWidgetState extends State<ImportExportWidget> {
         Map<String, dynamic> validEl = {
           "name": el["name"],
           "dose": el["dose"],
-          "unit": el["unit"]
+          "unit": el["unit"],
         };
 
         validEl["uid"] = el["uid"] is String ? el["uid"] : const Uuid().v4();

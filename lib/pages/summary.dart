@@ -42,8 +42,16 @@ class SummaryPageState extends State<SummaryPage> {
   }
 
   Future<String> buildPath(String format) async {
-    String now = DateTime.now().toString();
+    // Replace spaces and ":" because Windows is shit
+    String now = DateTime.now()
+        .toString()
+        .replaceAll(" ", "_")
+        .replaceAll(":", "-");
     Directory? pDir = await getApplicationDocumentsDirectory();
+
+    if (!await pDir.exists()) {
+      await pDir.create(recursive: true);
+    }
 
     String fullPath = join(pDir.path, "${now}_summary.$format");
     return fullPath;

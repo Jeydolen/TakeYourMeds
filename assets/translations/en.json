@@ -105,5 +105,6 @@
   "year": "Year",
   "data_for": "Data for {}",
   "del_favorite_title": "Delete favorite ?",
-  "del_favorite": "Do you really want to delete this favorite ?\nMedication: {}"
+  "del_favorite": "Do you really want to delete this favorite ?\nMedication: {}",
+  "select_path": "Please select a path for your file"
 }
