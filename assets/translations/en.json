@@ -28,7 +28,7 @@
   "took_med_general": "Took medication",
   "mood": "Mood",
   "good": "Good",
-  "meh": "Meh",
+  "meh": "Average",
   "bad": "Bad",
   "del_reminder_title": "Delete reminder?",
   "del_reminder": "Are you sure you really want to delete this reminder?",
